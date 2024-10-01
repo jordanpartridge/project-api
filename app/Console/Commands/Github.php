@@ -2,10 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Integrations\Github\Github as GithubIntegration;
-use App\Http\Integrations\Github\Requests\GetAuthenticatedUserRequest;
 use Illuminate\Console\Command;
-use Saloon\Http\Auth\TokenAuthenticator;
 
 use function Laravel\Prompts\error;
 use function Laravel\Prompts\info;
@@ -26,24 +23,11 @@ class Github extends Command
         'Account Details' => ['id', 'node_id', 'type', 'site_admin', 'hireable', 'two_factor_authentication'],
     ];
 
-    public function handle()
+    public function handle(\App\Services\Github $githubService)
     {
-        $token = config('services.github.token');
 
-        if (! $token) {
-            error('GitHub token is not set in the config.');
-
-            return 1;
-        }
-
-        $github = new GithubIntegration;
-        $github->authenticate(new TokenAuthenticator($token));
-
-        info('Fetching user data from GitHub...');
-
-        $userData = spin(function () use ($github) {
-            $request = new GetAuthenticatedUserRequest;
-            $response = $github->send($request);
+        $userData = spin(function () use ($githubService) {
+            $response = $githubService->user();
 
             if (! $response->successful()) {
                 error('Failed to fetch user data. Status: ' . $response->status());

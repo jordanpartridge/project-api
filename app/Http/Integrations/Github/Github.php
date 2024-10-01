@@ -3,6 +3,7 @@
 namespace App\Http\Integrations\Github;
 
 use Saloon\Helpers\OAuth2\OAuthConfig;
+use Saloon\Http\Auth\TokenAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Traits\OAuth2\AuthorizationCodeGrant;
 use Saloon\Traits\Plugins\AcceptsJson;
@@ -11,6 +12,11 @@ class Github extends Connector
 {
     use AcceptsJson;
     use AuthorizationCodeGrant;
+
+    public function __construct(string $token)
+    {
+        $this->authenticate(new TokenAuthenticator($token));
+    }
 
     /**
      * The Base URL of the API.

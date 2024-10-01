@@ -5,7 +5,7 @@ namespace App\Http\Integrations\Github\Requests;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
-class GetAuthenticatedUserRequest extends Request
+class GetUserRequest extends Request
 {
     /**
      * The HTTP method of the request
