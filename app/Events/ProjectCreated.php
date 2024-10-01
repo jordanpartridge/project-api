@@ -24,8 +24,9 @@ class ProjectCreated extends Event
 
     public function handle()
     {
-        return Project::create([
+        return Project::updateOrCreate([
             'name' => $this->name,
+        ], [
             'description' => $this->description,
         ]);
     }
