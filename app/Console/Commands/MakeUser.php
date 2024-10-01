@@ -5,9 +5,10 @@ namespace App\Console\Commands;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use function Laravel\Prompts\text;
-use function Laravel\Prompts\table;
+
 use function Laravel\Prompts\select;
+use function Laravel\Prompts\table;
+use function Laravel\Prompts\text;
 
 class MakeUser extends Command
 {
@@ -43,7 +44,7 @@ class MakeUser extends Command
                 'blue' => 'Ocean Blue (for the calm)',
                 'green' => 'Forest Green (for the nature lovers)',
                 'purple' => 'Royal Purple (for the fabulous)',
-                'rainbow' => 'Rainbow (for the indecisive)'
+                'rainbow' => 'Rainbow (for the indecisive)',
             ]
         );
 
@@ -64,7 +65,7 @@ class MakeUser extends Command
             ['Name', $name],
             ['Email', $email],
             ['Favorite Color', $favoriteColor],
-            ['Secret Identity', 'Shh... it\'s a secret!']
+            ['Secret Identity', 'Shh... it\'s a secret!'],
         ]);
 
         $this->newLine();
