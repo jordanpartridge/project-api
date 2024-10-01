@@ -8,11 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('repos', function (Blueprint $table) {
             $table->snowflakeId();
             $table->string('name')->unique();
-            $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->string('url')->unique();
+            $table->string('language')->nullable();
+            $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -20,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('repos');
     }
 };

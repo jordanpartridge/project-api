@@ -6,6 +6,9 @@ use Glhd\Bits\Database\HasSnowflakes;
 use Glhd\Bits\Snowflake;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -14,6 +17,7 @@ class Project extends Model
     use HasFactory;
     use HasSlug;
     use HasSnowflakes;
+    use LogsActivity;
 
     protected $fillable = [
         'name',
@@ -29,5 +33,16 @@ class Project extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
+    }
+
+    public function repos(): HasMany
+    {
+        return $this->hasMany(Repo::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable();
     }
 }
