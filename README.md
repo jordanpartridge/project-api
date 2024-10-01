@@ -6,7 +6,7 @@
 - Will include documentation and ideas for each project
 
 ## 2. Key Features
-- GitHub integration
+- **GitHub Integration**: Pull repository data, commit history, and issue tracking. [Learn more about GitHub integration](github-integration.md)
 - WakaTime integration
 - Project documentation storage
 - Idea tracking
