@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Integrations\Github\Github as GithubConnector;
-use App\Http\Integrations\Github\Requests\GetReposRequest;
+use App\Http\Integrations\Github\Requests\Repos\ListRequest;
 use Illuminate\Console\Command;
 
 use function Laravel\Prompts\confirm;
@@ -96,7 +96,7 @@ class Github extends Command
     {
         $personalOnly = confirm('Do you want to see only personal repositories?', true);
 
-        $request = new GetReposRequest;
+        $request = new ListRequest;
         $request->query()->merge([
             'sort' => 'updated',
             'direction' => 'desc',
@@ -137,7 +137,7 @@ class Github extends Command
 
     private function viewRecentCommits()
     {
-        $request = new GetReposRequest;
+        $request = new ListRequest;
         $request->query()->add('type', 'owner');
         $repos = $this->fetchData($request);
         if (! $repos) {

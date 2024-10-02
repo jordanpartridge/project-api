@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Events\ProjectCreated;
 use App\Http\Integrations\Github\Github as GithubIntegration;
-use App\Http\Integrations\Github\Requests\GetReposRequest;
+use App\Http\Integrations\Github\Requests\Repos\ListRequest;
 use App\Models\Language;
 use Exception;
 use Illuminate\Console\Command;
@@ -26,7 +26,7 @@ class SyncRepo extends Command
         $limit = $this->option('limit');
         $this->info("Fetching up to {$limit} repositories...");
 
-        $request = new GetReposRequest;
+        $request = new ListRequest;
         $request->query()->merge([
             'sort' => 'updated',
             'direction' => 'desc',
@@ -88,10 +88,11 @@ class SyncRepo extends Command
             description: $repo['description'] ?? null,
         );
 
-        $project->repo()->create([
+        $project->repo()->updateOrCreate([
             'github_id' => $repo['id'],
             'name' => $repo['name'],
             'full_name' => $repo['full_name'],
+        ], [
             'description' => $repo['description'] ?? null,
             'url' => $repo['html_url'],
             'private' => $repo['private'],

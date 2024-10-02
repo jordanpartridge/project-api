@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Http\Integrations\Github\Github as GithubIntegration;
-use App\Http\Integrations\Github\Requests\GetReposRequest;
-use App\Http\Integrations\Github\Requests\GetUserRequest;
+use App\Http\Integrations\Github\Requests\Repos\ListRequest;
+use App\Http\Integrations\Github\Requests\User\GetUserRequest;
 use Saloon\Http\Response;
 
 class Github
@@ -18,6 +18,6 @@ class Github
 
     public function repos(): Response
     {
-        return $this->githubIntegration->send(new GetReposRequest);
+        return $this->githubIntegration->send(new ListRequest);
     }
 }
