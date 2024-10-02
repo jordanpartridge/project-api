@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Integrations\Github\Requests;
+namespace App\Http\Integrations\Github\Requests\Repos;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
-class GetReposRequest extends Request
+class ListRequest extends Request
 {
     protected Method $method = Method::GET;
 

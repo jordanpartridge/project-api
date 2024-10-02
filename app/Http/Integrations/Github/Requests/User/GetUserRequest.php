@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Integrations\Github\Requests;
+namespace App\Http\Integrations\Github\Requests\User;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
