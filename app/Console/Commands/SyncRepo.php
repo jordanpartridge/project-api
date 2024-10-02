@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Events\ProjectCreated;
 use App\Http\Integrations\Github\Github as GithubIntegration;
 use App\Http\Integrations\Github\Requests\GetReposRequest;
+use App\Models\Language;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -87,12 +88,28 @@ class SyncRepo extends Command
             description: $repo['description'] ?? null,
         );
 
-        $project->repos()->create([
+        $project->repo()->create([
+            'github_id' => $repo['id'],
             'name' => $repo['name'],
+            'full_name' => $repo['full_name'],
             'description' => $repo['description'] ?? null,
             'url' => $repo['html_url'],
-            'language' => $repo['language'] ?? null,
+            'private' => $repo['private'],
+            'stars_count' => $repo['stargazers_count'],
+            'forks_count' => $repo['forks_count'],
+            'open_issues_count' => $repo['open_issues_count'],
+            'default_branch' => $repo['default_branch'],
+            'last_push_at' => $repo['pushed_at'],
+            'topics' => $repo['topics'] ?? [],
+            'license' => $repo['license']['spdx_id'] ?? null,
         ]);
+        //might work?
+        if ($repo['language']) {
+            $language = Language::firstOrCreate(['name' => $repo['language']]);
+            $project->repo->language()->associate($language);
+            $project->repo->save();
+
+        }
 
         $this->info("Project {$project->name} created successfully.");
     }

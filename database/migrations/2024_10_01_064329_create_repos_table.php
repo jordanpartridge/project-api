@@ -10,11 +10,24 @@ return new class extends Migration
     {
         Schema::create('repos', function (Blueprint $table) {
             $table->snowflakeId();
-            $table->string('name')->unique();
+            $table->unsignedBigInteger('github_id')->unique(); // New field for GitHub's repo ID
+            $table->string('full_name')->unique();
+            $table->string('name');
             $table->text('description')->nullable();
             $table->string('url')->unique();
+            //oops this table doesn't exit yet I'm being a bad developer
             $table->string('language')->nullable();
+            $table->boolean('private')->default(false);
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
+
+            $table->unsignedInteger('stars_count')->default(0);
+            $table->unsignedInteger('forks_count')->default(0);
+            $table->unsignedInteger('open_issues_count')->default(0);
+            $table->string('default_branch')->default('main');
+            $table->timestamp('last_push_at')->nullable();
+            $table->json('topics')->nullable();
+            $table->string('license')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

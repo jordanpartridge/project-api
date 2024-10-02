@@ -6,7 +6,7 @@ use Glhd\Bits\Database\HasSnowflakes;
 use Glhd\Bits\Snowflake;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Sluggable\HasSlug;
@@ -35,9 +35,9 @@ class Project extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function repos(): HasMany
+    public function repo(): HasOne
     {
-        return $this->hasMany(Repo::class);
+        return $this->hasOne(Repo::class);
     }
 
     public function getActivitylogOptions(): LogOptions
