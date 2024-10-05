@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('url')->unique();
-            //oops this table doesn't exit yet I'm being a bad developer
             $table->string('language')->nullable();
             $table->boolean('private')->default(false);
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
