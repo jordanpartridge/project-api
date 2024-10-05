@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Events\ProjectCreated;
-use App\Http\Integrations\Github\Github as GithubIntegration;
 use App\Http\Integrations\Github\Requests\Repos\ListRequest;
+use App\Http\Requests\Github as GithubIntegration;
 use App\Models\Language;
 use Exception;
 use Illuminate\Console\Command;
@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 
 class SyncRepo extends Command
 {
-    protected $signature = 'sync:repo {--limit=100 : The number of repositories to fetch}';
+    protected $signature = 'repo:sync {--limit=100 : The number of repositories to fetch}';
     protected $description = 'Sync GitHub repository information to projects';
 
     public function __construct(private readonly GithubIntegration $github)
@@ -21,7 +21,7 @@ class SyncRepo extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): void
     {
         $limit = $this->option('limit');
         $this->info("Fetching up to {$limit} repositories...");

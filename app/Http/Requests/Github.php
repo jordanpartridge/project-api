@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Integrations\Github;
+namespace App\Http\Requests;
 
 use Saloon\Helpers\OAuth2\OAuthConfig;
 use Saloon\Http\Auth\TokenAuthenticator;
