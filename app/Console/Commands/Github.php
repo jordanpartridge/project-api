@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Integrations\Github\Github as GithubConnector;
 use App\Http\Integrations\Github\Requests\Repos\ListRequest;
+use App\Http\Requests\Github as GithubConnector;
 use Illuminate\Console\Command;
 
 use function Laravel\Prompts\confirm;

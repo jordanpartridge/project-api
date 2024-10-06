@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Language;
 use App\Models\Project;
 use App\Models\Repo;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,6 +23,7 @@ class RepoFactory extends Factory
             'name' => $this->faker->unique()->name(),
             'github_id' => $this->faker->unique()->randomNumber(),
             'full_name' => $this->faker->unique()->name(),
+            'language_id' => Language::factory()->create(),
             'url' => $this->faker->url(),
             'project_id' => Project::inRandomOrder()->first() ?? Project::factory(),
         ];

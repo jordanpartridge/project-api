@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Integrations\Github\Github;
+use App\Http\Requests\Github;
 use Illuminate\Support\ServiceProvider;
 
 class GithubServiceProvider extends ServiceProvider
