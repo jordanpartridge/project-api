@@ -16,6 +16,11 @@ class Commit extends Model
         'sha',
         'message',
         'author',
+        'committed_at',
+    ];
+
+    protected $casts = [
+        'committed_at' => 'datetime',
     ];
 
     public function repo(): BelongsTo

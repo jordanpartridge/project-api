@@ -15,6 +15,7 @@ return new class extends Migration
             $table->text('message');
             $table->string('author');
             $table->timestamps();
+            $table->timestamp('committed_at')->nullable();
         });
     }
 
