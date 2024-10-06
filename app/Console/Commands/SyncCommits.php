@@ -33,7 +33,15 @@ class SyncCommits extends Command
         $repos = Repo::all();
         $repos->each(function (Repo $repo) use ($github) {
             $this->info('Syncing commits for ' . $repo->full_name);
-            $response = $github->commits($repo);
+
+            try {
+                $response = $github->commits($repo);
+            } catch (Exception $e) {
+                report($e);
+                report(new Exception('Error syncing commits for ' . $repo->full_name));
+                $this->error($e->getMessage());
+            }
+            $this->error($e->getMessage());
             collect($response->json())->each(function ($commit) use ($repo) {
                 if (is_string($commit)) {
                     $this->error($commit . ' for ' . $repo->full_name);
@@ -58,7 +66,7 @@ class SyncCommits extends Command
 
     private function syncReposIfNeeded(): void
     {
-        if (Repo::all()->count() === 0) {
+        if (Repo::count() === 0) {
             $this->info('No repos found. Syncing repos first...');
             Artisan::call('repo:sync');
         }
