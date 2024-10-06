@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Integrations\Github\Requests\Commits\ListRequest as ReposListRequest;
 use App\Http\Integrations\Github\Requests\Repos\DeleteRequest;
 use App\Http\Integrations\Github\Requests\Repos\ListRequest;
 use App\Http\Integrations\Github\Requests\User\GetUserRequest;
@@ -21,6 +22,11 @@ class Github
     public function repos(): Response
     {
         return $this->githubIntegration->send(new ListRequest);
+    }
+
+    public function commits(Repo $repo): Response
+    {
+        return $this->githubIntegration->send(new ReposListRequest($repo));
     }
 
     public function deleteRepo(Repo $repo): Response
