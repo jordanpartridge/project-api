@@ -36,31 +36,31 @@ class SyncCommits extends Command
 
             try {
                 $response = $github->commits($repo);
+                collect($response->json())->each(function ($commit) use ($repo) {
+                    if (is_string($commit)) {
+                        $this->error($commit . ' for ' . $repo->full_name);
+
+                        return;
+                    }
+                    try {
+                        $repo->commits()->updateOrCreate([
+                            'sha' => $commit['sha'],
+                        ], [
+                            'message' => $commit['commit']['message'],
+                            'author' => $commit['commit']['author']['name'],
+                            'committed_at' => $commit['commit']['author']['date'],
+                        ]);
+                    } catch (Exception $e) {
+                        $this->error($e->getMessage() . ' for ' . $repo->full_name);
+                    }
+
+                });
             } catch (Exception $e) {
                 report($e);
                 report(new Exception('Error syncing commits for ' . $repo->full_name));
                 $this->error($e->getMessage());
             }
-            $this->error($e->getMessage());
-            collect($response->json())->each(function ($commit) use ($repo) {
-                if (is_string($commit)) {
-                    $this->error($commit . ' for ' . $repo->full_name);
 
-                    return;
-                }
-                try {
-                    $repo->commits()->updateOrCreate([
-                        'sha' => $commit['sha'],
-                    ], [
-                        'message' => $commit['commit']['message'],
-                        'author' => $commit['commit']['author']['name'],
-                        'date' => $commit['commit']['author']['date'],
-                    ]);
-                } catch (Exception $e) {
-                    $this->error($e->getMessage() . ' for ' . $repo->full_name);
-                }
-
-            });
         });
     }
 
