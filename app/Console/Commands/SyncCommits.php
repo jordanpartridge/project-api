@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\Repo;
+use App\Services\Github;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
 
 class SyncCommits extends Command
 {
@@ -26,7 +28,7 @@ class SyncCommits extends Command
     /**
      * Execute the console command.
      */
-    public function handle(\App\Services\Github $github): void
+    public function handle(Github $github): void
     {
         $this->syncReposIfNeeded();
         $this->info('Syncing commits...');
@@ -36,7 +38,11 @@ class SyncCommits extends Command
 
             try {
                 $response = $github->commits($repo);
+                //files
+
                 collect($response->json())->each(function ($commit) use ($repo) {
+                    $files = Http::get($commit['url'])->json('files');
+                    $this->processFiles($files, $repo);
                     if (is_string($commit)) {
                         $this->error($commit . ' for ' . $repo->full_name);
 
@@ -47,7 +53,7 @@ class SyncCommits extends Command
                             'sha' => $commit['sha'],
                         ], [
                             'message' => $commit['commit']['message'],
-                            'author' => $commit['commit']['author']['name'],
+                            'author' => $commit['commit']['committer']['name'],
                             'committed_at' => $commit['commit']['author']['date'],
                         ]);
                     } catch (Exception $e) {
@@ -70,5 +76,22 @@ class SyncCommits extends Command
             $this->info('No repos found. Syncing repos first...');
             Artisan::call('repo:sync');
         }
+    }
+
+    private function processFiles(mixed $files, Repo $repo)
+    {
+        $this->info('Processing files...');
+        collect($files)->each(function ($file) use ($repo) {
+            $this->info('Processing file: ' . $file['filename']);
+            $created = $repo->files()->updateOrCreate([
+                'path' => $file['filename'],
+            ], [
+                'content' => $file['contents_url'],
+                'raw_url' => $file['raw_url'],
+                'sha' => $file['sha'],
+
+            ]);
+            $this->info('File created: ' . $created->path);
+        });
     }
 }

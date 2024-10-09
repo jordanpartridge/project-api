@@ -12,7 +12,7 @@ use Saloon\Http\Response;
 
 class Github
 {
-    public function __construct(private GithubIntegration $githubIntegration) {}
+    public function __construct(private readonly GithubIntegration $githubIntegration) {}
 
     public function user(): Response
     {
