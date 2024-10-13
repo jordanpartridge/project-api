@@ -45,6 +45,16 @@ class Repo extends Model
         'topics' => 'array',
     ];
 
+    public function commits(): HasMany
+    {
+        return $this->hasMany(Commit::class);
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()->logFillable();
@@ -58,10 +68,5 @@ class Repo extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
-    }
-
-    public function commits(): HasMany
-    {
-        return $this->hasMany(Commit::class);
     }
 }
