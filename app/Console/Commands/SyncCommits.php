@@ -78,7 +78,7 @@ class SyncCommits extends Command
         }
     }
 
-    private function processFiles(mixed $files, Repo $repo)
+    private function processFiles(mixed $files, Repo $repo): void
     {
         $this->info('Processing files...');
         collect($files)->each(function ($file) use ($repo) {
