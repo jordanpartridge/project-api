@@ -27,4 +27,9 @@ class Commit extends Model
     {
         return $this->belongsTo(Repo::class);
     }
+
+    public function files()
+    {
+        return $this->belongsToMany(File::class)->withPivot('status', 'additions', 'deletions', 'changes');
+    }
 }
