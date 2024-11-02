@@ -1,3 +1,5 @@
 ## Github Integration
 
-Project api finds relevant information from github and displays it in the project.
+Project api utilizes <a href="https://www.github.com/jordanpartridge/github-client">jordanpartridge/github-client</a>
+
+It provides both a Facade and a service for ease of use.
