@@ -2,35 +2,35 @@
 
 namespace App\Services;
 
-use App\Http\Integrations\Github\Requests\Commits\ListRequest as ReposListRequest;
-use App\Http\Integrations\Github\Requests\Repos\DeleteRequest;
-use App\Http\Integrations\Github\Requests\Repos\ListRequest;
-use App\Http\Integrations\Github\Requests\User\GetUserRequest;
-use App\Http\Requests\Github as GithubIntegration;
+use App\Http\Integrations\Github\Requests\Commits\ListRequest;
 use App\Models\Repo;
+use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
+use JordanPartridge\GithubClient\Requests\Repos\Repos;
+use JordanPartridge\GithubClient\Requests\Repos\Repos\Delete;
+use JordanPartridge\GithubClient\Requests\User;
 use Saloon\Http\Response;
 
-class Github
+final readonly class Github
 {
-    public function __construct(private readonly GithubIntegration $githubIntegration) {}
+    public function __construct(private GithubConnectorInterface $githubIntegration) {}
 
     public function user(): Response
     {
-        return $this->githubIntegration->send(new GetUserRequest);
+        return $this->githubIntegration->send(new User);
     }
 
     public function repos(): Response
     {
-        return $this->githubIntegration->send(new ListRequest);
+        return $this->githubIntegration->send(new Repos);
     }
 
     public function commits(Repo $repo): Response
     {
-        return $this->githubIntegration->send(new ReposListRequest($repo));
+        return $this->githubIntegration->send(new ListRequest($repo));
     }
 
     public function deleteRepo(Repo $repo): Response
     {
-        return $this->githubIntegration->send(new DeleteRequest($repo));
+        return $this->githubIntegration->send(new Delete($repo->full_name));
     }
 }
