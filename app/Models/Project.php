@@ -24,9 +24,9 @@ class Project extends Model
         'description',
     ];
 
-    protected $casts = [
-        'id' => Snowflake::class,
-    ];
+    //    protected $casts = [
+    //        'id' => Snowflake::class,
+    //    ];
 
     public function getSlugOptions(): SlugOptions
     {
