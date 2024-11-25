@@ -10,8 +10,8 @@
         "filament/widgets": "^3.2",
         "glhd/bits": "^0.5.0",
         "hirethunk/verbs": "^0.6.2",
-        "jordanpartridge/github-client": "dev-main",
-        "jordanpartridge/packagist-client": "@dev",
+        "jordanpartridge/github-client": "v0.2",
+        "jordanpartridge/packagist-client": "v0.1.0a",
         "laravel/prompts": "^0.1.25",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
@@ -76,12 +76,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "~/packages/jordanpartridge/github-client"
-        }
-    ]
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

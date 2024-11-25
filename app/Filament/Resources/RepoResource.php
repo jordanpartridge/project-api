@@ -78,6 +78,7 @@ class RepoResource extends Resource
 
                         TextInput::make('stars_count')
                             ->numeric()
+                            ->readonly()
                             ->default(0),
 
                         TextInput::make('forks_count')

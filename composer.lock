@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3865f403c18bfa8f8ed1b7f58ff2f530",
+    "content-hash": "42223709ec1300e3a0d1de279422182d",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2810,11 +2810,17 @@
         },
         {
             "name": "jordanpartridge/github-client",
-            "version": "dev-main",
+            "version": "v0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jordanpartridge/github-client.git",
+                "reference": "e3e76f3f6ebd733abb114a6dbd088f4d2229eae6"
+            },
             "dist": {
-                "type": "path",
-                "url": "/Users/jordanpartridge/packages/jordanpartridge/github-client",
-                "reference": "f7097d737189fd25cf382b0939951f7b6eba5f9d"
+                "type": "zip",
+                "url": "https://api.github.com/repos/jordanpartridge/github-client/zipball/e3e76f3f6ebd733abb114a6dbd088f4d2229eae6",
+                "reference": "e3e76f3f6ebd733abb114a6dbd088f4d2229eae6",
+                "shasum": ""
             },
             "require": {
                 "illuminate/contracts": "^10.0||^11.0",
@@ -2851,44 +2857,7 @@
                     "JordanPartridge\\GithubClient\\Database\\Factories\\": "database/factories/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "JordanPartridge\\GithubClient\\Tests\\": "tests/",
-                    "Workbench\\App\\": "workbench/app/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "@composer run prepare"
-                ],
-                "clear": [
-                    "@php vendor/bin/testbench package:purge-github-client --ansi"
-                ],
-                "prepare": [
-                    "@php vendor/bin/testbench package:discover --ansi"
-                ],
-                "build": [
-                    "@composer run prepare",
-                    "@php vendor/bin/testbench workbench:build --ansi"
-                ],
-                "start": [
-                    "Composer\\Config::disableProcessTimeout",
-                    "@composer run build",
-                    "@php vendor/bin/testbench serve"
-                ],
-                "analyse": [
-                    "vendor/bin/phpstan analyse"
-                ],
-                "test": [
-                    "vendor/bin/pest"
-                ],
-                "test-coverage": [
-                    "vendor/bin/pest --coverage"
-                ],
-                "format": [
-                    "vendor/bin/pint"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2906,9 +2875,17 @@
                 "github-client",
                 "laravel"
             ],
-            "transport-options": {
-                "relative": false
-            }
+            "support": {
+                "issues": "https://github.com/jordanpartridge/github-client/issues",
+                "source": "https://github.com/jordanpartridge/github-client/tree/v0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/JordanPartridge",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-25T02:20:47+00:00"
         },
         {
             "name": "jordanpartridge/packagist-client",
@@ -12881,10 +12858,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
-        "jordanpartridge/github-client": 20,
-        "jordanpartridge/packagist-client": 20
+        "jordanpartridge/packagist-client": 15
     },
     "prefer-stable": true,
     "prefer-lowest": false,

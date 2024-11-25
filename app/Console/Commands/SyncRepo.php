@@ -131,7 +131,7 @@ class SyncRepo extends Command
             sprintf(
                 '%s | Updated: %s',
                 $repo->language ?? 'No Language',
-                Carbon::parse($repo->updatedAt)->diffForHumans()
+                Carbon::parse($repo->updated_at)->diffForHumans()
             )
         );
     }
