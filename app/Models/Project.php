@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Glhd\Bits\Database\HasSnowflakes;
-use Glhd\Bits\Snowflake;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -23,10 +22,6 @@ class Project extends Model
         'name',
         'description',
     ];
-
-    //    protected $casts = [
-    //        'id' => Snowflake::class,
-    //    ];
 
     public function getSlugOptions(): SlugOptions
     {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51e051723edec6c0032bf716fbdffdf8",
+    "content-hash": "3865f403c18bfa8f8ed1b7f58ff2f530",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2811,16 +2811,10 @@
         {
             "name": "jordanpartridge/github-client",
             "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jordanpartridge/github-client.git",
-                "reference": "c3b33b4133bebe1061e7e90a7ddf49ff133fd7b0"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jordanpartridge/github-client/zipball/c3b33b4133bebe1061e7e90a7ddf49ff133fd7b0",
-                "reference": "c3b33b4133bebe1061e7e90a7ddf49ff133fd7b0",
-                "shasum": ""
+                "type": "path",
+                "url": "/Users/jordanpartridge/packages/jordanpartridge/github-client",
+                "reference": "f7097d737189fd25cf382b0939951f7b6eba5f9d"
             },
             "require": {
                 "illuminate/contracts": "^10.0||^11.0",
@@ -2840,7 +2834,6 @@
                 "phpstan/phpstan-deprecation-rules": "^1.1",
                 "phpstan/phpstan-phpunit": "^1.3"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -2858,7 +2851,44 @@
                     "JordanPartridge\\GithubClient\\Database\\Factories\\": "database/factories/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "JordanPartridge\\GithubClient\\Tests\\": "tests/",
+                    "Workbench\\App\\": "workbench/app/"
+                }
+            },
+            "scripts": {
+                "post-autoload-dump": [
+                    "@composer run prepare"
+                ],
+                "clear": [
+                    "@php vendor/bin/testbench package:purge-github-client --ansi"
+                ],
+                "prepare": [
+                    "@php vendor/bin/testbench package:discover --ansi"
+                ],
+                "build": [
+                    "@composer run prepare",
+                    "@php vendor/bin/testbench workbench:build --ansi"
+                ],
+                "start": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "@composer run build",
+                    "@php vendor/bin/testbench serve"
+                ],
+                "analyse": [
+                    "vendor/bin/phpstan analyse"
+                ],
+                "test": [
+                    "vendor/bin/pest"
+                ],
+                "test-coverage": [
+                    "vendor/bin/pest --coverage"
+                ],
+                "format": [
+                    "vendor/bin/pint"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -2876,17 +2906,9 @@
                 "github-client",
                 "laravel"
             ],
-            "support": {
-                "issues": "https://github.com/jordanpartridge/github-client/issues",
-                "source": "https://github.com/jordanpartridge/github-client/tree/main"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/JordanPartridge",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-11-02T17:24:32+00:00"
+            "transport-options": {
+                "relative": false
+            }
         },
         {
             "name": "jordanpartridge/packagist-client",

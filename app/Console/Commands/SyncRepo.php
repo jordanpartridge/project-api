@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use JordanPartridge\GithubClient\Data\Repo;
 use JordanPartridge\GithubClient\Enums\Direction;
+use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Facades\Github;
 use Throwable;
@@ -66,7 +67,7 @@ class SyncRepo extends Command
             sort: Sort::UPDATED,
             direction: Direction::DESC,
             per_page: (int) $this->option('limit'),
-            type: 'owner'
+            type: RepoType::Owner,
         )->dto());
     }
 
