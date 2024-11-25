@@ -6,6 +6,7 @@ use App\Filament\Resources\RepoResource\Pages\CreateRepo;
 use App\Filament\Resources\RepoResource\Pages\EditRepo;
 use App\Filament\Resources\RepoResource\Pages\ListRepos;
 use App\Filament\Resources\RepoResource\Pages\ViewRepo;
+use App\Filament\Resources\RepoResource\RelationManagers\CommitsRelationshipManager;
 use App\Models\Repo;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Section;
@@ -119,7 +120,8 @@ class RepoResource extends Resource
                 TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
-                    ->sortable(),
+                    ->sortable()
+                    ->icon('heroicon-m-code-bracket'),
 
                 ViewColumn::make('full_name')
                     ->view('tables.columns.github-repo-badge')
@@ -131,7 +133,13 @@ class RepoResource extends Resource
                 TextColumn::make('description')
                     ->limit(50)
                     ->toggleable()
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap()
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+
+                        return strlen($state) > 50 ? $state : null;
+                    }),
 
                 TextColumn::make('language.name')
                     ->badge()
@@ -148,19 +156,28 @@ class RepoResource extends Resource
 
                 TextColumn::make('stars_count')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Stars')
+                    ->icon('heroicon-m-star'),
 
                 TextColumn::make('forks_count')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Forks')
+                    ->icon('heroicon-m-arrow-path'),
 
                 TextColumn::make('open_issues_count')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Issues')
+                    ->icon('heroicon-m-exclamation-circle'),
 
                 TextColumn::make('last_push_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Last Push')
+                    ->icon('heroicon-m-clock'),
+
             ])
             ->defaultSort('last_push_at', 'desc')
             ->actions([
@@ -283,7 +300,7 @@ class RepoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CommitsRelationshipManager::make(),
         ];
     }
 

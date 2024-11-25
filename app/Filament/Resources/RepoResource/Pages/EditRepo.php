@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\RepoResource\Pages;
 
 use App\Filament\Resources\RepoResource;
+use App\Filament\Resources\RepoResource\Widgets\RepoStatsOverview;
 use App\Models\Repo;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
@@ -34,6 +35,13 @@ class EditRepo extends EditRecord
                 ])
                 ->url(fn (Repo $record) => $record->url)
                 ->openUrlInNewTab(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            RepoStatsOverview::class,
         ];
     }
 }
