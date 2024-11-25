@@ -33,8 +33,11 @@ class ProjectResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-folder'; // Classic project folder
 
     protected static ?string $navigationLabel = 'Projects';
+
     protected static ?string $navigationGroup = 'Development'; // Optional: if you want to group it
+
     protected static ?string $modelLabel = 'Project';
+
     protected static ?string $pluralModelLabel = 'Projects'; // Optional: for better pluralization
 
     // Optional: Navigation sorting
