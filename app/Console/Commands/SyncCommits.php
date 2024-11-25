@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\Repo;
-use App\Services\Github;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use JordanPartridge\GithubClient\Facades\Github;
 
 class SyncCommits extends Command
 {
@@ -28,17 +28,16 @@ class SyncCommits extends Command
     /**
      * Execute the console command.
      */
-    public function handle(Github $github): void
+    public function handle(): void
     {
         $this->syncReposIfNeeded();
         $this->info('Syncing commits...');
         $repos = Repo::all();
-        $repos->each(function (Repo $repo) use ($github) {
+        $repos->each(function (Repo $repo) {
             $this->info('Syncing commits for ' . $repo->full_name);
 
             try {
-                $response = $github->commits($repo);
-                //files
+                $response = Github::commits()->all($repo->full_name);
 
                 collect($response->json())->each(function ($commit) use ($repo) {
                     $files = Http::get($commit['url'])->json('files');

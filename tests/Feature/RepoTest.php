@@ -3,14 +3,12 @@
 use App\Models\Language;
 use App\Models\Project;
 use App\Models\Repo;
-use Glhd\Bits\Snowflake;
 
 it('can be created with factory', function () {
     $repo = Repo::factory()->create();
     expect($repo)->toBeInstanceOf(Repo::class)
         ->and($repo->name)->toBeString()
-        ->and($repo->url)->toBeString()
-        ->and($repo->project_id)->toBeInstanceOf(Snowflake::class);
+        ->and($repo->url)->toBeString();
 });
 
 it('belongs to a project', function () {

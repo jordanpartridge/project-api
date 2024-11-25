@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Integrations\Github\Requests\Repos\ListRequest;
-use App\Http\Requests\Github as GithubConnector;
 use Illuminate\Console\Command;
+use JordanPartridge\GithubClient\Contracts\GithubConnectorInterface;
+use JordanPartridge\GithubClient\Requests\Repos\Repos;
 
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\error;
@@ -18,9 +18,9 @@ class Github extends Command
     protected $signature = 'github';
     protected $description = 'Interactively explore GitHub data';
 
-    private $githubConnector;
+    private GithubConnectorInterface $githubConnector;
 
-    public function __construct(GithubConnector $githubConnector)
+    public function __construct(GithubConnectorInterface $githubConnector)
     {
         parent::__construct();
         $this->githubConnector = $githubConnector;
@@ -96,7 +96,7 @@ class Github extends Command
     {
         $personalOnly = confirm('Do you want to see only personal repositories?', true);
 
-        $request = new ListRequest;
+        $request = new Repos;
         $request->query()->merge([
             'sort' => 'updated',
             'direction' => 'desc',

@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "jordanpartridge/project-api",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
@@ -10,8 +10,9 @@
         "filament/widgets": "^3.2",
         "glhd/bits": "^0.5.0",
         "hirethunk/verbs": "^0.6.2",
-        "jordanpartridge/packagist-client": "@dev",
-        "laravel/prompts": "^v0.3.0",
+        "jordanpartridge/github-client": "v0.2",
+        "jordanpartridge/packagist-client": "v0.1.0a",
+        "laravel/prompts": "^0.1.25",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "saloonphp/laravel-plugin": "^3.0",
@@ -58,7 +59,8 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
-        ]
+        ],
+        "test": "vendor/bin/pest"
     },
     "extra": {
         "laravel": {
@@ -74,15 +76,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../packages/jordanpartridge/packagist-client",
-            "options": {
-                "symlink": true
-            }
-        }
-    ]
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

@@ -22,7 +22,7 @@ class ProjectCreated extends Event
         $project->description = $this->description;
     }
 
-    public function handle()
+    public function handle(): Project
     {
         return Project::updateOrCreate([
             'name' => $this->name,
