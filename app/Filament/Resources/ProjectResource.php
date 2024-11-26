@@ -11,7 +11,6 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
@@ -24,29 +23,32 @@ use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-folder'; // Classic project folder
+    protected static ?string $navigationIcon = 'heroicon-o-folder';
 
     protected static ?string $navigationLabel = 'Projects';
-    protected static ?string $navigationGroup = 'Development'; // Optional: if you want to group it
+
+    protected static ?string $navigationGroup = 'Development';
+
     protected static ?string $modelLabel = 'Project';
-    protected static ?string $pluralModelLabel = 'Projects'; // Optional: for better pluralization
 
-    // Optional: Navigation sorting
-    protected static ?int $navigationSort = 1; // Put it first in the nav
+    protected static ?string $pluralModelLabel = 'Projects';
 
-    // Optional: Add a badge to show total projects
+    protected static ?int $navigationSort = 1;
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
 
-    // Optional: Badge color
     public static function getNavigationBadgeColor(): ?string
     {
         return 'gray';
@@ -77,7 +79,7 @@ class ProjectResource extends Resource
                         TextInput::make('full_name')
                             ->required()
                             ->maxLength(255)
-                            ->placeholder('Enter repo name')
+                            ->placeholder('organization/repository')
                             ->columnSpanFull()
                             ->suffixAction(
                                 TableAction::make('viewRepo')
@@ -94,25 +96,16 @@ class ProjectResource extends Resource
                             ->columnSpanFull(),
                         TextInput::make('description')
                             ->columnSpanFull(),
-
                     ])
                     ->extraAttributes(['class' => 'relative']),
-                // Add a view button in the fieldset header
-
             ])
             ->columns(2);
-
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable()
-                    ->formatStateUsing(fn ($state) => (string) $state),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
@@ -120,27 +113,61 @@ class ProjectResource extends Resource
                     ->wrap(),
                 ViewColumn::make('repo.full_name')
                     ->view('tables.columns.github-repo-badge')
+                    ->state(fn ($record) => [
+                        'name' => $record->repo->full_name,
+                        'url' => route('filament.admin.resources.repos.view', $record->repo),
+                    ])
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('description')
                     ->searchable()
                     ->sortable()
                     ->toggleable()
-                    ->limit(50),
+                    ->limit(50)
+                    ->tooltip(fn (Project $record): string => $record->description ?? ''),
                 TextColumn::make('created_at')
-                    ->dateTime('d-m-Y h:i A')
+                    ->label('Created')
+                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state->format('M j, Y g:i A'))
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable()
+                    ->tooltip(fn (Project $record): string => $record->created_at->format('F j, Y g:i:s A')),
+                TextColumn::make('updated_at')
+                    ->label('Updated')
+                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state->diffForHumans())
+                    ->sortable()
+                    ->toggleable()
+                    ->tooltip(fn (Project $record): string => $record->updated_at->format('F j, Y g:i:s A')),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
-                // You could add filters for repo status, stars count, etc.
+                SelectFilter::make('stars')
+                    ->options([
+                        '10' => '10+ stars',
+                        '50' => '50+ stars',
+                        '100' => '100+ stars',
+                        '1000' => '1000+ stars',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'],
+                            fn (Builder $query, $stars): Builder => $query->whereHas('repo', fn ($q) => $q->where('stars_count', '>=', (int) $stars)
+                            )
+                        );
+                    }),
+
+                Filter::make('updated_recently')
+                    ->query(fn (Builder $query): Builder => $query->where('updated_at', '>=', now()->subDays(7)))
+                    ->label('Updated This Week'),
+
             ])
             ->actions([
                 ViewAction::make()
                     ->color('gray'),
                 Action::make('viewOnGithub')
                     ->label('Open in GitHub')
-                    ->icon('heroicon-m-code-bracket')  // or could use svg github icon
+                    ->icon('heroicon-m-code-bracket')
                     ->color('gray')
                     ->button()
                     ->size('sm')

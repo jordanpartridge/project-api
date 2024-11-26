@@ -16,6 +16,7 @@ use function Laravel\Prompts\table;
 class Github extends Command
 {
     protected $signature = 'github';
+
     protected $description = 'Interactively explore GitHub data';
 
     private GithubConnectorInterface $githubConnector;

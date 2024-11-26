@@ -13,6 +13,7 @@ use function Laravel\Prompts\text;
 class MakeUser extends Command
 {
     protected $signature = 'make:user';
+
     protected $description = 'Create a user and generate a Sanctum key with style and pizzazz!';
 
     public function handle()
