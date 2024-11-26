@@ -30,6 +30,11 @@ class Project extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function repo(): HasOne
     {
         return $this->hasOne(Repo::class);
