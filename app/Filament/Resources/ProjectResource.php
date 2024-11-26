@@ -161,9 +161,6 @@ class ProjectResource extends Resource
                     ->query(fn (Builder $query): Builder => $query->where('updated_at', '>=', now()->subDays(7)))
                     ->label('Updated This Week'),
 
-                Filter::make('archived')
-                    ->query(fn (Builder $query): Builder => $query->whereHas('repo', fn ($q) => $q->where('is_archived', true)))
-                    ->label('Show Archived'),
             ])
             ->actions([
                 ViewAction::make()
