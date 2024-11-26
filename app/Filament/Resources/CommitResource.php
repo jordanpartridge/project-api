@@ -94,7 +94,7 @@ class CommitResource extends Resource
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
 
-                        return strlen($state) > 50 ? $state : null;
+                        return mb_strlen($state) > 50 ? $state : null;
                     }),
 
                 TextColumn::make('author')
