@@ -125,6 +125,12 @@ class RepoResource extends Resource
 
                 ViewColumn::make('full_name')
                     ->view('tables.columns.github-repo-badge')
+                    ->state(function (Repo $record): array {
+                        return [
+                            'name' => $record->full_name,
+                            'url' => route('filament.admin.resources.repos.view', ['record' => $record]),
+                        ];
+                    })
                     ->searchable()
                     ->sortable()
                     ->toggleable()
@@ -232,8 +238,7 @@ class RepoResource extends Resource
                             ])
                             ->default('>='),
                         TextInput::make('stars_count')
-                            ->numeric()
-                            ->default(100),
+                            ->numeric(),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query

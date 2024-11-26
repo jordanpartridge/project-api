@@ -71,6 +71,13 @@ class CommitResource extends Resource
             ->columns([
                 ViewColumn::make('repo.full_name')
                     ->view('tables.columns.github-repo-badge')
+                    ->state(function ($record): array {
+                        return [
+                            'name' => $record->repo->full_name,
+                            'url' => route('filament.admin.resources.repos.view', $record->repo),
+                        ];
+                    }
+                    )
                     ->searchable()
                     ->sortable()
                     ->toggleable()

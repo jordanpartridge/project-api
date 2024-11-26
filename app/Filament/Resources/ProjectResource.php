@@ -123,6 +123,10 @@ class ProjectResource extends Resource
                     ->wrap(),
                 ViewColumn::make('repo.full_name')
                     ->view('tables.columns.github-repo-badge')
+                    ->state(fn ($record) => [
+                        'name' => $record->repo->full_name,
+                        'url' => route('filament.admin.resources.repos.view', $record->repo),
+                    ])
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('description')
