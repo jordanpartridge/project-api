@@ -21,6 +21,7 @@ class Commit extends Model
 
     protected $casts = [
         'committed_at' => 'datetime',
+        'author' => 'array',
     ];
 
     public function repo(): BelongsTo

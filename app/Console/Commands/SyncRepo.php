@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use JordanPartridge\GithubClient\Data\Repo;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Enums\Direction;
 use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
@@ -28,7 +28,7 @@ class SyncRepo extends Command
         $this->components->info('🚀 Initiating GitHub Repository Sync');
 
         try {
-            /** @var Collection<Repo> $repos */
+            /** @var Collection<RepoData> $repos */
             $repos = $this->fetchRepositories();
 
             if ($repos->isEmpty()) {
@@ -59,19 +59,21 @@ class SyncRepo extends Command
     }
 
     /**
-     * @return Collection<Repo>
+     * @return Collection<RepoData>
      */
     private function fetchRepositories(): Collection
     {
-        return collect(Github::repos()->all(
+        $repos = collect(Github::repos()->all(
+            per_page: (int) $this->option('limit'),
             sort: Sort::UPDATED,
             direction: Direction::DESC,
-            per_page: (int) $this->option('limit'),
             type: RepoType::Owner,
         )->dto());
+
+        return $repos;
     }
 
-    private function syncRepository(Repo $repo, $progress): void
+    private function syncRepository(RepoData $repo, $progress): void
     {
         try {
             $this->displayRepositoryInfo($repo);
@@ -84,7 +86,7 @@ class SyncRepo extends Command
         }
     }
 
-    private function createOrUpdateProject(Repo $repo): mixed
+    private function createOrUpdateProject(RepoData $repo): mixed
     {
         $project = ProjectCreated::commit(
             name: Str::title(str_replace('-', ' ', $repo->name)),
@@ -114,7 +116,7 @@ class SyncRepo extends Command
         return $project;
     }
 
-    private function displayRepositoryInfo(Repo $repo): void
+    private function displayRepositoryInfo(RepoData $repo): void
     {
         match ($this->option('display')) {
             'minimal' => $this->displayMinimal($repo),
@@ -123,7 +125,7 @@ class SyncRepo extends Command
         };
     }
 
-    private function displayMinimal(Repo $repo): void
+    private function displayMinimal(RepoData $repo): void
     {
         $this->newLine();
         $this->components->twoColumnDetail(
@@ -136,7 +138,7 @@ class SyncRepo extends Command
         );
     }
 
-    private function displayCompact(Repo $repo): void
+    private function displayCompact(RepoData $repo): void
     {
         $this->newLine();
         $this->components->twoColumnDetail('<fg=blue>Repository</>', $repo->full_name);
@@ -147,7 +149,7 @@ class SyncRepo extends Command
         ]);
     }
 
-    private function displayFull(Repo $repo): void
+    private function displayFull(RepoData $repo): void
     {
         $this->newLine();
         $this->components->twoColumnDetail('<fg=blue>Repository</>', $repo->full_name);

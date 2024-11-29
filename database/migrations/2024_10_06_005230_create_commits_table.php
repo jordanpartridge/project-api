@@ -11,9 +11,9 @@ return new class extends Migration
         Schema::create('commits', function (Blueprint $table) {
             $table->snowflakeId();
             $table->foreignId('repo_id')->constrained()->cascadeOnDelete();
-            $table->string('sha');
+            $table->string('sha')->nullable();
             $table->text('message');
-            $table->string('author');
+            $table->json('author');
             $table->timestamps();
             $table->timestamp('committed_at')->nullable();
         });
