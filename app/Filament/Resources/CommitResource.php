@@ -35,6 +35,11 @@ class CommitResource extends Resource
 
     protected static ?string $modelLabel = 'Commit';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -104,7 +109,15 @@ class CommitResource extends Resource
                         return mb_strlen($state) > 50 ? $state : null;
                     }),
 
-                TextColumn::make('author')
+                ViewColumn::make('author')
+                    ->view('tables.columns.github-author')
+                    ->state(function (Commit $commit): array {
+                        return [
+                            'name' => $commit->author['login'],
+                            'email' => $commit->author['html_url'],
+                            'date' => now(),
+                        ];
+                    })
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
