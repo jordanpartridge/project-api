@@ -43,6 +43,7 @@ class SyncCommits extends Command
         collect($commits)->each(function ($commit) use ($repo) {
             $commit = $commit->toArray();
             $commit['message'] = $commit['commit']['message'];
+            $commit['author'] = $commit['commit']['author'] ?? ['name' => 'Unknown'];
             $repo->commits()->create($commit);
         });
 

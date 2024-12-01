@@ -67,7 +67,7 @@ class SyncRepo extends Command
             per_page: (int) $this->option('limit'),
             sort: Sort::UPDATED,
             direction: Direction::DESC,
-            type: RepoType::Owner,
+            //            type: RepoType::Owner,
         )->dto());
 
         return $repos;
