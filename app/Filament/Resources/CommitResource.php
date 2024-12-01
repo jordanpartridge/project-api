@@ -18,7 +18,6 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -44,12 +43,28 @@ class CommitResource extends Resource
         </svg>
     HTML;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::whereDate('created_at', Carbon::today())->count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $todayCount = static::getNavigationBadge();
+
+        return match (true) {
+            $todayCount === 0 => 'gray',
+            $todayCount < 5 => 'warning',
+            $todayCount < 10 => 'success',
+            default => 'primary',
+        };
+    }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                // Repository Column with ViewColumn preserved
-                ViewColumn::make('full_name')
+                ViewColumn::make('repo.full_name')
                     ->view('tables.columns.github-repo-badge')
                     ->state(function (Commit $record): array {
                         return [

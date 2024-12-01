@@ -6,6 +6,7 @@ use Glhd\Bits\Database\HasSnowflakes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Commit extends Model
 {
@@ -29,7 +30,7 @@ class Commit extends Model
         return $this->belongsTo(Repo::class);
     }
 
-    public function files()
+    public function files(): BelongsToMany
     {
         return $this->belongsToMany(File::class)->withPivot('status', 'additions', 'deletions', 'changes');
     }
