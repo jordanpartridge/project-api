@@ -26,7 +26,7 @@ class DeleteRepo extends Command
     /**
      * Execute the console command.
      */
-    public function handle(\App\Services\Github $github): void
+    public function handle(\JordanPartridge\GithubClient\Github $github): void
     {
         $repos = Repo::all();
         $select = select('repo', $repos->pluck('full_name', 'id')->toArray());

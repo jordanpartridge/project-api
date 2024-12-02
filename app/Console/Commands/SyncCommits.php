@@ -2,74 +2,32 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Commit;
 use App\Models\Repo;
-use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use JordanPartridge\GithubClient\Facades\Github;
+use Psy\Readline\Hoa\Exception;
 
 class SyncCommits extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'commits:sync';
+    private const API_RATE_LIMIT = 5000; // GitHub's rate limit per hour
+    private const RATE_LIMIT_BUFFER = 100; // Buffer to prevent hitting the limit
+    protected $signature = 'commits:sync {--per-page=100} {--max-pages=100} {--with-files}';
+    protected $description = 'Sync commits from Github with pagination support';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Sync commits from Github';
+    // Track API calls for rate limiting
+    private int $apiCalls = 0;
 
-    /**
-     * Execute the console command.
-     */
     public function handle(): void
     {
-        $this->syncReposIfNeeded();
-        $this->info('Syncing commits...');
-        $repos = Repo::all();
-        $repos->each(function (Repo $repo) {
-            $this->info('Syncing commits for ' . $repo->full_name);
-
-            try {
-                $response = Github::commits()->all($repo->full_name);
-
-                collect($response->json())->each(function ($commit) use ($repo) {
-                    $files = Http::get($commit['url'])->json('files');
-                    $this->processFiles($files, $repo);
-                    if (is_string($commit)) {
-                        $this->error($commit . ' for ' . $repo->full_name);
-
-                        return;
-                    }
-                    try {
-                        $repo->commits()->updateOrCreate([
-                            'sha' => $commit['sha'],
-                        ], [
-                            'message' => $commit['commit']['message'],
-                            'author' => $commit['commit']['committer']['name'],
-                            'committed_at' => $commit['commit']['author']['date'],
-                        ]);
-                    } catch (Exception $e) {
-                        $this->error($e->getMessage() . ' for ' . $repo->full_name);
-                    }
-
-                });
-            } catch (Exception $e) {
-                report($e);
-                report(new Exception('Error syncing commits for ' . $repo->full_name));
-                $this->error($e->getMessage());
-            }
-
-        });
+        $this->ensureReposExist();
+        $this->syncAllRepos();
     }
 
-    private function syncReposIfNeeded(): void
+    private function ensureReposExist(): void
     {
         if (Repo::count() === 0) {
             $this->info('No repos found. Syncing repos first...');
@@ -77,20 +35,159 @@ class SyncCommits extends Command
         }
     }
 
-    private function processFiles(mixed $files, Repo $repo): void
+    private function syncAllRepos(): void
+    {
+        $this->info('Syncing commits...');
+
+        Repo::chunk(100, function (Collection $repos) {
+            $repos->each(function (Repo $repo) {
+                if ($this->apiCalls >= (self::API_RATE_LIMIT - self::RATE_LIMIT_BUFFER)) {
+                    $this->error('Approaching API rate limit. Stopping sync.');
+
+                    return false;
+                }
+
+                $this->syncRepoCommits($repo);
+            });
+        });
+    }
+
+    private function syncRepoCommits(Repo $repo): void
+    {
+        $this->info("Syncing commits for {$repo->full_name}");
+
+        $perPage = $this->option('per-page');
+        $maxPages = $this->option('max-pages');
+        $page = 1;
+        $processedCommits = 0;
+
+        do {
+            $this->info("Fetching page {$page}...");
+
+            try {
+                $commits = Github::commits()->all(
+                    repo_name: $repo->full_name,
+                    per_page: $perPage,
+                    page: $page
+                );
+                $this->apiCalls++;
+
+                if (empty($commits)) {
+                    break;
+                }
+
+                $processedCommits += $this->processCommits($repo, $commits);
+
+                if ($page >= $maxPages) {
+                    $this->warn("Reached maximum page limit ({$maxPages}) for {$repo->full_name}");
+                    break;
+                }
+
+                $page++;
+                $this->enforceRateLimit();
+
+            } catch (Exception $e) {
+                Log::error("Failed to sync commits for {$repo->full_name}: " . $e->getMessage());
+                $this->error("Failed to sync commits for {$repo->full_name}: " . $e->getMessage());
+
+                return;
+            }
+
+        } while (! empty($commits));
+
+        $this->info("Processed {$processedCommits} commits for {$repo->full_name}");
+
+        // Only process files if the --with-files flag is set
+        $this->processFiles($repo);
+
+    }
+
+    private function processCommits(Repo $repo, array $commits): int
+    {
+        $this->info('Processing commits...');
+
+        $commitData = collect($commits)->map(function ($commit) use ($repo) {
+            return [
+                'sha' => $commit->sha,
+                'message' => $commit->commit->message,
+                'author' => $commit->commit->author->toJson(),
+                'committed_at' => $commit->commit->author->date,
+                'repo_id' => $repo->id,
+            ];
+        })->all();
+
+        Commit::upsert($commitData, ['sha'], ['message', 'author', 'committed_at']);
+        $this->info(count($commitData) . ' commits upserted');
+
+        return count($commitData);
+    }
+
+    private function processFiles(Repo $repo): void
     {
         $this->info('Processing files...');
-        collect($files)->each(function ($file) use ($repo) {
-            $this->info('Processing file: ' . $file['filename']);
-            $created = $repo->files()->updateOrCreate([
-                'path' => $file['filename'],
-            ], [
-                'content' => $file['contents_url'],
-                'raw_url' => $file['raw_url'],
-                'sha' => $file['sha'],
 
-            ]);
-            $this->info('File created: ' . $created->path);
-        });
+        Commit::where('repo_id', $repo->id)
+            ->whereDoesntHave('files')
+            ->chunk(100, function (Collection $commits) use ($repo) {
+                $commits->each(function (Commit $commit) use ($repo) {
+                    if ($this->shouldStopDueToRateLimit()) {
+                        return false;
+                    }
+
+                    try {
+                        $this->info("Processing files for commit {$commit->sha}");
+                        $details = Github::commits()->get($commit->repo->full_name, $commit->sha);
+                        $this->apiCalls++;
+
+                        // Handle the files data transformation properly
+                        $files = $details->files;
+                        if ($files) {
+                            info('Hey we have some files');
+                            $fileData = $files->map(function ($file) use ($commit) {
+                                info('processing file: ' . $file->filename);
+
+                                return [
+                                    'commit_id' => $commit->id,
+                                    'filename' => $file->filename,
+                                    'status' => $file->status,
+                                    'additions' => $file->additions ?? 0,
+                                    'deletions' => $file->deletions ?? 0,
+                                    'changes' => $file->changes ?? 0,
+                                    'raw_url' => $file->raw_url ?? null,
+                                ];
+                            });
+                            $fileData->map(function ($file) use ($repo, $commit) {
+                                $file['repo_id'] = $repo->id;
+                                $commit->files()->create($file);
+                            });
+                            $this->info(count($fileData) . ' files processed');
+                        }
+
+                        $this->enforceRateLimit();
+
+                    } catch (\Exception $e) {
+                        Log::error("Failed to process files for commit {$commit->sha}", [
+                            'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString(),
+                        ]);
+                        $this->error("Failed to process files for commit {$commit->sha}: " . $e->getMessage());
+                    }
+                });
+            });
+    }
+
+    private function shouldStopDueToRateLimit(): bool
+    {
+        return $this->apiCalls >= (self::API_RATE_LIMIT - self::RATE_LIMIT_BUFFER);
+    }
+
+    private function enforceRateLimit(): void
+    {
+        if ($this->apiCalls % 100 === 0) {
+            $this->info("Made {$this->apiCalls} API calls. Sleeping for 2 seconds...");
+            sleep(2);
+        } else {
+            usleep(100000); // 100ms delay between regular calls
+        }
     }
 }

@@ -30,10 +30,10 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
-                'gray' => Color::Slate,
-                'danger' => Color::Rose,
-                'success' => Color::Emerald,
+                'primary' => Color::Sky,      // Electric blue that pops in both modes
+                'gray' => Color::Zinc,        // Clean neutral base
+                'danger' => Color::Rose,      // Sharp contrast for alerts
+                'success' => Color::Teal,     // Crisp tech-green feedback
             ])
             ->brandName(config('app.name'))
             ->sidebarCollapsibleOnDesktop()

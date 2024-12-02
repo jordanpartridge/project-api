@@ -8,83 +8,167 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use JordanPartridge\GithubClient\Data\Repo;
+use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Enums\Direction;
-use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Facades\Github;
 use Throwable;
 
+use function Laravel\Prompts\error;
+use function Laravel\Prompts\progress;
+use function Laravel\Prompts\warning;
+
 class SyncRepo extends Command
 {
     protected $signature = 'repo:sync
-        {--limit=100 : The number of repositories to fetch}
         {--display=full : Display mode (full/compact/minimal)}';
 
     protected $description = 'Synchronize GitHub repositories with local projects';
 
     public function handle(): void
     {
-        $this->components->info('🚀 Initiating GitHub Repository Sync');
+        info('🚀 Starting GitHub Repository Sync');
 
         try {
-            /** @var Collection<Repo> $repos */
-            $repos = $this->fetchRepositories();
+            $repos = $this->fetchAllRepositories();
 
             if ($repos->isEmpty()) {
-                $this->components->error('No repositories found matching the criteria.');
+                warning('No repositories found matching the criteria.');
 
                 return;
             }
 
-            $this->components->info(sprintf('Found %d repositories to sync...', $repos->count()));
+            info(sprintf('Found %d repositories to sync...', $repos->count()));
 
-            $progress = $this->output->createProgressBar($repos->count());
-            $progress->start();
+            $progress = progress('Syncing repositories', $repos->count());
 
-            /** @var Repo $repo */
-            foreach ($repos as $repo) {
-                $this->syncRepository($repo, $progress);
-                $progress->advance();
+            foreach ($repos as $index => $repo) {
+                $progress->advance(
+                    step: $index + 1
+                );
+
+                $this->syncRepository($repo);
             }
 
             $progress->finish();
-            $this->newLine(2);
+            info('Sync completed successfully!');
 
         } catch (Throwable $e) {
-            $this->components->error('Failed to sync repositories: ' . $e->getMessage());
+            warning('Failed to sync repositories: ' . $e->getMessage());
 
             return;
         }
     }
 
     /**
-     * @return Collection<Repo>
+     * Fetch all repositories using pagination
+     *
+     * @return Collection<RepoData>
      */
-    private function fetchRepositories(): Collection
+    private function fetchAllRepositories(): Collection
     {
-        return collect(Github::repos()->all(
-            sort: Sort::UPDATED,
-            direction: Direction::DESC,
-            per_page: (int) $this->option('limit'),
-            type: RepoType::Owner,
-        )->dto());
+        $allRepos = collect();
+        $page = 1;
+        $perPage = 100;
+
+        while (true) {
+
+            $repos = collect(Github::repos()->all(
+                page: $page,
+                per_page: $perPage,
+                sort: Sort::UPDATED,
+                direction: Direction::DESC,
+            )->dto());
+
+            if ($repos->isEmpty()) {
+                break;
+            }
+
+            $allRepos = $allRepos->merge($repos);
+            $page++;
+        }
+
+        return $allRepos;
     }
 
-    private function syncRepository(Repo $repo, $progress): void
+    private function syncRepository(RepoData $repo): void
     {
         try {
             $this->displayRepositoryInfo($repo);
             $project = $this->createOrUpdateProject($repo);
             $this->syncLanguage($project, $repo->language);
 
-            $this->components->info("✓ Synced {$repo->full_name}");
         } catch (Throwable $e) {
-            $this->components->error("Failed to sync {$repo->full_name}: {$e->getMessage()}");
+            error("Failed to sync {$repo->full_name}: {$e->getMessage()}");
         }
     }
 
-    private function createOrUpdateProject(Repo $repo): mixed
+    private function displayRepositoryInfo(RepoData $repo): void
+    {
+        match ($this->option('display')) {
+            'minimal' => $this->displayMinimal($repo),
+            'full' => $this->displayFull($repo),
+            default => $this->displayCompact($repo),
+        };
+    }
+
+    private function displayMinimal(RepoData $repo): void
+    {
+        $this->line(sprintf(
+            '  <fg=blue>%s</> %s (Updated: %s)',
+            $repo->name,
+            $repo->language ?? 'No Language',
+            $this->formatDate($repo->updated_at)
+        ));
+    }
+
+    private function displayCompact(RepoData $repo): void
+    {
+        $this->line(sprintf(
+            "  <fg=blue>%s</>\n  ⭐ %d | 📅 %s | 🔓 %d issues",
+            $repo->full_name,
+            $repo->stargazers_count,
+            $this->formatDate($repo->updated_at),
+            $repo->open_issues_count
+        ));
+    }
+
+    private function displayFull(RepoData $repo): void
+    {
+        $this->newLine();
+        $this->line(sprintf('  <fg=blue;options=bold>%s</>', $repo->full_name));
+        $this->line(sprintf('  %s', $repo->private ? '🔒 Private' : '🌐 Public'));
+
+        if ($repo->description) {
+            $this->line(sprintf('  %s', $repo->description));
+        }
+
+        $this->line(sprintf(
+            '  ⭐ %d stars | 🍴 %d forks | 🔓 %d issues | 📦 %s',
+            $repo->stargazers_count,
+            $repo->forks_count,
+            $repo->open_issues_count,
+            $this->formatSize($repo->size)
+        ));
+
+        $this->line(sprintf(
+            '  Created: %s | Updated: %s',
+            $this->formatDate($repo->created_at),
+            $this->formatDate($repo->updated_at)
+        ));
+
+        if ($repo->language) {
+            $this->line(sprintf('  Language: %s', $repo->language));
+        }
+
+        if (! empty($repo->topics)) {
+            $this->line(sprintf('  Topics: %s', implode(', ', $repo->topics)));
+        }
+
+        $this->newLine();
+    }
+
+    private function createOrUpdateProject(RepoData $repo): mixed
     {
         $project = ProjectCreated::commit(
             name: Str::title(str_replace('-', ' ', $repo->name)),
@@ -114,73 +198,6 @@ class SyncRepo extends Command
         return $project;
     }
 
-    private function displayRepositoryInfo(Repo $repo): void
-    {
-        match ($this->option('display')) {
-            'minimal' => $this->displayMinimal($repo),
-            'full' => $this->displayFull($repo),
-            default => $this->displayCompact($repo),
-        };
-    }
-
-    private function displayMinimal(Repo $repo): void
-    {
-        $this->newLine();
-        $this->components->twoColumnDetail(
-            "<fg=blue>{$repo->name}</>",
-            sprintf(
-                '%s | Updated: %s',
-                $repo->language ?? 'No Language',
-                Carbon::parse($repo->updated_at)->diffForHumans()
-            )
-        );
-    }
-
-    private function displayCompact(Repo $repo): void
-    {
-        $this->newLine();
-        $this->components->twoColumnDetail('<fg=blue>Repository</>', $repo->full_name);
-        $this->components->bulletList([
-            "Stars: {$repo->stargazers_count}",
-            'Updated: ' . Carbon::parse($repo->updated_at)->diffForHumans(),
-            "Issues: {$repo->open_issues_count  }",
-        ]);
-    }
-
-    private function displayFull(Repo $repo): void
-    {
-        $this->newLine();
-        $this->components->twoColumnDetail('<fg=blue>Repository</>', $repo->full_name);
-
-        // Basic Info
-        $this->components->bulletList([
-            '<fg=yellow>Basic Info</>',
-            "ID: {$repo->id}",
-            "Name: {$repo->name}",
-            'Private: ' . ($repo->private ? '🔒 Yes' : '🌐 No'),
-            'Description: ' . ($repo->description ?? 'N/A'),
-        ]);
-
-        // Stats
-        $this->newLine();
-        $this->components->bulletList([
-            '<fg=yellow>Stats</>',
-            "Stars: ⭐ {$repo->stargazers_count}",
-            "Forks: 🍴 {$repo->forks_count}",
-            "Issues: 🔓 {$repo->open_issues_count}",
-            'Size: ' . $this->formatSize($repo->size),
-        ]);
-
-        // Dates
-        $this->newLine();
-        $this->components->bulletList([
-            '<fg=yellow>Dates</>',
-            'Created: ' . Carbon::parse($repo->created_at)->format('Y-m-d H:i:s'),
-            'Updated: ' . Carbon::parse($repo->updated_at)->format('Y-m-d H:i:s'),
-            'Pushed: ' . Carbon::parse($repo->pushed_at)->format('Y-m-d H:i:s'),
-        ]);
-    }
-
     private function syncLanguage($project, ?string $language): void
     {
         if ($language) {
@@ -202,5 +219,10 @@ class SyncRepo extends Command
         }
 
         return round($size, 2) . ' ' . $units[$unit];
+    }
+
+    private function formatDate(string $date): string
+    {
+        return Carbon::parse($date)->diffForHumans();
     }
 }
