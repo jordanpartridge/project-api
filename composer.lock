@@ -3713,16 +3713,16 @@
         },
         {
             "name": "jordanpartridge/github-client",
-            "version": "v0.3",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jordanpartridge/github-client.git",
-                "reference": "bbc10542343f19248f307bad3b0daa438bcce7e2"
+                "reference": "b1ad86c219523df9c9dff9e4661a30d09f1e5b4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jordanpartridge/github-client/zipball/bbc10542343f19248f307bad3b0daa438bcce7e2",
-                "reference": "bbc10542343f19248f307bad3b0daa438bcce7e2",
+                "url": "https://api.github.com/repos/jordanpartridge/github-client/zipball/b1ad86c219523df9c9dff9e4661a30d09f1e5b4b",
+                "reference": "b1ad86c219523df9c9dff9e4661a30d09f1e5b4b",
                 "shasum": ""
             },
             "require": {
@@ -3781,7 +3781,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jordanpartridge/github-client/issues",
-                "source": "https://github.com/jordanpartridge/github-client/tree/v0.3"
+                "source": "https://github.com/jordanpartridge/github-client/tree/v0.3.1"
             },
             "funding": [
                 {
@@ -3789,7 +3789,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-02T03:56:03+00:00"
+            "time": "2024-12-02T04:31:36+00:00"
         },
         {
             "name": "jordanpartridge/packagist-client",
