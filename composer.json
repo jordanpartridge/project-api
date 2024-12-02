@@ -10,7 +10,7 @@
         "filament/widgets": "^3.2",
         "glhd/bits": "^0.5.0",
         "hirethunk/verbs": "^0.6.2",
-        "jordanpartridge/github-client": "@dev",
+        "jordanpartridge/github-client": "^v0.3",
         "jordanpartridge/packagist-client": "v0.1.0a",
         "laravel/prompts": "^0.1.25",
         "laravel/sanctum": "^4.0",
@@ -77,14 +77,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "~/packages/jordanpartridge/github-client",
-            "options": {
-                "symlink": true
-            }
-        }
-    ]
+    "prefer-stable": true
 }

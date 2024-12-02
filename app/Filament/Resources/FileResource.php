@@ -5,7 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\FileResource\Pages\CreateFile;
 use App\Filament\Resources\FileResource\Pages\EditFile;
 use App\Filament\Resources\FileResource\Pages\ListFiles;
+use App\Filament\Resources\RepoResource\RelationManagers\CommitsRelationshipManager;
 use App\Models\File;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
@@ -26,7 +28,7 @@ class FileResource extends Resource
     {
         return $form
             ->schema([
-                // Your form fields here
+                TextInput::make('filename'),
             ]);
     }
 
@@ -42,11 +44,10 @@ class FileResource extends Resource
                     ])
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('path')
-                    ->label('Path')
+                TextColumn::make('filename')
+                    ->label('Filename')
                     ->searchable()
                     ->sortable(),
-                // Option 1: Using built-in URL column
                 TextColumn::make('content')
                     ->label('Content')
                     ->url(fn ($record) => $record->content)
@@ -76,7 +77,7 @@ class FileResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CommitsRelationshipManager::class,
         ];
     }
 

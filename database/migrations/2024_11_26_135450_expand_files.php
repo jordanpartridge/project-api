@@ -14,7 +14,7 @@ return new class extends Migration
             $table->integer('additions')->after('filename');
             $table->integer('deletions')->after('additions');
             $table->integer('changes')->after('deletions');
-            $table->string('size')->after('changes');
+            $table->string('size')->after('changes')->default('0');
         });
     }
 

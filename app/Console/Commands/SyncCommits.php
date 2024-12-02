@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Commit;
-use App\Models\File;
 use App\Models\Repo;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -127,14 +126,11 @@ class SyncCommits extends Command
     {
         $this->info('Processing files...');
 
-        // Process files in smaller chunks to avoid memory issues
         Commit::where('repo_id', $repo->id)
             ->whereDoesntHave('files')
-            ->chunk(100, function (Collection $commits) {
-                $commits->each(function (Commit $commit) {
-                    if ($this->apiCalls >= (self::API_RATE_LIMIT - self::RATE_LIMIT_BUFFER)) {
-                        $this->error('Approaching API rate limit. Stopping file processing.');
-
+            ->chunk(100, function (Collection $commits) use ($repo) {
+                $commits->each(function (Commit $commit) use ($repo) {
+                    if ($this->shouldStopDueToRateLimit()) {
                         return false;
                     }
 
@@ -143,31 +139,46 @@ class SyncCommits extends Command
                         $details = Github::commits()->get($commit->repo->full_name, $commit->sha);
                         $this->apiCalls++;
 
-                        if ($details->files) {
-                            $fileData = collect($details->files)->map(function ($file) use ($commit) {
+                        // Handle the files data transformation properly
+                        $files = $details->files;
+                        if ($files) {
+                            info('Hey we have some files');
+                            $fileData = $files->map(function ($file) use ($commit) {
+                                info('processing file: ' . $file->filename);
+
                                 return [
                                     'commit_id' => $commit->id,
                                     'filename' => $file->filename,
                                     'status' => $file->status,
-                                    'additions' => $file->additions,
-                                    'deletions' => $file->deletions,
-                                    'changes' => $file->changes,
+                                    'additions' => $file->additions ?? 0,
+                                    'deletions' => $file->deletions ?? 0,
+                                    'changes' => $file->changes ?? 0,
                                     'raw_url' => $file->raw_url ?? null,
                                 ];
-                            })->all();
-
-                            File::insert($fileData);
+                            });
+                            $fileData->map(function ($file) use ($repo, $commit) {
+                                $file['repo_id'] = $repo->id;
+                                $commit->files()->create($file);
+                            });
                             $this->info(count($fileData) . ' files processed');
                         }
 
                         $this->enforceRateLimit();
 
-                    } catch (Exception $e) {
-                        Log::error("Failed to process files for commit {$commit->sha}: " . $e->getMessage());
+                    } catch (\Exception $e) {
+                        Log::error("Failed to process files for commit {$commit->sha}", [
+                            'error' => $e->getMessage(),
+                            'trace' => $e->getTraceAsString(),
+                        ]);
                         $this->error("Failed to process files for commit {$commit->sha}: " . $e->getMessage());
                     }
                 });
             });
+    }
+
+    private function shouldStopDueToRateLimit(): bool
+    {
+        return $this->apiCalls >= (self::API_RATE_LIMIT - self::RATE_LIMIT_BUFFER);
     }
 
     private function enforceRateLimit(): void

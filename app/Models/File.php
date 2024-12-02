@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class File extends Model
 {
@@ -21,6 +22,11 @@ class File extends Model
         'size',
         'status',
     ];
+
+    public function commits(): belongsToMany
+    {
+        return $this->belongsToMany(Commit::class);
+    }
 
     public function repo(): BelongsTo
     {
