@@ -12,19 +12,12 @@ return new class extends Migration
         Schema::rename('commit_file', 'file_versions');
 
         // Add new columns to file_versions
-        Schema::table('file_versions', function (Blueprint $table) {
-            $table->string('sha')->after('file_id');
-            $table->string('previous_sha')->nullable()->after('sha');
-            $table->string('content_type')->nullable()->after('previous_sha');
-        });
+        Schema::table('file_versions', function (Blueprint $table) {});
 
         // Modify files table
         Schema::table('files', function (Blueprint $table) {
             // Add SHA to track current version
             $table->string('sha')->nullable()->after('filename');
-
-            // Add path separate from filename
-            $table->string('path')->after('filename');
 
             // Remove columns that should be in file_versions only
             $table->dropColumn(['additions', 'deletions', 'changes', 'size']);

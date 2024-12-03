@@ -25,7 +25,7 @@ class File extends Model
 
     public function commits(): belongsToMany
     {
-        return $this->belongsToMany(Commit::class);
+        return $this->belongsToMany(Commit::class, 'file_versions');
     }
 
     public function repo(): BelongsTo
