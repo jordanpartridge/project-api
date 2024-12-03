@@ -98,9 +98,6 @@ class SyncCommits extends Command
 
         $this->info("Processed {$processedCommits} commits for {$repo->full_name}");
 
-        // Only process files if the --with-files flag is set
-        $this->processFiles($repo);
-
     }
 
     private function processCommits(Repo $repo, array $commits): int
