@@ -16,10 +16,6 @@ class File extends Model
         'filename',
         'content',
         'sha',
-        'additions',
-        'changes',
-        'deletions',
-        'size',
         'status',
     ];
 

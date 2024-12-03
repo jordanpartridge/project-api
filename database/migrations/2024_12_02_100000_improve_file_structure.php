@@ -11,9 +11,6 @@ return new class extends Migration
         // First, create the file_versions table (renamed from commit_file)
         Schema::rename('commit_file', 'file_versions');
 
-        // Add new columns to file_versions
-        Schema::table('file_versions', function (Blueprint $table) {});
-
         // Modify files table
         Schema::table('files', function (Blueprint $table) {
             // Add SHA to track current version
