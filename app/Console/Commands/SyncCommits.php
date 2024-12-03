@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\ProcessFilesForCommit;
 use App\Models\Commit;
 use App\Models\File;
 use App\Models\Repo;
@@ -114,8 +115,12 @@ class SyncCommits extends Command
             ];
         })->all();
 
-        Commit::upsert($commitData, ['sha'], ['message', 'author', 'committed_at']);
-        $this->info(count($commitData) . ' commits upserted');
+        $count = Commit::upsert($commitData, ['sha'], ['message', 'author', 'committed_at']);
+        $this->info($count . ' commits upserted');
+        foreach ($commitData as $data) {
+            $commit = Commit::where('sha', $data['sha'])->first();
+            ProcessFilesForCommit::dispatch($commit);
+        }
 
         return count($commitData);
     }

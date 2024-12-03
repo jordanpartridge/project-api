@@ -24,11 +24,10 @@ class ProcessFilesForCommit implements ShouldQueue
     {
         $details = $this->getCommitDetails();
         // Handle the files data transformation properly
-        $files = $details->files;
         // Inside the processFiles method, modify the file attachment part:
 
         if ($this->shouldProcessFiles($details)) {
-            $this->processFiles($files);
+            $this->processFiles($details);
         }
     }
 
@@ -39,7 +38,7 @@ class ProcessFilesForCommit implements ShouldQueue
 
     private function shouldProcessFiles($details): bool
     {
-        return $details->files ?? false;
+        return $details->files->count() > 0;
     }
 
     private function processFiles($details): void
