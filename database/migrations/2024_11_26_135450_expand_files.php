@@ -9,7 +9,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->string('status')->after('path');
             $table->renameColumn('path', 'filename');
             $table->integer('additions')->after('filename');
             $table->integer('deletions')->after('additions');

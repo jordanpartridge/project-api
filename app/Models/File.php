@@ -16,16 +16,12 @@ class File extends Model
         'filename',
         'content',
         'sha',
-        'additions',
-        'changes',
-        'deletions',
-        'size',
         'status',
     ];
 
     public function commits(): belongsToMany
     {
-        return $this->belongsToMany(Commit::class);
+        return $this->belongsToMany(Commit::class, 'file_versions');
     }
 
     public function repo(): BelongsTo

@@ -32,6 +32,6 @@ class Commit extends Model
 
     public function files(): BelongsToMany
     {
-        return $this->belongsToMany(File::class)->withPivot('status', 'additions', 'deletions', 'changes');
+        return $this->belongsToMany(File::class, 'file_versions')->withPivot('status', 'additions', 'deletions', 'changes');
     }
 }

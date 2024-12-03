@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('commit_id')->constrained()->cascadeOnDelete();
             $table->foreignId('file_id')->constrained()->cascadeOnDelete();
-            $table->string('status')->nullable(); // E.g., 'modified', 'added', or 'deleted'
             $table->integer('additions')->default(0); // Lines added
             $table->integer('deletions')->default(0); // Lines removed
             $table->integer('changes')->default(0);   // Total changes (additions + deletions)

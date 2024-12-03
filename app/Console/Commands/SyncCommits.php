@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Commit;
+use App\Models\File;
 use App\Models\Repo;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -141,26 +142,28 @@ class SyncCommits extends Command
 
                         // Handle the files data transformation properly
                         $files = $details->files;
+                        // Inside the processFiles method, modify the file attachment part:
+
                         if ($files) {
                             info('Hey we have some files');
-                            $fileData = $files->map(function ($file) use ($commit) {
+                            foreach ($files as $file) {
                                 info('processing file: ' . $file->filename);
 
-                                return [
-                                    'commit_id' => $commit->id,
+                                // First create/get the file record
+                                $fileModel = File::firstOrCreate([
                                     'filename' => $file->filename,
-                                    'status' => $file->status,
+                                    'repo_id' => $repo->id,
+                                ]);
+
+                                // Then attach the file to the commit with the pivot data
+                                $commit->files()->attach($fileModel->id, [
                                     'additions' => $file->additions ?? 0,
                                     'deletions' => $file->deletions ?? 0,
                                     'changes' => $file->changes ?? 0,
-                                    'raw_url' => $file->raw_url ?? null,
-                                ];
-                            });
-                            $fileData->map(function ($file) use ($repo, $commit) {
-                                $file['repo_id'] = $repo->id;
-                                $commit->files()->create($file);
-                            });
-                            $this->info(count($fileData) . ' files processed');
+                                ]);
+                            }
+
+                            $this->info(count($files) . ' files processed');
                         }
 
                         $this->enforceRateLimit();
