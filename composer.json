@@ -12,6 +12,7 @@
         "hirethunk/verbs": "^0.6.2",
         "jordanpartridge/github-client": "^v0.3",
         "jordanpartridge/packagist-client": "v0.1.0a",
+        "laravel/horizon": "^5.29",
         "laravel/prompts": "^0.1.25",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
