@@ -116,10 +116,9 @@ class SyncCommits extends Command
 
         $count = Commit::upsert($commitData, ['sha'], ['message', 'author', 'committed_at']);
         $this->info($count . ' commits upserted');
-        foreach ($commitData as $data) {
-            $commit = Commit::where('sha', $data['sha'])->first();
-            ProcessFilesForCommit::dispatch($commit);
-        }
+        Commit::whereIn('sha', array_column($commitData, 'sha'))
+            ->get()
+            ->each(fn ($commit) => ProcessFilesForCommit::dispatch($commit));
 
         return count($commitData);
     }
