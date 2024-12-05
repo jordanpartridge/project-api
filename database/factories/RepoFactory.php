@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Language;
+use App\Models\Owner;
 use App\Models\Project;
 use App\Models\Repo;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,6 +26,7 @@ class RepoFactory extends Factory
             'full_name' => $this->faker->unique()->name(),
             'language_id' => Language::factory()->create(),
             'url' => $this->faker->url(),
+            'owner_id' => Owner::factory()->create(),
             'project_id' => Project::inRandomOrder()->first() ?? Project::factory(),
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Events\ProjectCreated;
 use App\Models\Language;
+use App\Models\Owner;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -20,7 +21,7 @@ use function Laravel\Prompts\warning;
 
 class SyncRepo extends Command
 {
-    protected $signature = 'repo:sync
+    protected $signature = 'sync:repo
         {--display=full : Display mode (full/compact/minimal)}';
 
     protected $description = 'Synchronize GitHub repositories with local projects';
@@ -175,11 +176,20 @@ class SyncRepo extends Command
             description: $repo->description,
         );
 
+        $owner = Owner::updateOrCreate(
+            ['login' => $repo->owner->login],
+            [
+                'avatar_url' => $repo->owner->avatar_url,
+                'type' => $repo->owner->type,
+                'html_url' => $repo->owner->html_url,
+            ]
+        );
         $project->repo()->updateOrCreate(
             [
                 'github_id' => $repo->id,
                 'name' => $repo->name,
                 'full_name' => $repo->full_name,
+                'owner_id' => $owner->id,
             ],
             [
                 'description' => $repo->description,

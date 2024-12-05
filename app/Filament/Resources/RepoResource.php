@@ -22,9 +22,9 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -122,20 +122,26 @@ class RepoResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('owner.avatar_url')
+                    ->label('Owner')
+                    ->circular()
+                    ->size(40)
+                    ->url(fn (Repo $record): string => OwnerResource::getUrl('view', ['record' => $record->owner]))
+                    ->alignCenter(),
+
+                TextColumn::make('owner.login')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Owner')
+                    ->url(fn (Repo $record): string => OwnerResource::getUrl('view', ['record' => $record->owner])),
+
                 TextColumn::make('name')
                     ->searchable()
                     ->toggleable()
                     ->sortable()
                     ->icon('heroicon-m-code-bracket'),
 
-                ViewColumn::make('full_name')
-                    ->view('tables.columns.github-repo-badge')
-                    ->state(function (Repo $record): array {
-                        return [
-                            'name' => $record->full_name,
-                            'url' => route('filament.admin.resources.repos.view', ['record' => $record]),
-                        ];
-                    })
+                TextColumn::make('full_name')
                     ->searchable()
                     ->sortable()
                     ->toggleable()
@@ -188,7 +194,6 @@ class RepoResource extends Resource
                     ->sortable()
                     ->label('Last Push')
                     ->icon('heroicon-m-clock'),
-
             ])
             ->defaultSort('last_push_at', 'desc')
             ->actions([

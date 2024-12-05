@@ -25,6 +25,7 @@ class Repo extends Model
         'description',
         'url',
         'language',
+        'owner_id',
         'private',
         'project_id',
         'stars_count',
@@ -68,5 +69,10 @@ class Repo extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(Owner::class);
     }
 }
