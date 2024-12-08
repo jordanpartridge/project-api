@@ -29,51 +29,105 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->colors([
-                'primary' => Color::Sky,      // Electric blue that pops in both modes
-                'gray' => Color::Zinc,        // Clean neutral base
-                'danger' => Color::Rose,      // Sharp contrast for alerts
-                'success' => Color::Teal,     // Crisp tech-green feedback
-            ])
             ->brandName(config('app.name'))
+            ->colors($this->getPanelColors())
+            ->topNavigation($this->getTopNavigationConfig($panel))
             ->sidebarCollapsibleOnDesktop()
             ->navigationGroups([
                 'User Management',
                 'Settings',
             ])
             ->maxContentWidth('7xl')
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
+            ->resources($this->getResourceConfig())
+            ->pages($this->getPageConfig())
+            ->widgets($this->getWidgetConfig())
+            ->middleware($this->getMiddleware())
+            ->authMiddleware([Authenticate::class])
             ->renderHook(
                 name: PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
-                hook: function () {
-                    if (config('app.env') === 'local') {
-                        return Blade::render('<x-login-link />');
-                    }
+                hook: fn () => $this->renderLoginLink()
+            );
+    }
 
-                    return null;
-                }
-            )
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
+    protected function getPanelColors(): array
+    {
+        return [
+            'primary' => Color::Sky,    // Electric blue that pops in both modes
+            'gray' => Color::Zinc,   // Clean neutral base
+            'danger' => Color::Rose,   // Sharp contrast for alerts
+            'success' => Color::Teal,   // Crisp tech-green feedback
+        ];
+    }
+
+    protected function getTopNavigationConfig(Panel $panel): callable
+    {
+        return fn (): \Illuminate\View\View => view('panels.topbar', [
+            'currentPanel' => $panel->getId(),
+            'backgroundColor' => match ($panel->getId()) {
+                'admin' => 'bg-blue-500',
+                'support' => 'bg-green-500',
+                default => 'bg-gray-500',
+            },
+        ]);
+    }
+
+    protected function getResourceConfig(): array
+    {
+        return [
+            'discover' => [
+                'in' => app_path('Filament/Resources'),
+                'for' => 'App\\Filament\\Resources',
+            ],
+        ];
+    }
+
+    protected function getPageConfig(): array
+    {
+        return [
+            'discover' => [
+                'in' => app_path('Filament/Pages'),
+                'for' => 'App\\Filament\\Pages',
+            ],
+            'register' => [
+                Dashboard::class,
+            ],
+        ];
+    }
+
+    protected function getWidgetConfig(): array
+    {
+        return [
+            'discover' => [
+                'in' => app_path('Filament/Widgets'),
+                'for' => 'App\\Filament\\Widgets',
+            ],
+            'register' => [
                 AccountWidget::class,
-            ])
-            ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-            ])
-            ->authMiddleware([
-                Authenticate::class,
-            ]);
+            ],
+        ];
+    }
+
+    protected function getMiddleware(): array
+    {
+        return [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            AuthenticateSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            DisableBladeIconComponents::class,
+            DispatchServingFilamentEvent::class,
+        ];
+    }
+
+    protected function renderLoginLink(): ?string
+    {
+        if (config('app.env') === 'local') {
+            return Blade::render('<x-login-link />');
+        }
+
+        return null;
     }
 }

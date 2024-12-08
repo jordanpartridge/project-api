@@ -32,7 +32,7 @@ class SyncCommits extends Command
     {
         if (Repo::count() === 0) {
             $this->info('No repos found. Syncing repos first...');
-            Artisan::call('repo:sync');
+            Artisan::call('sync:repos');
         }
     }
 
