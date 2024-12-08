@@ -54,16 +54,7 @@ class User extends Authenticatable implements FilamentUser, HasShieldPermissions
 
     public function canAccessPanel(Panel $panel): bool
     {
-        // Super admin can access everything
-        if ($this->hasRole('super_admin')) {
-            return true;
-        }
-
-        return match ($panel->getId()) {
-            'admin' => $this->can('view_admin_panel'),
-            'github' => $this->can('view_github_panel'),
-            default => false,
-        };
+        return true;
     }
 
     public function getFilamentShieldPermissions(): array

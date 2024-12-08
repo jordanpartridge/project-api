@@ -8,6 +8,7 @@ use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,34 +23,34 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
     protected static ?string $navigationGroup = 'User Management';
-
     protected static ?int $navigationSort = 1;
-
     protected static ?string $recordTitleAttribute = 'name';
-
     protected static ?string $modelLabel = 'System User';
-
     protected static ?string $pluralModelLabel = 'System Users';
-
     protected static int $globalSearchResultsLimit = 20;
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return Cache::remember('users_count', now()->addMinutes(10), function () {
+            return static::getModel()::count();
+        });
     }
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        return static::getModel()::count() > 10 ? 'warning' : 'success';
+        $count = static::getModel()::count();
+
+        return $count > 10 ? 'warning' : 'success';
     }
 
     public static function form(Form $form): Form
@@ -78,7 +79,7 @@ class UserResource extends Resource
 
                                 TextInput::make('password')
                                     ->password()
-                                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                                    ->dehydrateStateUsing(fn ($state) => $state ? Hash::make($state) : null)
                                     ->required(fn (string $context): bool => $context === 'create')
                                     ->minLength(8)
                                     ->same('password_confirmation')
@@ -92,6 +93,13 @@ class UserResource extends Resource
                                     ->required(fn (string $context): bool => $context === 'create')
                                     ->minLength(8)
                                     ->autocomplete('new-password'),
+
+                                Select::make('roles')
+                                    ->relationship('roles', 'name')
+                                    ->multiple()
+                                    ->label('Roles')
+                                    ->required()
+                                    ->placeholder('Assign Roles'),
                             ]),
                     ]),
             ]);
@@ -131,6 +139,19 @@ class UserResource extends Resource
                     ->trueColor('success')
                     ->falseColor('danger'),
 
+                TextColumn::make('roles_display')
+                    ->label('Roles')
+                    ->getStateUsing(function ($record) {
+                        $icons = [
+                            'admin' => '🛡️',
+                            'github_user' => '🐙',
+                            'super_admin' => '👑',
+                        ];
+
+                        return $record->roles?->pluck('name')->map(fn ($role) => ($icons[$role] ?? '🔹') . ' ' . Str::title(str_replace('_', ' ', $role))
+                        )->join(', ') ?? 'No roles assigned';
+                    }),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -147,7 +168,6 @@ class UserResource extends Resource
                     ->since()
                     ->icon('heroicon-o-clock'),
             ])
-
             ->filters([
                 TernaryFilter::make('email_verified_at')
                     ->label('Email Verified')
@@ -156,29 +176,16 @@ class UserResource extends Resource
                     ->falseLabel('Not Verified')
                     ->placeholder('All Users'),
 
-                SelectFilter::make('created_at')
-                    ->label('Created Date')
-                    ->options([
-                        'today' => 'Today',
-                        'week' => 'Last Week',
-                        'month' => 'Last Month',
-                        'year' => 'This Year',
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return match ($data['value']) {
-                            'today' => $query->whereDate('created_at', today()),
-                            'week' => $query->whereDate('created_at', '>=', now()->subWeek()),
-                            'month' => $query->whereDate('created_at', '>=', now()->subMonth()),
-                            'year' => $query->whereDate('created_at', '>=', now()->startOfYear()),
-                            default => $query
-                        };
-                    }),
+                SelectFilter::make('roles.name')
+                    ->label('Role')
+                    ->multiple()
+                    ->relationship('roles', 'name')
+                    ->placeholder('All Roles'),
+
             ])
             ->actions([
-                EditAction::make()
-                    ->iconButton(),
-                DeleteAction::make()
-                    ->iconButton(),
+                EditAction::make()->iconButton(),
+                DeleteAction::make()->iconButton(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
@@ -191,9 +198,7 @@ class UserResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -208,8 +213,6 @@ class UserResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+            ->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 }
