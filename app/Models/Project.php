@@ -2,47 +2,56 @@
 
 namespace App\Models;
 
-use Glhd\Bits\Database\HasSnowflakes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
     use HasFactory;
-    use HasSlug;
-    use HasSnowflakes;
-    use LogsActivity;
 
     protected $fillable = [
         'name',
         'description',
+        'long_description',
+        'status',
+        'featured_image',
+        'demo_url',
+        'is_featured',
+        'display_order',
+        'meta_data',
     ];
 
-    public function getSlugOptions(): SlugOptions
+    protected $casts = [
+        'is_featured' => 'boolean',
+        'meta_data' => 'array',
+    ];
+
+    public function repo(): BelongsTo
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+        return $this->belongsTo(Repo::class);
     }
 
-    public function getRouteKeyName(): string
+    public function languages(): BelongsToMany
     {
-        return 'slug';
+        return $this->belongsToMany(Language::class);
     }
 
-    public function repo(): HasOne
+    public function files(): HasMany
     {
-        return $this->hasOne(Repo::class);
+        return $this->hasMany(File::class);
     }
 
-    public function getActivitylogOptions(): LogOptions
+    public function scopeFeatured(Builder $query): Builder
     {
-        return LogOptions::defaults()
-            ->logFillable();
+        return $query->where('is_featured', true);
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', 'active');
     }
 }

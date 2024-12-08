@@ -18,9 +18,23 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'slug' => $this->faker->slug,
-            'description' => $this->faker->text,
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->sentence(),
+            'long_description' => $this->faker->paragraphs(3, true),
+            'status' => $this->faker->randomElement(['active', 'archived', 'draft']),
+            'featured_image' => $this->faker->imageUrl(),
+            'demo_url' => $this->faker->url(),
+            'is_featured' => $this->faker->boolean(20),
+            'display_order' => $this->faker->numberBetween(1, 100),
         ];
+    }
+
+    public function featured(): Factory|ProjectFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'is_featured' => true,
+            ];
+        });
     }
 }
