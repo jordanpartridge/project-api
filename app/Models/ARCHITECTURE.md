@@ -15,6 +15,13 @@ erDiagram
         snowflake id PK
         string name
         string slug
+        string status
+        string feature_image
+        string demo_url
+        string long_description
+        boolean is_featured
+        integer display_order
+        json metadata
         string description
         timestamp created_at
         timestamp updated_at
