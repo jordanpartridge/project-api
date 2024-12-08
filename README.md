@@ -16,8 +16,8 @@ erDiagram
     Project ||--o| Repo : has
     Repo ||--|{ Commit : contains
     Repo ||--|{ File : contains
-    Repo }|--|| Owner : belongs_to
-    Repo }|--|| Language : written_in
+    Repo ||--|| Owner : belongs_to
+    Repo ||--|| Language : written_in
     User ||--o{ Project : manages
 
     Project {
