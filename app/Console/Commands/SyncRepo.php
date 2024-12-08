@@ -21,7 +21,7 @@ use function Laravel\Prompts\warning;
 
 class SyncRepo extends Command
 {
-    protected $signature = 'sync:repo
+    protected $signature = 'sync:repos
         {--display=full : Display mode (full/compact/minimal)}';
 
     protected $description = 'Synchronize GitHub repositories with local projects';
@@ -181,7 +181,7 @@ class SyncRepo extends Command
             [
                 'avatar_url' => $repo->owner->avatar_url,
                 'type' => $repo->owner->type,
-                'html_url' => $repo->owner->html_url,
+                'html_url' => $repo->owner->html_url, X,
             ]
         );
         $project->repo()->updateOrCreate(

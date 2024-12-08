@@ -2,19 +2,12 @@
 
 namespace App\Models;
 
-use Glhd\Bits\Database\HasSnowflakes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
-class Language extends Model
+/** @use HasFactory<\Database\Factories\LanguageFactory> */
+class Language extends DataModel
 {
-    use HasFactory;
-    use HasSnowflakes;
-    use LogsActivity;
-
     protected $fillable = [
         'name',
     ];
@@ -32,6 +25,8 @@ class Language extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logFillable();
+            ->logOnly(['name'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

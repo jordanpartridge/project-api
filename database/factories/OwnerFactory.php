@@ -20,7 +20,7 @@ class OwnerFactory extends Factory
         return [
             'login' => $this->faker->name(),
             'avatar_url' => $this->faker->imageUrl(),
-            'url' => $this->faker->url(),
+            'html_url' => $this->faker->url(),
             'type' => $this->faker->randomElement(['user', 'organization']),
         ];
     }

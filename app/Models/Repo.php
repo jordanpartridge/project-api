@@ -2,49 +2,45 @@
 
 namespace App\Models;
 
-use Glhd\Bits\Database\HasSnowflakes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
-class Repo extends Model
+/** @use HasFactory<\Database\Factories\RepoFactory> */
+class Repo extends DataModel
 {
-    use HasFactory;
-    use HasSnowflakes;
-    use LogsActivity;
-    use SoftDeletes;
-
     protected $fillable = [
-        'github_id',
-        'full_name',
-        'name',
-        'description',
-        'url',
-        'language',
-        'owner_id',
-        'private',
         'project_id',
-        'stars_count',
-        'forks_count',
-        'open_issues_count',
-        'default_branch',
-        'last_push_at',
-        'topics',
-        'license',
+        'owner_id',
+        'language_id',
+        'name',
+        'full_name',
+        'description',
+        'private',
+        'fork',
+        'pushed_at',
     ];
 
     protected $casts = [
         'private' => 'boolean',
-        'stars_count' => 'integer',
-        'forks_count' => 'integer',
-        'open_issues_count' => 'integer',
-        'last_push_at' => 'datetime',
-        'topics' => 'array',
+        'fork' => 'boolean',
+        'pushed_at' => 'datetime',
     ];
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(Owner::class);
+    }
+
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class);
+    }
 
     public function commits(): HasMany
     {
@@ -58,21 +54,33 @@ class Repo extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logFillable();
+        return LogOptions::defaults()
+            ->logOnly([
+                'name',
+                'full_name',
+                'description',
+                'private',
+                'pushed_at',
+                'project_id',
+                'owner_id',
+                'language_id',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
-    public function language(): BelongsTo
+    public function getMainLanguageAttribute(): ?string
     {
-        return $this->belongsTo(Language::class);
+        return $this->language?->name;
     }
 
-    public function project(): BelongsTo
+    public function getOwnerNameAttribute(): ?string
     {
-        return $this->belongsTo(Project::class);
+        return $this->owner?->name;
     }
 
-    public function owner(): BelongsTo
+    public function getLatestCommitAttribute()
     {
-        return $this->belongsTo(Owner::class);
+        return $this->commits()->latest('committed_at')->first();
     }
 }
