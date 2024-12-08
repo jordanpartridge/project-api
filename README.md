@@ -1,95 +1,136 @@
-# Project API Microservice Plan (Laravel 11)
+# Project API
 
-## 1. Project Overview
-- Microservice to track project information across GitHub and WakaTime
-- Aims to provide comprehensive project details for portfolio and management purposes
-- Will include documentation and ideas for each project
+A Laravel 11-based microservice for tracking GitHub repository data and project management. Built with Filament admin panel for easy data visualization and management.
 
-## 2. Key Features
-- **GitHub Integration**: Pull repository data, commit history, and issue tracking. [Learn more about GitHub integration](github-integration.md)
-- WakaTime integration
-- Project documentation storage
-- Idea tracking
-- Portfolio generation
+## Current Implementation
 
-## 3. Technical Stack
-- Backend Framework: Laravel 11
-- Database: MySQL (default for Laravel, but PostgreSQL is also well-supported)
-- API: Laravel's built-in API resources and controllers
-- Authentication: Laravel Sanctum for API authentication
-- Task Scheduling: Laravel's built-in task scheduler for data synchronization
-- Testing: PHPUnit with Laravel's testing utilities
+- **Admin Interface**: Built with Filament, providing real-time repository insights
+- **GitHub Integration**: Tracks repositories, commits, and file changes
+- **Activity Logging**: Monitors project and repository activities
+- **Project Management**: Handles project metadata and repository relationships
 
-## 4. Main Components
+## Data Structure
 
-### 4.1 Data Collection
-- GitHub API integration using Laravel's HTTP client
-- WakaTime API integration using Laravel's HTTP client
-- Use Laravel's job queues for asynchronous data fetching
+```mermaid
+erDiagram
+    Project ||--o| Repo : has
+    Repo ||--|{ Commit : contains
+    Repo ||--|{ File : contains
+    Repo }|--|| Owner : belongs_to
+    Repo }|--|| Language : written_in
+    User ||--o{ Project : manages
 
-### 4.2 Data Storage
-- Use Laravel's Eloquent ORM for data models and database interactions
-- Implement database migrations for version control of schema
-- Use Laravel's seeding feature for initial data population
+    Project {
+        snowflake id PK
+        string name
+        string slug
+        string description
+        timestamp created_at
+        timestamp updated_at
+    }
 
-### 4.3 API Endpoints
-- Implement RESTful API using Laravel's resource controllers
-- Use Laravel API resources for data transformation
-- Implement rate limiting using Laravel's built-in middleware
+    Repo {
+        snowflake id PK
+        snowflake project_id FK
+        snowflake owner_id FK
+        snowflake language_id FK
+        string name
+        string full_name
+        string description
+        boolean private
+        boolean fork
+        timestamp pushed_at
+        timestamp created_at
+        timestamp updated_at
+    }
 
-### 4.4 Authentication and Authorization
-- Use Laravel Sanctum for API token authentication
-- Implement Laravel's built-in gates and policies for authorization
+    Commit {
+        snowflake id PK
+        snowflake repo_id FK
+        string sha
+        string message
+        timestamp committed_at
+        string author_name
+        string author_email
+        timestamp created_at
+        timestamp updated_at
+    }
 
-### 4.5 Documentation Features
-- Use Laravel's filesystem abstraction for storing documentation files
-- Implement versioning using Laravel's custom filesystem drivers if needed
+    File {
+        snowflake id PK
+        snowflake repo_id FK
+        string name
+        string path
+        string sha
+        integer size
+        string type
+        timestamp created_at
+        timestamp updated_at
+    }
 
-### 4.6 Idea Tracking
-- Implement using Laravel's Eloquent relationships for associating ideas with projects
+    Owner {
+        snowflake id PK
+        string name
+        string type
+        timestamp created_at
+        timestamp updated_at
+    }
 
-### 4.7 Portfolio Generation
-- Use Laravel's view composers for aggregating data
-- Implement using Laravel's Blade templating engine for customizable views
+    Language {
+        snowflake id PK
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
 
-## 5. Development Phases
+    User {
+        snowflake id PK
+        string name
+        string email
+        timestamp email_verified_at
+        timestamp created_at
+        timestamp updated_at
+    }
+```
 
-### Phase 1: Setup and Core Functionality
-- Set up Laravel 11 project
-- Configure database and environment
-- Implement basic CRUD operations for projects using Laravel's MVC architecture
+## Current Features
 
-### Phase 2: External Integrations
-- Implement GitHub API integration using Laravel's HTTP client and job queues
-- Implement WakaTime API integration using the same approach
-- Set up Laravel's task scheduler for regular data synchronization
+### Admin Panel (Filament)
+- Project management with repository associations
+- Commit history visualization
+- File tracking and management
+- User management
+- Repository insights
 
-### Phase 3: Documentation and Idea Management
-- Develop documentation features using Laravel's filesystem abstraction
-- Implement idea tracking functionality with Eloquent relationships
+### Core Functionality
+- Snowflake IDs for distributed scalability
+- Activity logging on all models
+- Slug-based routing for projects
+- Relationship management between projects and repositories
 
-### Phase 4: Portfolio Generation
-- Design and implement portfolio data aggregation using Laravel's Eloquent ORM
-- Create customizable portfolio endpoints using API resources
+## Tech Stack
 
-### Phase 5: Authentication and Security
-- Implement API authentication using Laravel Sanctum
-- Set up authorization using Laravel's gates and policies
-- Conduct security audit, ensuring proper use of Laravel's security features
+- **Framework**: Laravel 11
+- **Admin Panel**: Filament
+- **Database**: MySQL/PostgreSQL
+- **Authentication**: Laravel Sanctum
+- **Activity Logging**: Spatie Activity Log
+- **ID Generation**: Snowflake IDs
 
-### Phase 6: Testing and Optimization
-- Write feature and unit tests using Laravel's testing utilities
-- Perform load testing and optimize performance (consider using Laravel Octane for production)
-- Refine API based on testing results
+## Getting Started
 
-### Phase 7: Documentation and Deployment
-- Generate API documentation (consider using tools like Laravel OpenAPI)
-- Prepare deployment scripts (consider using Laravel Forge or Laravel Vapor for deployment)
-- Set up CI/CD pipeline (GitHub Actions or Laravel Envoyer)
+1. Clone the repository
+2. Install dependencies: `composer install`
+3. Copy .env.example: `cp .env.example .env`
+4. Generate application key: `php artisan key:generate`
+5. Configure database in .env
+6. Run migrations: `php artisan migrate`
+7. Serve application: `php artisan serve`
 
-## 6. Next Steps
-1. Install Laravel 11 and set up the development environment
-2. Create a new Laravel project and initialize Git repository
-3. Set up the database and configure the `.env` file
-4. Begin with Phase 1: Setup and Core Functionality
-5. Plan out detailed tasks for each phase
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
