@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Github\Pages\GithubDashboard;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -10,13 +11,14 @@ use Filament\Navigation\MenuItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class GithubPanelProvider extends PanelProvider
@@ -30,15 +32,16 @@ class GithubPanelProvider extends PanelProvider
             ->brandName('GitHub Integration')
             ->colors([
                 'primary' => Color::Orange,
+                'gray' => Color::Slate,
+                'info' => Color::Blue,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
+                'danger' => Color::Rose,
             ])
             ->discoverResources(in: app_path('Filament/Github/Resources'), for: 'App\\Filament\\Github\\Resources')
             ->discoverPages(in: app_path('Filament/Github/Pages'), for: 'App\\Filament\\Github\\Pages')
             ->pages([
                 GithubDashboard::class,
-            ])
-            ->discoverWidgets(in: app_path('Filament/Github/Widgets'), for: 'App\\Filament\\Github\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -54,21 +57,28 @@ class GithubPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->databaseNotifications()
-            ->topNavigation()
-            ->renderHook(
-                'panels::top-navigation',
-                fn (): \Illuminate\View\View => view('panels.topbar', [
-                    'currentPanel' => $panel->getId(),
-                    'backgroundColor' => 'bg-orange-500',
-                ])
-            )
+            ->authGuard('web')
             ->userMenuItems([
                 MenuItem::make()
                     ->label('Admin Panel')
-                    ->icon('heroicon-o-building-office')
+                    ->icon('heroicon-o-cog')
                     ->url('/admin')
                     ->visible(fn () => auth()->user()?->can('view_admin_panel')),
-            ]);
+            ])
+            ->databaseNotifications()
+            ->plugin(FilamentShieldPlugin::make())
+            ->renderHook(
+                name: PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE,
+                hook: fn () => $this->renderLoginLink()
+            );
+    }
+
+    protected function renderLoginLink(): ?string
+    {
+        if (app()->environment('local')) {
+            return Blade::render('<x-login-link />');
+        }
+
+        return null;
     }
 }

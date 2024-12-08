@@ -2,17 +2,13 @@
 
 namespace App\Models;
 
-use Glhd\Bits\Database\HasSnowflakes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Activitylog\LogOptions;
 
-class Commit extends Model
+/** @use HasFactory<\Database\Factories\CommitFactory> */
+class Commit extends DataModel
 {
-    use HasFactory;
-    use HasSnowflakes;
-
     protected $fillable = [
         'sha',
         'message',
@@ -33,5 +29,17 @@ class Commit extends Model
     public function files(): BelongsToMany
     {
         return $this->belongsToMany(File::class, 'file_versions')->withPivot('status', 'additions', 'deletions', 'changes');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'sha',
+                'message',
+                'committed_at',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 }

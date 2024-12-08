@@ -2,22 +2,27 @@
 
 namespace App\Models;
 
-use Database\Factories\OwnerFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
 
-class Owner extends Model
+/** @use HasFactory<\Database\Factories\OwnerFactory> */
+class Owner extends DataModel
 {
-    /** @use HasFactory<OwnerFactory> */
-    use HasFactory;
-
-    use SoftDeletes;
-
     protected $fillable = [
         'login',
         'type',
         'avatar_url',
         'html_url',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'login',
+                'type',
+                'avatar_url',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 }

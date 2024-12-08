@@ -14,11 +14,11 @@ class ShieldSeeder extends Seeder
 
         // Create base permissions
         $permissions = [
+            // Panel Access
             'view_admin_panel',
             'view_github_panel',
-            'manage_github_integrations',
-            'manage_permissions',
-            // Resource permissions
+
+            // Project Permissions
             'view_any_project',
             'view_project',
             'create_project',
@@ -26,12 +26,24 @@ class ShieldSeeder extends Seeder
             'delete_project',
             'restore_project',
             'force_delete_project',
-            // User permissions
+
+            // GitHub Integration
+            'manage_github_integrations',
+            'sync_repositories',
+            'manage_webhooks',
+
+            // User Management
             'view_any_user',
             'view_user',
             'create_user',
             'update_user',
             'delete_user',
+
+            // Activity Log
+            'view_activity_log',
+
+            // Shield/Permissions Management
+            'manage_permissions',
         ];
 
         foreach ($permissions as $permission) {
@@ -50,9 +62,15 @@ class ShieldSeeder extends Seeder
                 'delete_project',
                 'view_any_user',
                 'view_user',
+                'view_activity_log',
             ],
             'github_user' => [
                 'view_github_panel',
+                'manage_github_integrations',
+                'sync_repositories',
+                'manage_webhooks',
+                'view_any_project',
+                'view_project',
             ],
         ];
 

@@ -4,13 +4,14 @@ namespace Tests\Feature\Database;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class NotificationsTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function notifications_table_exists(): void
     {
         $this->assertTrue(
@@ -19,7 +20,7 @@ class NotificationsTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function notifications_table_has_required_columns(): void
     {
         $this->assertTrue(Schema::hasColumns('notifications', [

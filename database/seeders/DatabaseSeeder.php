@@ -9,7 +9,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            ShieldSeeder::class,
+            ShieldSeeder::class, // Run this first to create roles and permissions
+            UserSeeder::class,
         ]);
     }
 }

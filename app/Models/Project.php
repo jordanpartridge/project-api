@@ -2,24 +2,34 @@
 
 namespace App\Models;
 
-use Glhd\Bits\Database\HasSnowflakes;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Project extends Model
+/**
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $long_description
+ * @property string $status
+ * @property string|null $featured_image
+ * @property string|null $demo_url
+ * @property bool $is_featured
+ * @property int|null $display_order
+ * @property array|null $meta_data
+ *
+ * @method static \Database\Factories\ProjectFactory factory()
+ */
+class Project extends DataModel
 {
     use HasFactory;
     use HasSlug;
-    use HasSnowflakes;
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
         'long_description',
         'status',
@@ -35,31 +45,6 @@ class Project extends Model
         'meta_data' => 'array',
     ];
 
-    public function repo(): BelongsTo
-    {
-        return $this->belongsTo(Repo::class);
-    }
-
-    public function languages(): BelongsToMany
-    {
-        return $this->belongsToMany(Language::class);
-    }
-
-    public function files(): HasMany
-    {
-        return $this->hasMany(File::class);
-    }
-
-    public function scopeFeatured(Builder $query): Builder
-    {
-        return $query->where('is_featured', true);
-    }
-
-    public function scopeActive(Builder $query): Builder
-    {
-        return $query->where('status', 'active');
-    }
-
     /**
      * Get the options for generating the slug.
      */
@@ -68,5 +53,35 @@ class Project extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
+    }
+
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'name',
+                'slug',
+                'description',
+                'status',
+                'is_featured',
+            ])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
+
+    /**
+     * Get the repositories associated with the project.
+     */
+    public function repos(): HasMany
+    {
+        return $this->hasMany(Repo::class);
     }
 }

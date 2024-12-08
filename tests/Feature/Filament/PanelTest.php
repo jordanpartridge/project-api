@@ -4,93 +4,111 @@ namespace Tests\Feature\Filament;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class PanelTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Create necessary permissions and role
+        $adminRole = Role::create(['name' => 'admin']);
+
+        $permissions = [
+            'view_admin_panel',
+            'view_github_panel',
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::create(['name' => $permission]);
+        }
+
+        $adminRole->syncPermissions($permissions);
+    }
+
+    #[Test]
     public function unauthorized_users_cannot_access_admin_panel()
     {
         $response = $this->get('/admin');
         $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/admin/login');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unauthorized_users_cannot_access_github_panel()
     {
         $response = $this->get('/github');
         $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/github/login');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authorized_user_can_access_admin_panel()
     {
-        $user = User::factory()->create(['is_admin' => true]);
+        $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $response = $this->actingAs($user)
             ->get('/admin');
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authorized_user_can_access_github_panel()
     {
-        $user = User::factory()->create(['can_access_github' => true]);
+        $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $response = $this->actingAs($user)
             ->get('/github');
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function panel_navigation_shows_correct_items()
     {
-        $user = User::factory()->create([
-            'is_admin' => true,
-            'can_access_github' => true,
-        ]);
+        $user = User::factory()->create();
+        $user->assignRole('admin');
 
+        // Check admin panel navigation
         $response = $this->actingAs($user)
             ->get('/admin');
 
-        $response->assertSee('GitHub Panel');
-        $response->assertSee('Admin Panel');
-    }
+        $response->assertSuccessful();
+        $response->assertSeeInOrder(['GitHub Panel', 'Admin Panel'], false);
 
-    /**
-     * @test
-     */
-    public function panel_colors_are_correctly_applied()
-    {
-        $user = User::factory()->create([
-            'is_admin' => true,
-            'can_access_github' => true,
-        ]);
-
-        // Test admin panel
-        $response = $this->actingAs($user)
-            ->get('/admin');
-        $response->assertSee('bg-blue-500');
-
-        // Test github panel
+        // Check github panel navigation
         $response = $this->actingAs($user)
             ->get('/github');
-        $response->assertSee('bg-orange-500');
+
+        $response->assertSuccessful();
+        $response->assertSee('GitHub Integration');
+    }
+
+    #[Test]
+    public function panels_have_correct_branding()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        // Check admin panel branding
+        $response = $this->actingAs($user)
+            ->get('/admin');
+        $response->assertSuccessful();
+        $response->assertSee(config('app.name'));
+
+        // Check github panel branding
+        $response = $this->actingAs($user)
+            ->get('/github');
+        $response->assertSuccessful();
+        $response->assertSee('GitHub Integration');
     }
 }

@@ -25,7 +25,7 @@ class PanelPermissionsTest extends TestCase
             ->givePermissionTo(Permission::all());
     }
 
-    /** @test */
+    #[Test]
     public function super_admin_can_access_all_panels(): void
     {
         $superAdmin = User::factory()->create();
@@ -40,7 +40,7 @@ class PanelPermissionsTest extends TestCase
         $response->assertStatus(200);
     }
 
-    /** @test */
+    #[Test]
     public function user_without_permissions_cannot_access_panels(): void
     {
         $user = User::factory()->create();
@@ -53,7 +53,7 @@ class PanelPermissionsTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function user_with_specific_permission_can_access_only_authorized_panel(): void
     {
         $user = User::factory()->create();
