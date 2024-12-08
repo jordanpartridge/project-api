@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
 class CommitsRelationshipManager extends RelationManager
 {
     protected static string $relationship = 'commits';
+
     protected static ?string $recordTitleAttribute = 'message';
 
     public function form(Form $form): Form

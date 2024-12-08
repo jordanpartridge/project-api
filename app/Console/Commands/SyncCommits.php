@@ -15,8 +15,11 @@ use Psy\Readline\Hoa\Exception;
 class SyncCommits extends Command
 {
     private const API_RATE_LIMIT = 5000; // GitHub's rate limit per hour
+
     private const RATE_LIMIT_BUFFER = 100; // Buffer to prevent hitting the limit
+
     protected $signature = 'sync:commits {--per-page=100} {--max-pages=100} {--with-files}';
+
     protected $description = 'Sync commits from Github with pagination support';
 
     // Track API calls for rate limiting

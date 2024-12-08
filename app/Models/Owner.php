@@ -11,6 +11,7 @@ class Owner extends Model
 {
     /** @use HasFactory<OwnerFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     protected $fillable = [

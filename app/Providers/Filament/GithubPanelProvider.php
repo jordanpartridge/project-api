@@ -28,16 +28,9 @@ class GithubPanelProvider extends PanelProvider
             ->path('github')
             ->login()
             ->brandName('GitHub Integration')
-            ->favicon('images/github-favicon.png')
             ->colors([
-                'danger' => Color::Rose,
-                'gray' => Color::Slate,
-                'info' => Color::Blue,
                 'primary' => Color::Orange,
-                'success' => Color::Emerald,
-                'warning' => Color::Orange,
             ])
-            ->font('Inter')
             ->discoverResources(in: app_path('Filament/Github/Resources'), for: 'App\\Filament\\Github\\Resources')
             ->discoverPages(in: app_path('Filament/Github/Pages'), for: 'App\\Filament\\Github\\Pages')
             ->pages([
@@ -63,13 +56,6 @@ class GithubPanelProvider extends PanelProvider
             ])
             ->databaseNotifications()
             ->topNavigation()
-            ->maxContentWidth('full')
-            ->navigationGroups([
-                'Repositories',
-                'Integration',
-                'Configuration',
-            ])
-            ->sidebarCollapsibleOnDesktop()
             ->renderHook(
                 'panels::top-navigation',
                 fn (): \Illuminate\View\View => view('panels.topbar', [
@@ -81,8 +67,8 @@ class GithubPanelProvider extends PanelProvider
                 MenuItem::make()
                     ->label('Admin Panel')
                     ->icon('heroicon-o-building-office')
-                    ->url('/admin'),
-                // Add more menu items as needed
+                    ->url('/admin')
+                    ->visible(fn () => auth()->user()?->can('view_admin_panel')),
             ]);
     }
 }

@@ -26,9 +26,13 @@ use Illuminate\Support\Str;
 class CommitResource extends Resource
 {
     protected static ?string $model = Commit::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-code-bracket-square';
+
     protected static ?string $navigationGroup = 'GitHub';
+
     protected static ?string $navigationLabel = 'Commits';
+
     protected static ?string $modelLabel = 'Commit';
 
     private const COMMIT_SVG_ICON = <<<'HTML'

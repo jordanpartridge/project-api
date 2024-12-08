@@ -34,9 +34,13 @@ use Filament\Tables\Table;
 class RepoResource extends Resource
 {
     protected static ?string $model = Repo::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-code-bracket';
+
     protected static ?string $navigationGroup = 'GitHub';
+
     protected static ?string $navigationLabel = 'Repositories';
+
     protected static ?string $modelLabel = 'Repository';
 
     public static function getNavigationBadge(): ?string
