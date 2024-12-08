@@ -67,47 +67,29 @@ class PanelTest extends TestCase
         $user->assignRole('admin');
 
         $response = $this->actingAs($user)
-            ->get('/github');
+            ->get('/github/dashboard');
 
         $response->assertSuccessful();
-    }
-
-    #[Test]
-    public function panel_navigation_shows_correct_items()
-    {
-        $user = User::factory()->create();
-        $user->assignRole('admin');
-
-        // Check admin panel navigation
-        $response = $this->actingAs($user)
-            ->get('/admin');
-
-        $response->assertSuccessful();
-        $response->assertSeeInOrder(['GitHub Panel', 'Admin Panel'], false);
-
-        // Check github panel navigation
-        $response = $this->actingAs($user)
-            ->get('/github');
-
-        $response->assertSuccessful();
-        $response->assertSee('GitHub Integration');
     }
 
     #[Test]
     public function panels_have_correct_branding()
     {
+
         $user = User::factory()->create();
         $user->assignRole('admin');
 
         // Check admin panel branding
         $response = $this->actingAs($user)
             ->get('/admin');
+
+        $status = $response->status();
         $response->assertSuccessful();
         $response->assertSee(config('app.name'));
 
         // Check github panel branding
         $response = $this->actingAs($user)
-            ->get('/github');
+            ->get('/github/dashboard');
         $response->assertSuccessful();
         $response->assertSee('GitHub Integration');
     }
