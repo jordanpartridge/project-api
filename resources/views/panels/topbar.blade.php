@@ -15,9 +15,9 @@
                 </a>
             @endcan
 
-            @can('access-support')
-                <a href="/support" class="px-3 py-2 text-sm text-white hover:bg-white/10 rounded-lg transition {{ $currentPanel === 'support' ? 'bg-white/20' : '' }}">
-                    Support
+            @can('access-github')
+                <a href="/github" class="px-3 py-2 text-sm text-white hover:bg-white/10 rounded-lg transition {{ $currentPanel === 'github' ? 'bg-white/20' : '' }}">
+                    GitHub
                 </a>
             @endcan
 
