@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -80,8 +80,8 @@ class Project extends DataModel
     /**
      * Get the repositories associated with the project.
      */
-    public function repos(): HasMany
+    public function repo(): HasOne
     {
-        return $this->hasMany(Repo::class);
+        return $this->hasOne(Repo::class);
     }
 }

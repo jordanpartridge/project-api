@@ -6,6 +6,7 @@ use App\Tool\GetFunctionForFile;
 use EchoLabs\Prism\Prism;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use RuntimeException;
 
 use function Laravel\Prompts\suggest;
 
@@ -66,11 +67,8 @@ class AnalyzeModel extends Command
     {
         $tool = new GetFunctionForFile;
 
-        $this->info("Starting analysis of {$model} model...");
-
-        $prompt = <<<PROMPT
-            Begin Analysis: `{$model}`"
-            PROMPT;
+        $prompt = "Starting analysis of {$model} model...";
+        $this->info($prompt);
 
         $response = Prism::text()
             ->using('anthropic', 'claude-3-5-sonnet-20241022')
@@ -78,15 +76,25 @@ class AnalyzeModel extends Command
             ->withPrompt($prompt)
             ->generate();
 
-        $toolResults = $response->toolResults;
-        $toolCalls = $response->toolCalls;
-        $text = $response->text;
+        [
+            'toolResults' => $toolResults,
+            'toolCalls' => $toolCalls,
+            'text' => $text,
+        ] = (array) $response;
+
+        activity()
+            ->withProperties(['tool-results' => $toolResults, 'tool-calls' => $toolCalls])
+            ->log('tool-run');
+
+        $this->info('Text Output:');
+        $this->line($text);
+
         $response = Prism::text()
             ->using('anthropic', 'claude-3-5-sonnet-20241022')
             ->withPrompt(sprintf(
                 'Analyze tool results and provide insights: %s',
                 json_encode($toolResults)
-            ));
+            ))->generate();
 
         if (! $response) {
             throw new RuntimeException('No response received from analysis');
@@ -96,7 +104,6 @@ class AnalyzeModel extends Command
         $this->newLine();
 
         // Use Laravel's built-in output formatting
-        $this->line($response->generate()->text);
-        // that dumb ai doesn't know that response isn't a string i guess
+        $this->line($response->text);
     }
 }
