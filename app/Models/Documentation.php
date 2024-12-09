@@ -14,6 +14,11 @@ class Documentation extends DataModel
     use HasSlug;
     use SoftDeletes;
 
+    public const CATEGORY_GUIDES = 'guides';
+    public const CATEGORY_TUTORIALS = 'tutorials';
+    public const CATEGORY_API = 'api';
+    public const CATEGORY_EXAMPLES = 'examples';
+
     protected $table = 'documentation';
 
     protected $fillable = [
@@ -31,6 +36,16 @@ class Documentation extends DataModel
         'meta_data' => 'array',
         'order' => 'integer',
     ];
+
+    public static function categories(): array
+    {
+        return [
+            self::CATEGORY_GUIDES,
+            self::CATEGORY_TUTORIALS,
+            self::CATEGORY_API,
+            self::CATEGORY_EXAMPLES,
+        ];
+    }
 
     public function getSlugOptions(): SlugOptions
     {
