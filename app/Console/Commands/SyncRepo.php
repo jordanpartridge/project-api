@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use JordanPartridge\GithubClient\Data\Repos\RepoData;
 use JordanPartridge\GithubClient\Enums\Direction;
+use JordanPartridge\GithubClient\Enums\RepoType;
 use JordanPartridge\GithubClient\Enums\Sort;
 use JordanPartridge\GithubClient\Facades\Github;
 use Throwable;
@@ -78,7 +79,8 @@ class SyncRepo extends Command
                 page: $page,
                 per_page: $perPage,
                 sort: Sort::UPDATED,
-                direction: Direction::DESC,
+                type: RepoType::Owner,
+                direction: Direction::DESC
             )->dto());
 
             if ($repos->isEmpty()) {
@@ -181,19 +183,20 @@ class SyncRepo extends Command
             [
                 'avatar_url' => $repo->owner->avatar_url,
                 'type' => $repo->owner->type,
-                'html_url' => $repo->owner->html_url, X,
+                'html_url' => $repo->owner->html_url,
             ]
         );
+
         $project->repo()->updateOrCreate(
             [
-                'github_id' => $repo->id,
                 'name' => $repo->name,
                 'full_name' => $repo->full_name,
                 'owner_id' => $owner->id,
+                'url' => $repo->html_url,
+
             ],
             [
                 'description' => $repo->description,
-                'url' => $repo->html_url,
                 'private' => $repo->private,
                 'stars_count' => $repo->stargazers_count,
                 'forks_count' => $repo->forks_count,

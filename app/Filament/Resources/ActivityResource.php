@@ -7,7 +7,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Spatie\Activitylog\Models\Activity;
 
@@ -39,8 +38,7 @@ class ActivityResource extends Resource
                     ->label('Action')
                     ->searchable(),
                 TextColumn::make('causer.name')
-                    ->label('User')
-                    ->sortable(),
+                    ->label('User'),
                 TextColumn::make('subject_type')
                     ->label('Model')
                     ->formatStateUsing(fn ($state) => class_basename($state))
@@ -50,13 +48,7 @@ class ActivityResource extends Resource
                     ->dateTime()
                     ->sortable(),
             ])
-            ->defaultSort('created_at', 'desc')
-            ->filters([
-                SelectFilter::make('log_name')
-                    ->options(fn () => Activity::distinct()->pluck('log_name', 'log_name')->toArray()),
-                SelectFilter::make('causer')
-                    ->relationship('causer', 'name'),
-            ])
+
             ->actions([
                 ViewAction::make(),
             ])

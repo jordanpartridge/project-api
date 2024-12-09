@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.3",
+        "echolabsdev/prism": "^0.21.0",
         "filament/filament": "^3.2",
         "filament/widgets": "^3.2",
         "glhd/bits": "^0.5.0",
@@ -14,7 +15,7 @@
         "jordanpartridge/github-client": "^v0.3",
         "jordanpartridge/packagist-client": "v0.1.0a",
         "laravel/horizon": "^5.29",
-        "laravel/prompts": "^0.1.25",
+        "laravel/prompts": "*",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "saloonphp/laravel-plugin": "^3.0",

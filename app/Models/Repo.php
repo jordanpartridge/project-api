@@ -15,6 +15,7 @@ class Repo extends DataModel
         'language_id',
         'name',
         'full_name',
+        'url',
         'description',
         'private',
         'fork',
