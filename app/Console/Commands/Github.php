@@ -114,7 +114,7 @@ class Github extends Command
         }
 
         $filteredRepos = array_filter($repos, function ($repo) use ($personalOnly) {
-            return ! $personalOnly || ! $repo['fork'];
+            return ! $personalOnly;
         });
 
         info($personalOnly ? 'Your Personal Repositories:' : 'Your Repositories (including organizations):');

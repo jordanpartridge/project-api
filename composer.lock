@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4f2cb9843963f2672b37e9317a181fd",
+    "content-hash": "b6b683dc51127f9525d4b7bce6ebb158",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2547,16 +2547,16 @@
         },
         {
             "name": "echolabsdev/prism",
-            "version": "v0.21.0",
+            "version": "v0.21.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/echolabsdev/prism.git",
-                "reference": "32387ef72a5b5ff72658837083dabe386fa27d80"
+                "reference": "58ed48a5071d5214ef47484977410d817d372b23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/echolabsdev/prism/zipball/32387ef72a5b5ff72658837083dabe386fa27d80",
-                "reference": "32387ef72a5b5ff72658837083dabe386fa27d80",
+                "url": "https://api.github.com/repos/echolabsdev/prism/zipball/58ed48a5071d5214ef47484977410d817d372b23",
+                "reference": "58ed48a5071d5214ef47484977410d817d372b23",
                 "shasum": ""
             },
             "require": {
@@ -2607,7 +2607,7 @@
             "description": "A powerful Laravel package for integrating Large Language Models (LLMs) into your applications.",
             "support": {
                 "issues": "https://github.com/echolabsdev/prism/issues",
-                "source": "https://github.com/echolabsdev/prism/tree/v0.21.0"
+                "source": "https://github.com/echolabsdev/prism/tree/v0.21.1"
             },
             "funding": [
                 {
@@ -2615,7 +2615,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-08T21:47:59+00:00"
+            "time": "2024-12-09T17:00:27+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -7103,16 +7103,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.6",
+            "version": "v0.12.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "3b5ea0efaa791cd1c65ecc493aec3e2aa55ff57c"
+                "reference": "d73fa3c74918ef4522bb8a3bf9cab39161c4b57c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/3b5ea0efaa791cd1c65ecc493aec3e2aa55ff57c",
-                "reference": "3b5ea0efaa791cd1c65ecc493aec3e2aa55ff57c",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/d73fa3c74918ef4522bb8a3bf9cab39161c4b57c",
+                "reference": "d73fa3c74918ef4522bb8a3bf9cab39161c4b57c",
                 "shasum": ""
             },
             "require": {
@@ -7176,9 +7176,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.6"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.7"
             },
-            "time": "2024-12-07T20:08:52+00:00"
+            "time": "2024-12-10T01:58:33+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -7952,16 +7952,16 @@
         },
         {
             "name": "spatie/color",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/color.git",
-                "reference": "4c540ffbef68a3df3d209718ae06deaab081e708"
+                "reference": "b4fac074a9e5999dcca12cbfab0f7c73e2684d6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/color/zipball/4c540ffbef68a3df3d209718ae06deaab081e708",
-                "reference": "4c540ffbef68a3df3d209718ae06deaab081e708",
+                "url": "https://api.github.com/repos/spatie/color/zipball/b4fac074a9e5999dcca12cbfab0f7c73e2684d6d",
+                "reference": "b4fac074a9e5999dcca12cbfab0f7c73e2684d6d",
                 "shasum": ""
             },
             "require": {
@@ -7999,7 +7999,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/color/issues",
-                "source": "https://github.com/spatie/color/tree/1.6.1"
+                "source": "https://github.com/spatie/color/tree/1.6.2"
             },
             "funding": [
                 {
@@ -8007,7 +8007,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-18T15:00:47+00:00"
+            "time": "2024-12-09T16:20:38+00:00"
         },
         {
             "name": "spatie/invade",
@@ -8245,16 +8245,16 @@
         },
         {
             "name": "spatie/laravel-login-link",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-login-link.git",
-                "reference": "4190e11ea0b0a31483df23910bdd34b92359050a"
+                "reference": "c80fb61841bf81ef8d30d8425c55479aaf3d3849"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-login-link/zipball/4190e11ea0b0a31483df23910bdd34b92359050a",
-                "reference": "4190e11ea0b0a31483df23910bdd34b92359050a",
+                "url": "https://api.github.com/repos/spatie/laravel-login-link/zipball/c80fb61841bf81ef8d30d8425c55479aaf3d3849",
+                "reference": "c80fb61841bf81ef8d30d8425c55479aaf3d3849",
                 "shasum": ""
             },
             "require": {
@@ -8304,22 +8304,22 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-login-link/tree/1.4.0"
+                "source": "https://github.com/spatie/laravel-login-link/tree/1.5.0"
             },
-            "time": "2024-11-07T15:18:12+00:00"
+            "time": "2024-12-09T10:52:48+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
-            "version": "1.16.6",
+            "version": "1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-package-tools.git",
-                "reference": "1f26942dc1e5c49eacfced34fdbc29ed234bd7b3"
+                "reference": "9ab30fd24f677e5aa370ea4cf6b41c517d16cf85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/1f26942dc1e5c49eacfced34fdbc29ed234bd7b3",
-                "reference": "1f26942dc1e5c49eacfced34fdbc29ed234bd7b3",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/9ab30fd24f677e5aa370ea4cf6b41c517d16cf85",
+                "reference": "9ab30fd24f677e5aa370ea4cf6b41c517d16cf85",
                 "shasum": ""
             },
             "require": {
@@ -8328,10 +8328,10 @@
             },
             "require-dev": {
                 "mockery/mockery": "^1.5",
-                "orchestra/testbench": "^7.7|^8.0",
-                "pestphp/pest": "^1.22",
-                "phpunit/phpunit": "^9.5.24",
-                "spatie/pest-plugin-test-time": "^1.1"
+                "orchestra/testbench": "^7.7|^8.0|^9.0",
+                "pestphp/pest": "^1.22|^2",
+                "phpunit/phpunit": "^9.5.24|^10.5",
+                "spatie/pest-plugin-test-time": "^1.1|^2.2"
             },
             "type": "library",
             "autoload": {
@@ -8358,7 +8358,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-package-tools/issues",
-                "source": "https://github.com/spatie/laravel-package-tools/tree/1.16.6"
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.17.0"
             },
             "funding": [
                 {
@@ -8366,7 +8366,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-18T15:02:02+00:00"
+            "time": "2024-12-09T16:29:14+00:00"
         },
         {
             "name": "spatie/laravel-permission",
@@ -8453,16 +8453,16 @@
         },
         {
             "name": "spatie/laravel-sluggable",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-sluggable.git",
-                "reference": "a44afe6f317959bcfdadcec3148486859fd5c1f5"
+                "reference": "26bd614233dd0a5fbd783c5bc5bb93512cf03fdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/a44afe6f317959bcfdadcec3148486859fd5c1f5",
-                "reference": "a44afe6f317959bcfdadcec3148486859fd5c1f5",
+                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/26bd614233dd0a5fbd783c5bc5bb93512cf03fdb",
+                "reference": "26bd614233dd0a5fbd783c5bc5bb93512cf03fdb",
                 "shasum": ""
             },
             "require": {
@@ -8500,7 +8500,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-sluggable/tree/3.6.0"
+                "source": "https://github.com/spatie/laravel-sluggable/tree/3.7.0"
             },
             "funding": [
                 {
@@ -8508,7 +8508,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-26T08:33:29+00:00"
+            "time": "2024-12-09T13:35:55+00:00"
         },
         {
             "name": "spatie/php-structure-discoverer",
@@ -9701,8 +9701,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -9777,8 +9777,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -9938,8 +9938,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -10096,8 +10096,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -10172,8 +10172,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -10252,8 +10252,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -10328,8 +10328,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -10410,8 +10410,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {

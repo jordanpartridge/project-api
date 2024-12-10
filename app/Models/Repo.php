@@ -18,14 +18,10 @@ class Repo extends DataModel
         'url',
         'description',
         'private',
-        'fork',
-        'pushed_at',
     ];
 
     protected $casts = [
         'private' => 'boolean',
-        'fork' => 'boolean',
-        'pushed_at' => 'datetime',
     ];
 
     public function project(): BelongsTo
@@ -61,7 +57,6 @@ class Repo extends DataModel
                 'full_name',
                 'description',
                 'private',
-                'pushed_at',
                 'project_id',
                 'owner_id',
                 'language_id',

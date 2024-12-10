@@ -6,14 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
+    public function up()
     {
         Schema::create('documentation', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->longText('content');
-            $table->string('category')->index();
+            $table->text('content');
+            $table->string('category');
             $table->integer('order')->default(0);
             $table->boolean('is_published')->default(true);
             $table->json('meta_data')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('documentation');
     }
