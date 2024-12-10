@@ -1,0 +1,17 @@
+{
+    "project": {
+        "name": "project-api",
+        "base_path": "/Users/jordanpartridge/Sites/project-api",
+        "knowledge": {
+            "shared_patterns": "/Sites/claude-knowledge/patterns",
+            "project_specific": "/Sites/project-backups/project-api/knowledge"
+        },
+        "context_file": "claude/context.md",
+        "working_directory": "/Users/jordanpartridge/Sites/project-api"
+    },
+    "knowledge_references": {
+        "patterns": "/Sites/claude-knowledge/patterns/laravel-patterns.json",
+        "project_state": "/Sites/project-backups/project-api/knowledge/current-state.json"
+    },
+    "mode": "project-api"
+}

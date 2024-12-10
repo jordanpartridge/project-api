@@ -22,12 +22,13 @@ class RepoFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->name(),
-            'github_id' => $this->faker->unique()->randomNumber(),
             'full_name' => $this->faker->unique()->name(),
             'language_id' => Language::factory()->create(),
             'url' => $this->faker->url(),
             'owner_id' => Owner::factory()->create(),
             'project_id' => Project::inRandomOrder()->first() ?? Project::factory(),
+            'description' => $this->faker->paragraph(),
+            'private' => $this->faker->boolean(),
         ];
     }
 }

@@ -1,0 +1,111 @@
+{
+  "known_issues": [
+    {
+      "id": "ISSUE-008",
+      "area": "Documentation",
+      "description": "Documentation migrations deleted, need to update schema and tests",
+      "status": "active",
+      "last_updated": "2024-12-09",
+      "priority": "high",
+      "related_files": [
+        "database/migrations/2024_12_08_000000_create_documentation_table.php",
+        "database/migrations/2024_12_09_000000_add_model_fields_to_documentation_table.php"
+      ]
+    },
+    {
+      "id": "ISSUE-002",
+      "area": "State Management",
+      "description": "Implement robust state persistence and recovery system for project context",
+      "status": "resolved",
+      "last_updated": "2024-12-11",
+      "priority_reason": "Foundation for other features, critical for system reliability",
+      "resolution": "Implemented state persistence and recovery system, validated with unit tests."
+    },
+    {
+      "id": "ISSUE-001",
+      "area": "Knowledge Integration",
+      "description": "Need to implement automatic loading and validation of Laravel patterns from knowledge store",
+      "status": "active",
+      "last_updated": "2024-12-09"
+    },
+    {
+      "id": "ISSUE-003",
+      "area": "Version Control Integration",
+      "description": "Enhance integration between Project Management and Version Control systems",
+      "status": "active",
+      "last_updated": "2024-12-09"
+    },
+    {
+      "id": "ISSUE-004",
+      "area": "Admin Interface",
+      "description": "Optimize Filament admin interface for improved project management workflow",
+      "status": "active",
+      "last_updated": "2024-12-09"
+    },
+    {
+      "id": "ISSUE-005",
+      "area": "Model Analysis",
+      "description": "Integrate Prism for enhanced model analysis and documentation",
+      "status": "active",
+      "last_updated": "2024-12-09"
+    },
+    {
+      "id": "ISSUE-006",
+      "area": "Database Schema",
+      "description": "Update Repo model and factory to remove github_id references after column removal",
+      "status": "resolved",
+      "last_updated": "2024-12-10",
+      "resolution": "Removed github_id from RepoFactory and verified no other references",
+      "resolution_date": "2024-12-10"
+    },
+    {
+      "id": "ISSUE-007",
+      "area": "Database Schema",
+      "description": "Add missing meta_data column to documentation table",
+      "status": "active",
+      "last_updated": "2024-12-10",
+      "priority": "high",
+      "related_tests": ["DocumentationTest"]
+    }
+  ],
+  "checkpoints": [
+    {
+      "date": "2024-12-10",
+      "description": "Successfully removed github_id from Repo system, reducing test failures from many to 11. Next up: documentation meta_data column.",
+      "test_status": "11 failures",
+      "completed_tasks": ["Remove github_id from RepoFactory", "Verify no lingering github_id references"],
+      "next_tasks": ["Add meta_data column to documentation table"]
+    },
+    {
+      "date": "2024-12-11",
+      "description": "Implemented state persistence and recovery system, validated with unit tests.",
+      "test_status": "0 failures",
+      "completed_tasks": ["Implement state persistence and recovery system"],
+      "next_tasks": ["Implement automatic loading of Laravel patterns"]
+    }
+  ],
+  "last_updated": "2024-12-11",
+  "project_info": {
+    "name": "project-api",
+    "root_path": "/Users/jordanpartridge/Sites/project-api",
+    "type": "Laravel API",
+    "frameworks": ["Laravel", "Filament"],
+    "key_packages": ["spatie/laravel-permission", "prism/laravel-model-analysis"]
+  },
+  "project_goals": {
+    "improve_project_management": true,
+    "enhance_version_control_integration": true,
+    "optimize_admin_interface": true,
+    "integrate_model_analysis_tooling": true
+  },
+  "change_log": {
+    "2024-12-10": [
+      "Removed `github_id` from `RepoFactory`, reduced test failures to 11",
+      "Next: add `meta_data` column to `documentation` table"
+    ],
+    "2024-12-11": [
+      "Implemented state persistence, 0 test failures",
+      "Next: automatic loading of Laravel patterns"
+    ]
+  }
+}

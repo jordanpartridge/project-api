@@ -202,7 +202,6 @@ class SyncRepo extends Command
                 'forks_count' => $repo->forks_count,
                 'open_issues_count' => $repo->open_issues_count,
                 'default_branch' => $repo->default_branch,
-                'last_push_at' => $repo->pushed_at,
                 'topics' => $repo->topics ?? [],
                 'license' => $repo->license?->spdxId ?? null,
             ]
