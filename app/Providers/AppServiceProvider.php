@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\ServiceProvider;
 use Monolog\Formatter\LineFormatter;
 
 class AppServiceProvider extends ServiceProvider
