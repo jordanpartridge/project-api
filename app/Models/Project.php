@@ -2,86 +2,45 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * @property string $name
- * @property string $slug
- * @property string|null $description
- * @property string|null $long_description
- * @property string $status
- * @property string|null $featured_image
- * @property string|null $demo_url
- * @property bool $is_featured
- * @property int|null $display_order
- * @property array|null $meta_data
- *
- * @method static \Database\Factories\ProjectFactory factory()
- */
-class Project extends DataModel
+class Project extends Model
 {
-    use HasFactory;
-    use HasSlug;
-
     protected $fillable = [
         'name',
-        'slug',
         'description',
-        'long_description',
+        'github_id',
+        'github_project_number',
+        'github_project_settings',
+        'github_project_visibility',
         'status',
-        'featured_image',
-        'demo_url',
-        'is_featured',
-        'display_order',
-        'meta_data',
     ];
 
     protected $casts = [
-        'is_featured' => 'boolean',
-        'meta_data' => 'array',
+        'github_project_settings' => 'json',
+        'last_synced_at' => 'datetime',
     ];
 
-    /**
-     * Get the options for generating the slug.
-     */
-    public function getSlugOptions(): SlugOptions
+    public function issues(): HasMany
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+        return $this->hasMany(Issue::class);
     }
 
-    /**
-     * Get the route key for the model.
-     */
-    public function getRouteKeyName(): string
+    public function owner(): BelongsTo
     {
-        return 'slug';
+        return $this->belongsTo(Owner::class);
     }
 
-    public function getActivitylogOptions(): LogOptions
+    public function scopeWithGitHubProject($query)
     {
-        return LogOptions::defaults()
-            ->logOnly([
-                'name',
-                'slug',
-                'description',
-                'status',
-                'is_featured',
-            ])
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+        return $query->whereNotNull('github_project_number');
     }
 
-    /**
-     * Get the repositories associated with the project.
-     */
-    public function repo(): HasOne
+    public function needsSync(): bool
     {
-        return $this->hasOne(Repo::class);
+        return $this->last_synced_at === null ||
+            $this->last_synced_at->diffInHours(now()) > 1;
     }
 }
