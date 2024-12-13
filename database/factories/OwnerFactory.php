@@ -2,26 +2,35 @@
 
 namespace Database\Factories;
 
-use App\Models\Owner;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Owner;
 
-/**
- * @extends Factory<Owner>
- */
 class OwnerFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Owner::class;
+
     public function definition(): array
     {
         return [
-            'login' => $this->faker->name(),
-            'avatar_url' => $this->faker->imageUrl(),
-            'html_url' => $this->faker->url(),
-            'type' => $this->faker->randomElement(['user', 'organization']),
+            'github_id' => (string) fake()->unique()->randomNumber(8),
+            'login' => fake()->unique()->userName(),
+            'type' => fake()->randomElement(['User', 'Organization']),
+            'avatar_url' => fake()->imageUrl(),
+            'html_url' => fake()->url(),
         ];
+    }
+
+    public function user(): self
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'User',
+        ]);
+    }
+
+    public function organization(): self
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'Organization',
+        ]);
     }
 }

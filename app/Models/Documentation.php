@@ -22,4 +22,21 @@ class Documentation extends Model
     protected $casts = [
         'is_published' => 'boolean',
     ];
+
+    /**
+     * @return array
+     */
+    public static  function categories(): array
+    {
+        return ['Laravel', 'PHP', 'JavaScript', 'Vue', 'React', 'Node', 'Laravel', 'PHP', 'JavaScript', 'Vue', 'React', 'Node'];
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
 }

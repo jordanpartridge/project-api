@@ -2,27 +2,35 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/** @use HasFactory<\Database\Factories\OwnerFactory> */
-class Owner extends DataModel
+class Owner extends Model
 {
+    use HasFactory, SoftDeletes;
+
     protected $fillable = [
+        'github_id',
         'login',
         'type',
         'avatar_url',
         'html_url',
     ];
 
-    public function getActivitylogOptions(): LogOptions
+    public function repos(): HasMany
     {
-        return LogOptions::defaults()
-            ->logOnly([
-                'login',
-                'type',
-                'avatar_url',
-            ])
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+        return $this->hasMany(Repo::class);
+    }
+
+    public function issues(): HasMany
+    {
+        return $this->hasMany(Issue::class, 'author_id');
+    }
+
+    public function pullRequests(): HasMany
+    {
+        return $this->hasMany(PullRequest::class, 'author_id');
     }
 }

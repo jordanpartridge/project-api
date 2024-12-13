@@ -1,0 +1,162 @@
+models:
+  Owner:
+    table: owners
+    attributes:
+      id: id
+      github_id: string unique
+      login: string unique
+      type: enum:User,Organization
+      avatar_url: string nullable
+      html_url: string
+    timestamps: true
+    softDeletes: true
+    relationships:
+      hasMany: [Repo, Issue:author_id, PullRequest:author_id]
+    tests:
+      - has_basic_attributes
+      - can_be_user_type
+      - can_be_organization_type
+      - can_have_many_repos
+      - can_have_many_authored_issues
+      - can_have_many_authored_pull_requests
+      - soft_deletes_with_repos
+
+  Repo:
+    table: repos
+    attributes:
+      id: id
+      github_id: string unique
+      name: string
+      full_name: string
+      description: text nullable
+      url: string
+      html_url: string
+      clone_url: string
+      ssh_url: string nullable
+      language: string nullable
+      stars: integer default:0
+      forks: integer default:0
+      open_issues_count: integer default:0
+      visibility: enum:public,private,internal
+      owner_id: foreignId:owners
+    timestamps: true
+    softDeletes: true
+    relationships:
+      belongsTo: Owner
+      hasMany: [Issue, PullRequest, Documentation]
+      belongsToMany: Project
+    tests:
+      - has_basic_attributes
+      - belongs_to_owner
+      - can_have_many_issues
+      - can_have_many_pull_requests
+      - can_have_documentation
+      - can_belong_to_multiple_projects
+      - soft_deletes_cascades_properly
+
+  Project:
+    table: projects
+    attributes:
+      id: id
+      name: string
+      description: text nullable
+      status: string default:active
+      featured_image: string nullable
+      demo_url: string nullable
+      long_description: text nullable
+      is_featured: boolean default:false
+      display_order: integer nullable
+      meta_data: json nullable
+    timestamps: true
+    relationships:
+      belongsToMany: Repo
+    tests:
+      - has_basic_attributes
+      - can_have_many_repos
+      - handles_meta_data_as_json
+      - can_be_featured
+      - orders_correctly
+
+  Documentation:
+    table: documentation
+    attributes:
+      id: ulid
+      title: string
+      slug: string unique
+      content: text
+      category: string
+      order: integer default:0
+      is_published: boolean default:true
+      meta_data: json nullable
+      repo_id: foreignId:repos nullable
+    timestamps: true
+    softDeletes: true
+    relationships:
+      belongsTo: Repo
+    tests:
+      - has_basic_attributes
+      - generates_unique_slug
+      - belongs_to_repo
+      - handles_meta_data_as_json
+      - can_be_published_unpublished
+      - orders_correctly
+      - soft_deletes_properly
+
+  Issue:
+    table: issues
+    attributes:
+      id: id
+      github_id: string unique
+      title: string
+      body: text nullable
+      state: enum:open,closed
+      repo_id: foreignId:repos
+      author_id: foreignId:owners
+      assignee_id: foreignId:owners nullable
+      closed_at: timestamp nullable
+    timestamps: true
+    softDeletes: true
+    relationships:
+      belongsTo: [Repo, Owner:author_id, Owner:assignee_id]
+    tests:
+      - has_basic_attributes
+      - belongs_to_repo
+      - has_author
+      - can_have_assignee
+      - can_be_closed
+      - soft_deletes_properly
+
+  PullRequest:
+    table: pull_requests
+    attributes:
+      id: id
+      github_id: string unique
+      title: string
+      body: text nullable
+      state: enum:open,closed,merged
+      repo_id: foreignId:repos
+      author_id: foreignId:owners
+      merged_by_id: foreignId:owners nullable
+      closed_at: timestamp nullable
+      merged_at: timestamp nullable
+    timestamps: true
+    softDeletes: true
+    relationships:
+      belongsTo: [Repo, Owner:author_id, Owner:merged_by_id]
+    tests:
+      - has_basic_attributes
+      - belongs_to_repo
+      - has_author
+      - can_be_merged
+      - tracks_merger
+      - soft_deletes_properly
+
+pivotTables:
+  project_repository:
+    attributes:
+      project_id: foreignId:projects
+      repository_id: foreignId:repos
+    timestamps: true
+    tests:
+      - links_projects_and_repos
+      - maintains_timestamps

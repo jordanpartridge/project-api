@@ -1,0 +1,31 @@
+created:
+    - database/factories/GitHubUserFactory.php
+    - database/factories/ProjectFactory.php
+    - database/factories/ProjectColumnFactory.php
+    - database/factories/ProjectCardFactory.php
+    - database/factories/RepoFactory.php
+    - database/factories/IssueFactory.php
+    - database/factories/PullRequestFactory.php
+    - database/migrations/2024_12_12_072718_create_git_hub_users_table.php
+    - database/migrations/2024_12_12_072719_create_projects_table.php
+    - database/migrations/2024_12_12_072720_create_project_columns_table.php
+    - database/migrations/2024_12_12_072721_create_project_cards_table.php
+    - database/migrations/2024_12_12_072722_create_repos_table.php
+    - database/migrations/2024_12_12_072723_create_issues_table.php
+    - database/migrations/2024_12_12_072724_create_pull_requests_table.php
+    - app/Models/GitHubUser.php
+    - app/Models/Project.php
+    - app/Models/ProjectColumn.php
+    - app/Models/ProjectCard.php
+    - app/Models/Repo.php
+    - app/Models/Issue.php
+    - app/Models/PullRequest.php
+models:
+    User: { github_id: 'string unique', username: 'string unique', avatar_url: 'string nullable', profile_url: string, type: 'enum:User,Organization', repos: hasMany, created_at: timestamp, updated_at: timestamp }
+    Repo: { github_id: 'string unique', name: string, full_name: string, description: 'text nullable', url: string, html_url: string, clone_url: string, ssh_url: 'string nullable', language: 'string nullable', stars: integer, forks: integer, open_issues_count: integer, visibility: 'enum:public,private,internal', owner_id: 'foreignId for GitHubUser', issues: hasMany, pull_requests: hasMany, project_id: 'foreignId for Project nullable', timestamps: timestamps }
+    Issue: { github_id: 'string unique', title: string, body: 'text nullable', state: 'enum:open,closed', repo_id: 'foreignId for Repo', author_id: 'foreignId for GitHubUser', assignee_id: 'foreignId for GitHubUser nullable', project_card_id: 'foreignId for ProjectCard nullable', closed_at: 'timestamp nullable', timestamps: timestamps }
+    PullRequest: { github_id: 'string unique', title: string, body: 'text nullable', state: 'enum:open,closed,merged', repo_id: 'foreignId for Repo', author_id: 'foreignId for GitHubUser', merged_by_id: 'foreignId for GitHubUser nullable', project_card_id: 'foreignId for ProjectCard nullable', closed_at: 'timestamp nullable', merged_at: 'timestamp nullable', timestamps: timestamps }
+    GitHubUser: { github_id: 'string unique', username: 'string unique', avatar_url: 'string nullable', profile_url: string, type: 'enum:User,Organization', repos: hasMany, projects: hasMany, timestamps: timestamps }
+    Project: { github_id: 'string unique', name: string, description: 'text nullable', url: string, owner_id: 'foreignId for GitHubUser', repos: hasMany, columns: hasMany, created_at: timestamp, updated_at: timestamp }
+    ProjectColumn: { github_id: 'string unique', name: string, project_id: 'foreignId for Project', cards: hasMany, created_at: timestamp, updated_at: timestamp }
+    ProjectCard: { github_id: 'string unique', note: 'text nullable', issue_id: 'foreignId for Issue nullable', pull_request_id: 'foreignId for PullRequest nullable', column_id: 'foreignId for ProjectColumn', created_at: timestamp, updated_at: timestamp }
