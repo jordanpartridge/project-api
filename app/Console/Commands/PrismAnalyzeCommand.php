@@ -32,8 +32,8 @@ class PrismAnalyzeCommand extends Command
 
                 $prism = new Prism;
                 $response = $prism->text()
-                    ->provider($provider)
-                    ->prompt($prompt)
+                    ->withProvider($provider)
+                    ->withPrompt($prompt)
                     ->get();
 
                 $this->info("\nAnalyzing " . basename($file) . ':');
