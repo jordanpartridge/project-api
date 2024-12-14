@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\CodeAnalysis\PrismAnalyzer;
+use App\Services\CodeAnalysis\StreamingAnalyzer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
@@ -14,58 +14,31 @@ class PrismAnalyzeCommand extends Command
     protected $signature = 'prism:analyze {path?}';
     protected $description = 'AI-powered code analysis using Prism';
 
-    public function handle(PrismAnalyzer $analyzer)
+    public function handle(StreamingAnalyzer $analyzer)
     {
         $path = $this->argument('path') ?? app_path();
+        $files = collect(File::files($path))->filter(fn ($f) => pathinfo($f, PATHINFO_EXTENSION) === 'php');
+        $results = [];
 
         info('🔍 Code Analysis');
 
-        $criticalIssues = [];
-        $opportunities = [];
-
-        foreach (File::files($path) as $file) {
-            if (pathinfo($file, PATHINFO_EXTENSION) !== 'php') {
-                continue;
-            }
-
+        foreach ($files as $file) {
             $filename = basename($file);
-            $results = $analyzer->analyze(File::get($file), $filename);
+            info("\n📄 {$filename}");
 
-            if (! empty($results['critical'])) {
-                $criticalIssues[] = ['file' => $filename, 'issues' => $results['critical']];
+            $code = File::get($file);
+            foreach ($analyzer->analyzeStream($code, $filename) as $analysis) {
+                $issues = $analysis['result']['issues'] ?? [];
+                $critical = collect($issues)->where('severity', '>=', 4);
+
+                if ($critical->isNotEmpty()) {
+                    table([
+                        'Type' => $analysis['area'],
+                        'Issue' => $critical->first()['description'],
+                        'Fix' => $critical->first()['solution'],
+                    ]);
+                }
             }
-
-            if (! empty($results['opportunities'])) {
-                $opportunities[] = ['file' => $filename, 'items' => $results['opportunities']];
-            }
         }
-
-        if (! empty($criticalIssues)) {
-            info('⚠️  Critical Fixes Needed');
-            table(collect($criticalIssues)->flatMap(function ($item) {
-                return collect($item['issues'])->map(function ($issue) use ($item) {
-                    return [
-                        'File' => $item['file'],
-                        'Issue' => $issue['description'],
-                        'Fix' => $issue['solution'],
-                    ];
-                });
-            })->toArray());
-        }
-
-        if (! empty($opportunities)) {
-            info('💡 Top Opportunities');
-            table(collect($opportunities)->flatMap(function ($item) {
-                return collect($item['items'])->map(function ($opp) use ($item) {
-                    return [
-                        'File' => $item['file'],
-                        'Type' => $opp['type'],
-                        'Improvement' => $opp['description'],
-                    ];
-                });
-            })->toArray());
-        }
-
-        return ! empty($criticalIssues);
     }
 }
