@@ -32,7 +32,7 @@ class PrismAnalyzeCommand extends Command
 
                 $prism = new Prism;
                 $response = $prism->text()
-                    ->withProvider($provider)
+                    ->using($provider)
                     ->withPrompt($prompt)
                     ->get();
 
@@ -40,6 +40,8 @@ class PrismAnalyzeCommand extends Command
                 $this->line($response);
             } catch (Exception $e) {
                 $this->error('Error analyzing ' . basename($file) . ': ' . $e->getMessage());
+                $this->error("Provider: {$provider}");
+                $this->error($e->getTraceAsString());
             }
         }
 
