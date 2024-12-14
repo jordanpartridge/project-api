@@ -9,15 +9,16 @@ use Illuminate\Support\Facades\File;
 
 class PrismAnalyzeCommand extends Command
 {
-    protected $signature = 'prism:analyze {path?} {--provider=anthropic}';
+    protected $signature = 'prism:analyze {path?} {--provider=anthropic} {--model=claude-3-opus}';
     protected $description = 'AI-powered code analysis using Prism';
 
     public function handle()
     {
         $path = $this->argument('path') ?? app_path();
         $provider = $this->option('provider');
+        $model = $this->option('model');
 
-        $this->info("Analyzing {$path} using {$provider}...");
+        $this->info("Analyzing {$path} using {$provider} ({$model})...");
 
         $files = File::files($path);
         foreach ($files as $file) {
@@ -32,7 +33,7 @@ class PrismAnalyzeCommand extends Command
 
                 $prism = new Prism;
                 $response = $prism->text()
-                    ->using($provider)
+                    ->using($provider, $model)
                     ->withPrompt($prompt)
                     ->get();
 
@@ -40,7 +41,7 @@ class PrismAnalyzeCommand extends Command
                 $this->line($response);
             } catch (Exception $e) {
                 $this->error('Error analyzing ' . basename($file) . ': ' . $e->getMessage());
-                $this->error("Provider: {$provider}");
+                $this->error("Provider: {$provider}, Model: {$model}");
                 $this->error($e->getTraceAsString());
             }
         }
