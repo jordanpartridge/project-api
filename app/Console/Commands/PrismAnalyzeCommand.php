@@ -6,25 +6,19 @@ use Illuminate\Console\Command;
 
 class PrismAnalyzeCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'prism:analyze';
+    protected $signature = 'prism:analyze {path?} {--provider=anthropic}';
+    protected $description = 'AI-powered code analysis using Prism';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        //
+        $path = $this->argument('path') ?? app_path();
+        $provider = $this->option('provider');
+
+        $this->info("Analyzing {$path} using {$provider}...");
+
+        // Your analysis logic here
+        $this->info('Analysis complete.');
+
+        return 0;
     }
 }
