@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4f2cb9843963f2672b37e9317a181fd",
+    "content-hash": "a38d97cfde7f47f5d1a34e279c2245f9",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2549,16 +2549,16 @@
         },
         {
             "name": "echolabsdev/prism",
-            "version": "v0.21.0",
+            "version": "v0.21.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/echolabsdev/prism.git",
-                "reference": "32387ef72a5b5ff72658837083dabe386fa27d80"
+                "reference": "58ed48a5071d5214ef47484977410d817d372b23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/echolabsdev/prism/zipball/32387ef72a5b5ff72658837083dabe386fa27d80",
-                "reference": "32387ef72a5b5ff72658837083dabe386fa27d80",
+                "url": "https://api.github.com/repos/echolabsdev/prism/zipball/58ed48a5071d5214ef47484977410d817d372b23",
+                "reference": "58ed48a5071d5214ef47484977410d817d372b23",
                 "shasum": ""
             },
             "require": {
@@ -2609,7 +2609,7 @@
             "description": "A powerful Laravel package for integrating Large Language Models (LLMs) into your applications.",
             "support": {
                 "issues": "https://github.com/echolabsdev/prism/issues",
-                "source": "https://github.com/echolabsdev/prism/tree/v0.21.0"
+                "source": "https://github.com/echolabsdev/prism/tree/v0.21.1"
             },
             "funding": [
                 {
@@ -2617,7 +2617,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-08T21:47:59+00:00"
+            "time": "2024-12-09T17:00:27+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -14459,6 +14459,6 @@
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
 }

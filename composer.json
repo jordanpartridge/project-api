@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.3",
-        "echolabsdev/prism": "^0.21.0",
+        "echolabsdev/prism": "^0.21.1",
         "filament/filament": "^3.2",
         "filament/widgets": "^3.2",
         "glhd/bits": "^0.5.0",

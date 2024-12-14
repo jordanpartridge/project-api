@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use EchoLabs\Prism\Facades\Prism;
+use EchoLabs\Prism\Facades\PrismAI;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
@@ -24,15 +25,20 @@ class PrismAnalyzeCommand extends Command
                 continue;
             }
 
-            $code = File::get($file);
-            $response = Prism::text()->anthropic()
-                ->withPrompt("Analyze this PHP code:\n{$code}")
-                ->stream();
+            $code = File::get($file->getPathname());
 
-            $this->info("\nAnalyzing " . basename($file) . ':');
+            try {
+                $prompt = "Analyze this PHP code for complexity, potential bugs, and optimization opportunities:\n\n{$code}";
 
-            foreach ($response as $chunk) {
-                $this->line($chunk);
+                $response = PrismAI::text()
+                    ->provider($provider)
+                    ->prompt($prompt)
+                    ->get();
+
+                $this->info("\nAnalyzing " . basename($file) . ':');
+                $this->line($response);
+            } catch (Exception $e) {
+                $this->error('Error analyzing ' . basename($file) . ': ' . $e->getMessage());
             }
         }
 
