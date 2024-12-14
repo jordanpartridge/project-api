@@ -29,11 +29,7 @@ class PrismAnalyzeCommand extends Command
             $code = File::get($file->getPathname());
 
             try {
-                $prompt = "Quick code inspection - highlight only critical findings:
-1. Major complexity issues
-2. Potential bugs or security risks
-3. Notable design issues
-4. Key optimization needs
+                $prompt = "Review this code and list ONLY the most critical issues that need immediate attention. Focus on security risks, major bugs, and significant performance problems. Keep it very brief - max 3 bullet points.
 
 Code:\n{$code}";
 
@@ -43,8 +39,11 @@ Code:\n{$code}";
                     ->withPrompt($prompt)
                     ->generate();
 
-                $this->info("\n" . basename($file) . ':');
-                $this->line($response->text);
+                $filename = basename($file);
+                if (trim($response->text)) {
+                    $this->info("\n{$filename}:");
+                    $this->line($response->text);
+                }
             } catch (Exception $e) {
                 $this->error(basename($file) . ': ' . $e->getMessage());
             }
