@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use EchoLabs\Prism\Facades\PrismAI;
+use EchoLabs\Prism\Prism;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -28,9 +28,10 @@ class PrismAnalyzeCommand extends Command
             $code = File::get($file->getPathname());
 
             try {
-                $prompt = "Analyze this PHP code for complexity, potential bugs, and optimization opportunities:\n\n{$code}";
+                $prompt = "Analyze this PHP code for:\n1. Code complexity\n2. Potential bugs\n3. Design patterns\n4. Optimization opportunities\n\nCode:\n{$code}";
 
-                $response = PrismAI::text()
+                $prism = new Prism;
+                $response = $prism->text()
                     ->provider($provider)
                     ->prompt($prompt)
                     ->get();
