@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use EchoLabs\Prism\Facades\Prism;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 class PrismAnalyzeCommand extends Command
 {
@@ -16,8 +18,25 @@ class PrismAnalyzeCommand extends Command
 
         $this->info("Analyzing {$path} using {$provider}...");
 
-        // Your analysis logic here
-        $this->info('Analysis complete.');
+        $files = File::files($path);
+        foreach ($files as $file) {
+            if (pathinfo($file, PATHINFO_EXTENSION) !== 'php') {
+                continue;
+            }
+
+            $code = File::get($file);
+            $response = Prism::text()->anthropic()
+                ->withPrompt("Analyze this PHP code:\n{$code}")
+                ->stream();
+
+            $this->info("\nAnalyzing " . basename($file) . ':');
+
+            foreach ($response as $chunk) {
+                $this->line($chunk);
+            }
+        }
+
+        $this->info("\nAnalysis complete.");
 
         return 0;
     }
