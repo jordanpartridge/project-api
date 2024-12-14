@@ -1,0 +1,20 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 8
+    paths:
+        - app
+    excludePaths:
+        - */migrations/*
+        - */seeds/*
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
+
+    ignoreErrors:
+        - '#Unsafe usage of new static#'
+        - '#Instantiated class new static not found#'
+        - '#Call to an undefined method Illuminate\\Database\\Query\\Builder::#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::#'
+        - '#missingType\.iterableValue#'
+        - '#missingType\.generics#'

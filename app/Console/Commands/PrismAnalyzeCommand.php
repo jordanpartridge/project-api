@@ -6,50 +6,73 @@ use App\Services\CodeAnalysis\StreamingAnalyzer;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-use function Laravel\Prompts\info;
-use function Laravel\Prompts\table;
-
+/**
+ * AI-powered code analysis command using Prism.
+ *
+ * @property string $signature prism:analyze {path?} Path to analyze, defaults to app directory
+ * @property string $description Command to perform AI-powered code analysis
+ */
 class PrismAnalyzeCommand extends Command
 {
     protected $signature = 'prism:analyze {path?}';
-    protected $description = 'AI-powered code analysis using Prism';
+    protected $description = 'Perform AI-powered code analysis using Prism';
 
     public function handle(StreamingAnalyzer $analyzer)
     {
         $path = $this->argument('path') ?? app_path();
-        $files = collect(File::files($path))->filter(fn ($f) => pathinfo($f, PATHINFO_EXTENSION) === 'php');
 
-        info('🔍 Code Analysis');
+        if (! File::exists($path)) {
+            $this->error("Path does not exist: {$path}");
+
+            return Command::FAILURE;
+        }
+
+        $this->info('🔍 Code Analysis');
+
+        $files = collect(File::files($path))
+            ->filter(function ($f) {
+                $realPath = $f->getRealPath();
+
+                return pathinfo($realPath, PATHINFO_EXTENSION) === 'php'
+                    && ! str_contains($realPath, '/vendor/');
+            });
+
+        $progress = $this->output->createProgressBar($files->count());
+        $progress->start();
+
+        $criticalIssues = [];
 
         foreach ($files as $file) {
             $filename = basename($file);
-            info("\n📄 {$filename}");
+            $progress->setMessage("Analyzing {$filename}");
 
             $code = File::get($file);
-            $criticalIssues = [];
+            $fileCriticalIssues = $analyzer->analyzeStream($code);
 
-            foreach ($analyzer->analyzeStream($code, $filename) as $analysis) {
-                if (isset($analysis['error'])) {
-                    $this->error($analysis['error']);
-
-                    continue;
-                }
-
-                $issues = $analysis['result']['issues'] ?? [];
-                $critical = collect($issues)->where('severity', '>=', 4);
-
-                if ($critical->isNotEmpty()) {
-                    $criticalIssues[] = [
-                        'Type' => $analysis['area'],
-                        'Issue' => $critical->first()['description'],
-                        'Fix' => $critical->first()['solution'],
-                    ];
-                }
+            if (! empty($fileCriticalIssues)) {
+                $criticalIssues[$filename] = $fileCriticalIssues;
             }
 
-            if (! empty($criticalIssues)) {
-                table($criticalIssues);
-            }
+            $progress->advance();
         }
+
+        $progress->finish();
+        $this->newLine(2);
+
+        if (! empty($criticalIssues)) {
+            $this->warn('Critical Issues Found:');
+            foreach ($criticalIssues as $file => $issues) {
+                $this->info("📄 {$file}:");
+                foreach ($issues as $issue) {
+                    $this->warn(" - {$issue}");
+                }
+            }
+
+            return Command::FAILURE;
+        }
+
+        $this->info('✅ No critical issues found.');
+
+        return Command::SUCCESS;
     }
 }

@@ -2,127 +2,96 @@
 
 namespace App\Console\Commands;
 
-use App\Tool\GetFunctionForFile;
-use EchoLabs\Prism\Prism;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-
-use function Laravel\Prompts\suggest;
+use Illuminate\Support\Str;
+use ReflectionClass;
 
 class AnalyzeModel extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'analyze:model {query?}';
+    protected $signature = 'model:analyze {model?}';
+    protected $description = 'Analyze Eloquent models and their relationships';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Analyze a model, find documentation, and provide recommendations.';
-
-    /**
-     * Execute the console command.
-     */
-    public function handle(): void
+    public function handle()
     {
-        $query = $this->argument('query') ?? $this->askForQuery();
+        $model = $this->argument('model');
 
-        // Search for models and relationships based on query
-        $model = $this->findModel($query);
-
-        if ($model) {
-            $this->info("Found model: {$model}");
-            $this->analyzeModelRelationships($model);
-        } else {
-            $this->error('Model not found.');
+        if (! $model) {
+            $model = $this->askForModel();
         }
+
+        $fqn = $this->getFullyQualifiedClassName($model);
+
+        if (! class_exists($fqn)) {
+            warning("Model {$model} not found.");
+
+            return Command::FAILURE;
+        }
+
+        $this->analyzeModelRelationships($fqn);
+
+        return Command::SUCCESS;
     }
 
-    /**
-     * Ask for the query if it's not provided in the arguments.
-     */
-    private function askForQuery(): string
-    {
-        // Using Laravel Prompts to ask for input with suggestions
-        return suggest('Enter a model or query', $this->getAllModelNames());
-    }
-
-    /**
-     * Find the model based on fuzzy matching or suggestions.
-     */
-    private function findModel(string $query): ?string
+    private function askForModel(): string
     {
         $models = $this->getAllModelNames();
 
-        // Check for exact match or fuzzy match (threshold > 50%)
-        foreach ($models as $model) {
-            $levenshteinDistance = levenshtein(strtolower($query), strtolower($model));
-            $modelLength = strlen($model);
-            $matchPercentage = (1 - ($levenshteinDistance / $modelLength)) * 100;
-
-            if ($matchPercentage >= 50) {
-                return $model;
-            }
-        }
-
-        return null;
+        return suggest(
+            'Which model would you like to analyze?',
+            $models
+        );
     }
 
-    /**
-     * Get all model names from app/Models directory.
-     */
+    private function getFullyQualifiedClassName(string $model): string
+    {
+        $modelNamespace = 'App\\Models\\';
+
+        return Str::startsWith($model, $modelNamespace)
+            ? $model
+            : $modelNamespace . $model;
+    }
+
     private function getAllModelNames(): array
     {
-        $modelsPath = app_path('Models');
-        $files = File::allFiles($modelsPath);
-        $modelNames = [];
+        $modelPath = app_path('Models');
 
-        foreach ($files as $file) {
-            $modelNames[] = pathinfo($file->getFilename(), PATHINFO_FILENAME);
-        }
-
-        return $modelNames;
+        return collect(File::files($modelPath))
+            ->map(fn ($file) => pathinfo($file, PATHINFO_FILENAME))
+            ->toArray();
     }
 
-    /**
-     * Analyze the model's relationships (like hasMany, belongsTo).
-     */
-    private function analyzeModelRelationships(string $model): void
+    private function analyzeModelRelationships(string $modelClass)
     {
-        $fqn = $this->getFullyQualifedClassName($model);
-        if (! class_exists($fqn)) {
-            $this->error("Model {$fqn} does not exist.");
+        $reflectionClass = new ReflectionClass($modelClass);
+        $model = new $modelClass;
+
+        info("Analyzing model: {$modelClass}");
+
+        $methods = collect($reflectionClass->getMethods())
+            ->filter(function ($method) {
+                return $method->isPublic() &&
+                       ! $method->isStatic() &&
+                       Str::startsWith($method->getName(), ['belongsTo', 'hasMany', 'hasOne', 'belongsToMany']);
+            });
+
+        if ($methods->isEmpty()) {
+            warning("No relationships found in {$modelClass}.");
 
             return;
         }
 
-        $getFunction = new GetFunctionForFile;
+        info('Relationships:');
+        $methods->each(function ($method) use ($model) {
+            try {
+                $relationshipInstance = $method->invoke($model);
+                $relationType = class_basename($relationshipInstance);
 
-        $response = Prism::text()->using('anthropic', 'claude-3-5-sonnet-20241022')
-            ->withPrompt("Please analyze the relationships of the model {$fqn}.")
-            ->withTools([$getFunction])
-            ->generate();
-
-        if (empty($relationships)) {
-            $this->info("No relationships found for {$modelNamespace}.");
-        } else {
-            $this->info("Relationships in {$modelNamespace}:");
-            foreach ($relationships as $relationship) {
-                $this->info("- {$relationship}");
+                info("- {$method->getName()}: {$relationType} relationship");
+            } catch (Exception $e) {
+                warning("Could not analyze {$method->getName()}: {$e->getMessage()}");
             }
-        }
-    }
-
-    /**
-     * Get the full namespace of a model.
-     */
-    private function getFullyQualifedClassName(string $model): string
-    {
-        return 'App\\Models\\' . ucfirst($model);
+        });
     }
 }
