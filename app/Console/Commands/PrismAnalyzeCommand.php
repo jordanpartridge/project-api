@@ -17,45 +17,55 @@ class PrismAnalyzeCommand extends Command
     public function handle(PrismAnalyzer $analyzer)
     {
         $path = $this->argument('path') ?? app_path();
-        $issues = collect();
 
-        info('Analyzing code...');
+        info('🔍 Code Analysis');
+
+        $criticalIssues = [];
+        $opportunities = [];
 
         foreach (File::files($path) as $file) {
             if (pathinfo($file, PATHINFO_EXTENSION) !== 'php') {
                 continue;
             }
 
-            $results = $analyzer->analyze(File::get($file));
+            $filename = basename($file);
+            $results = $analyzer->analyze(File::get($file), $filename);
 
-            if (! empty($results['issues'])) {
-                $issues->push([
-                    'file' => basename($file),
-                    'issues' => collect($results['issues']),
-                ]);
+            if (! empty($results['critical'])) {
+                $criticalIssues[] = ['file' => $filename, 'issues' => $results['critical']];
+            }
+
+            if (! empty($results['opportunities'])) {
+                $opportunities[] = ['file' => $filename, 'items' => $results['opportunities']];
             }
         }
 
-        if ($issues->isEmpty()) {
-            info('No critical issues found.');
-
-            return 0;
+        if (! empty($criticalIssues)) {
+            info('⚠️  Critical Fixes Needed');
+            table(collect($criticalIssues)->flatMap(function ($item) {
+                return collect($item['issues'])->map(function ($issue) use ($item) {
+                    return [
+                        'File' => $item['file'],
+                        'Issue' => $issue['description'],
+                        'Fix' => $issue['solution'],
+                    ];
+                });
+            })->toArray());
         }
 
-        $rows = $issues->flatMap(function ($item) {
-            return collect($item['issues'])->map(function ($issue) use ($item) {
-                return [
-                    'File' => $item['file'],
-                    'Type' => $issue['type'],
-                    'Severity' => str_repeat('⚠', $issue['severity']),
-                    'Issue' => $issue['description'],
-                    'Solution' => $issue['solution'],
-                ];
-            });
-        })->toArray();
+        if (! empty($opportunities)) {
+            info('💡 Top Opportunities');
+            table(collect($opportunities)->flatMap(function ($item) {
+                return collect($item['items'])->map(function ($opp) use ($item) {
+                    return [
+                        'File' => $item['file'],
+                        'Type' => $opp['type'],
+                        'Improvement' => $opp['description'],
+                    ];
+                });
+            })->toArray());
+        }
 
-        table($rows);
-
-        return count($rows) > 0 ? 1 : 0;
+        return ! empty($criticalIssues);
     }
 }

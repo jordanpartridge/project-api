@@ -3,41 +3,47 @@
 namespace App\Services\CodeAnalysis;
 
 use EchoLabs\Prism\Prism;
+use Exception;
 
 class PrismAnalyzer
 {
-    public function analyze($code): array
+    public function analyze($code, $filename): array
     {
         $prompt = <<<EOT
-Analyze this code and return a JSON object with:
+Analyze this code ({$filename}) and return a JSON object with:
 {
-    "issues": [{
-        "type": "security|performance|design",
-        "severity": 1-5,
-        "line": line_number,
-        "description": "Brief issue description",
-        "solution": "Brief solution"
+    "critical": [{  // Max 2 highest priority fixes needed
+        "description": "50 char max description",
+        "solution": "50 char max solution"
     }],
-    "good_practices": [{
+    "opportunities": [{  // Top 3 improvement opportunities
         "type": "security|performance|design",
-        "description": "Brief description"
+        "description": "50 char max"
     }]
 }
-Ensure output is valid JSON. Focus on critical issues (severity 4-5).
 
 Code:
 {$code}
 EOT;
 
-        $prism = new Prism;
-        $response = $prism->text()
-            ->using('anthropic', 'claude-3-opus-20240229')
-            ->withPrompt($prompt)
-            ->generate();
+        try {
+            $prism = new Prism;
+            $response = $prism->text()
+                ->using('anthropic', 'claude-3-opus-20240229')
+                ->withPrompt($prompt)
+                ->generate();
 
-        return json_decode($response->text, true) ?: [
-            'issues' => [],
-            'good_practices' => [],
+            return json_decode($response->text, true) ?: $this->emptyResponse();
+        } catch (Exception $e) {
+            return $this->emptyResponse();
+        }
+    }
+
+    private function emptyResponse(): array
+    {
+        return [
+            'critical' => [],
+            'opportunities' => [],
         ];
     }
 }
