@@ -11,7 +11,7 @@ class PrismAnalyzeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:prism-analyze-command';
+    protected $signature = 'prism:analyze';
 
     /**
      * The console command description.
