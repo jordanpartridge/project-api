@@ -18,7 +18,6 @@ class PrismAnalyzeCommand extends Command
     {
         $path = $this->argument('path') ?? app_path();
         $files = collect(File::files($path))->filter(fn ($f) => pathinfo($f, PATHINFO_EXTENSION) === 'php');
-        $results = [];
 
         info('🔍 Code Analysis');
 
@@ -27,17 +26,29 @@ class PrismAnalyzeCommand extends Command
             info("\n📄 {$filename}");
 
             $code = File::get($file);
+            $criticalIssues = [];
+
             foreach ($analyzer->analyzeStream($code, $filename) as $analysis) {
+                if (isset($analysis['error'])) {
+                    $this->error($analysis['error']);
+
+                    continue;
+                }
+
                 $issues = $analysis['result']['issues'] ?? [];
                 $critical = collect($issues)->where('severity', '>=', 4);
 
                 if ($critical->isNotEmpty()) {
-                    table([
+                    $criticalIssues[] = [
                         'Type' => $analysis['area'],
                         'Issue' => $critical->first()['description'],
                         'Fix' => $critical->first()['solution'],
-                    ]);
+                    ];
                 }
+            }
+
+            if (! empty($criticalIssues)) {
+                table($criticalIssues);
             }
         }
     }
