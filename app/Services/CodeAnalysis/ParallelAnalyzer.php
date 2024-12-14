@@ -32,7 +32,7 @@ class ParallelAnalyzer
 
                 $response = $prism->text()
                     ->using($provider, $model)
-                    ->withTimeout($this->timeout)
+
                     ->withPrompt($this->buildPrompt($code))
                     ->generate();
 
