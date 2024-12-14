@@ -2,93 +2,60 @@
 
 namespace App\Console\Commands;
 
-use App\Services\CodeAnalysis\ParallelAnalyzer;
+use App\Services\CodeAnalysis\PrismAnalyzer;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\table;
 
 class PrismAnalyzeCommand extends Command
 {
-    protected $signature = 'prism:analyze
-        {path? : Path to analyze}
-        {--provider=anthropic : AI provider to use}
-        {--model=claude-3-opus-20240229 : Model to use}
-        {--focus=all : Focus areas (security,performance,design)}
-        {--depth=normal : Analysis depth (quick,normal,deep)}';
-
+    protected $signature = 'prism:analyze {path?}';
     protected $description = 'AI-powered code analysis using Prism';
 
-    public function handle(ParallelAnalyzer $analyzer)
+    public function handle(PrismAnalyzer $analyzer)
     {
         $path = $this->argument('path') ?? app_path();
-        $provider = $this->option('provider');
-        $model = $this->option('model');
+        $issues = collect();
 
-        if (! is_dir($path)) {
-            $this->components->error("Directory not found: {$path}");
+        info('Analyzing code...');
 
-            return 1;
-        }
-
-        $files = Collection::make(File::files($path))
-            ->filter(fn ($file) => pathinfo($file, PATHINFO_EXTENSION) === 'php');
-
-        if ($files->isEmpty()) {
-            $this->components->error("No PHP files found in {$path}");
-
-            return 1;
-        }
-
-        $this->components->info('Starting code analysis...');
-
-        $this->components->task('Scanning files', fn () => $files->count() > 0);
-        $this->components->task('Setting up AI', fn () => true);
-
-        $results = [];
-        $errors = [];
-
-        $this->components->task('Analyzing code', function () use ($analyzer, $files, $provider, $model, &$results, &$errors) {
-            $analyses = $analyzer->analyzeFiles($files, $provider, $model);
-
-            foreach ($analyses as $path => $analysis) {
-                $filename = basename($path);
-                if (isset($analysis['error'])) {
-                    $errors[$filename] = $analysis['error'];
-                } else {
-                    $results[$filename] = $analysis;
-                }
+        foreach (File::files($path) as $file) {
+            if (pathinfo($file, PATHINFO_EXTENSION) !== 'php') {
+                continue;
             }
 
-            return empty($errors);
-        });
+            $results = $analyzer->analyze(File::get($file));
 
-        $this->newLine();
-        $this->components->info('Analysis Results:');
-
-        foreach ($results as $file => $result) {
-            $this->newLine();
-            $this->line("<fg=white;options=bold>{$file}</>");
-
-            foreach ($result['strengths'] as $strength) {
-                $this->line("  <fg=green>✓</> {$strength}");
-            }
-
-            foreach ($result['issues'] as $issue) {
-                $this->line("  <fg=red>✗</> {$issue['issue']}");
-                if (isset($issue['solution'])) {
-                    $this->line("    <fg=yellow>→</> {$issue['solution']}");
-                }
+            if (! empty($results['issues'])) {
+                $issues->push([
+                    'file' => basename($file),
+                    'issues' => collect($results['issues']),
+                ]);
             }
         }
 
-        if (! empty($errors)) {
-            $this->newLine();
-            $this->components->warn('Errors:');
-            foreach ($errors as $file => $error) {
-                $this->line("  <fg=red>✗</> {$file}: {$error}");
-            }
+        if ($issues->isEmpty()) {
+            info('No critical issues found.');
+
+            return 0;
         }
 
-        return empty($errors) ? 0 : 1;
+        $rows = $issues->flatMap(function ($item) {
+            return collect($item['issues'])->map(function ($issue) use ($item) {
+                return [
+                    'File' => $item['file'],
+                    'Type' => $issue['type'],
+                    'Severity' => str_repeat('⚠', $issue['severity']),
+                    'Issue' => $issue['description'],
+                    'Solution' => $issue['solution'],
+                ];
+            });
+        })->toArray();
+
+        table($rows);
+
+        return count($rows) > 0 ? 1 : 0;
     }
 }
