@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\File;
 
 class PrismAnalyzeCommand extends Command
 {
-    protected $signature = 'prism:analyze {path?} {--provider=anthropic} {--model=claude-3-opus}';
+    protected $signature = 'prism:analyze {path?} {--provider=anthropic} {--model=claude-3-opus-20240229}';
     protected $description = 'AI-powered code analysis using Prism';
 
     public function handle()
@@ -18,7 +18,7 @@ class PrismAnalyzeCommand extends Command
         $provider = $this->option('provider');
         $model = $this->option('model');
 
-        $this->info("Analyzing {$path} using {$provider} ({$model})...");
+        $this->info("Analyzing {$path}...");
 
         $files = File::files($path);
         foreach ($files as $file) {
@@ -29,24 +29,26 @@ class PrismAnalyzeCommand extends Command
             $code = File::get($file->getPathname());
 
             try {
-                $prompt = "Analyze this PHP code for:\n1. Code complexity\n2. Potential bugs\n3. Design patterns\n4. Optimization opportunities\n\nCode:\n{$code}";
+                $prompt = "Quick code inspection - highlight only critical findings:
+1. Major complexity issues
+2. Potential bugs or security risks
+3. Notable design issues
+4. Key optimization needs
+
+Code:\n{$code}";
 
                 $prism = new Prism;
                 $response = $prism->text()
                     ->using($provider, $model)
                     ->withPrompt($prompt)
-                    ->get();
+                    ->generate();
 
-                $this->info("\nAnalyzing " . basename($file) . ':');
-                $this->line($response);
+                $this->info("\n" . basename($file) . ':');
+                $this->line($response->text);
             } catch (Exception $e) {
-                $this->error('Error analyzing ' . basename($file) . ': ' . $e->getMessage());
-                $this->error("Provider: {$provider}, Model: {$model}");
-                $this->error($e->getTraceAsString());
+                $this->error(basename($file) . ': ' . $e->getMessage());
             }
         }
-
-        $this->info("\nAnalysis complete.");
 
         return 0;
     }
