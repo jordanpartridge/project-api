@@ -6,23 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::create('documentation', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->text('content');
-            $table->string('category');
+            $table->id();
+            $table->string('title', 255)->unique();
+            $table->string('slug', 255)->unique();
+            $table->string('category', 50);
+            $table->longText('content');
             $table->integer('order')->default(0);
-            $table->boolean('is_published')->default(true);
-            $table->json('meta_data')->nullable();
+            $table->boolean('is_published')->default(false);
+            $table->json('meta')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['category', 'order']);
+            $table->index('is_published');
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('documentation');
     }
