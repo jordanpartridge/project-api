@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Pages\Docs;
 
-use App\Models\Documentation;
 use Livewire\Component;
+use Illuminate\Validation\Rule;
 
 class Settings extends Component
 {
@@ -11,24 +11,30 @@ class Settings extends Component
     public $content;
     public $category;
     public $order;
-    public $is_published = true;
+    public $is_published = false;
 
     protected $rules = [
-        'title' => 'required|string|max:255',
+        'title' => 'required|string|max:255|unique:documentation,title',
         'content' => 'required|string',
-        'category' => 'required|string',
-        'order' => 'required|integer|min:1',
+        'category' => ['required', 'string', Rule::in(['guides', 'tutorials', 'api', 'examples'])],
+        'order' => 'required|integer|min:0',
+        'is_published' => 'boolean',
     ];
 
     public function save()
     {
-        $validated = $this->validate();
+        $this->validate();
 
+        // Create the documentation entry
         Documentation::create([
-            ...$validated,
+            'title' => $this->title,
+            'content' => $this->content,
+            'category' => $this->category,
+            'order' => $this->order,
             'is_published' => $this->is_published,
         ]);
 
+        session()->flash('message', 'Documentation created successfully.');
         $this->reset();
     }
 
