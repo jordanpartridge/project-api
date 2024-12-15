@@ -2,10 +2,10 @@
 
 namespace JordanPartridge\GithubClient\Connectors;
 
+use Saloon\Authenticators\BearerTokenAuthenticator;
+use Saloon\Contracts\Authenticator;
 use Saloon\Http\Connector;
 use Saloon\Traits\Plugins\AcceptsJson;
-use Saloon\Contracts\Authenticator;
-use Saloon\Authenticators\BearerTokenAuthenticator;
 
 class GraphQLConnector extends Connector
 {
@@ -38,21 +38,19 @@ class GraphQLConnector extends Connector
 
     /**
      * Intelligent method to handle different types of GraphQL requests
-     * 
-     * @param mixed $request
-     * @return mixed
      */
     public function send(mixed $request): mixed
     {
         try {
             $response = parent::send($request);
+
             return $request->transformResponse($response);
         } catch (\Exception $e) {
             // Advanced error handling
             \Log::error('GraphQL Request Failed', [
                 'message' => $e->getMessage(),
                 'request' => $request->definition(),
-                'variables' => $request->variables()
+                'variables' => $request->variables(),
             ]);
 
             throw $e;

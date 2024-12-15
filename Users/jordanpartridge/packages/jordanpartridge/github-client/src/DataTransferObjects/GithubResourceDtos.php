@@ -2,11 +2,10 @@
 
 namespace JordanPartridge\GithubClient\DataTransferObjects;
 
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
-use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Attributes\Validation;
-use Spatie\LaravelData\Optional;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 #[MapName(SnakeCaseMapper::class)]
 class UserDto extends Data
@@ -201,16 +200,16 @@ class IssueDto extends Data
         public string $state,
 
         #[Validation('nullable|string')]
-        public ?string $body = null,
+        public ?string $body,
 
         public UserDto $user,
 
-        public ?UserDto $assignee = null,
+        public ?UserDto $assignee,
 
         #[Validation('nullable|array')]
-        public ?array $labels = null,
+        public ?array $labels,
 
-        public ?MilestoneDto $milestone = null,
+        public ?MilestoneDto $milestone,
 
         #[Validation('required|date')]
         public \DateTimeInterface $createdAt,
@@ -237,7 +236,7 @@ class MilestoneDto extends Data
         public string $title,
 
         #[Validation('nullable|string')]
-        public ?string $description = null,
+        public ?string $description,
 
         #[Validation('required|string')]
         public string $state,
@@ -284,16 +283,16 @@ class PullRequestDto extends Data
         public string $title,
 
         #[Validation('nullable|string')]
-        public ?string $body = null,
+        public ?string $body,
 
         public UserDto $user,
 
         public UserDto $author,
 
-        public ?UserDto $assignee = null,
+        public ?UserDto $assignee,
 
         #[Validation('nullable|array')]
-        public ?array $labels = null,
+        public ?array $labels,
 
         #[Validation('required|date')]
         public \DateTimeInterface $createdAt,
@@ -398,7 +397,7 @@ class CommitUserDto extends Data
         public string $name,
 
         #[Validation('nullable|string')]
-        public ?string $email = null,
+        public ?string $email,
 
         #[Validation('required|date')]
         public \DateTimeInterface $date
@@ -422,7 +421,7 @@ class ReleaseDto extends Data
         public string $name,
 
         #[Validation('nullable|string')]
-        public ?string $body = null,
+        public ?string $body,
 
         #[Validation('required|boolean')]
         public bool $draft,

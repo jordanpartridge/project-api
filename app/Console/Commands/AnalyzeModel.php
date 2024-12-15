@@ -13,6 +13,7 @@ use function Laravel\Prompts\suggest;
 class AnalyzeModel extends Command
 {
     protected $signature = 'analyze:model {query?}';
+
     protected $description = 'Analyze a model, find documentation, and provide recommendations.';
 
     public function handle(): void

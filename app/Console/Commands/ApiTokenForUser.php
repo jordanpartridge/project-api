@@ -31,6 +31,6 @@ class ApiTokenForUser extends Command
         select('user', User::pluck('name', 'id')->toArray());
         $user = User::find(1);
         $token = $user->createToken('api-token')->plainTextToken;
-        $this->info('Token: ' . $token);
+        $this->info('Token: '.$token);
     }
 }

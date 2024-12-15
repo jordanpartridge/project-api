@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 class AnalyzeProjectCommand extends Command
 {
     protected $signature = 'project:analyze {path}';
+
     protected $description = 'Analyzes a project directory and provides insights';
 
     public function handle()
@@ -22,8 +23,8 @@ class AnalyzeProjectCommand extends Command
         // Add project overview section
         $response->addSection(
             'Project Overview',
-            "Analyzed project at: {$path}\n" .
-            "Total files: {$results['fileCount']}\n" .
+            "Analyzed project at: {$path}\n".
+            "Total files: {$results['fileCount']}\n".
             "Last modified: {$results['lastModified']}"
         );
 

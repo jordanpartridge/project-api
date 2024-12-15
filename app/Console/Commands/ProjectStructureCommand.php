@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\File;
 class ProjectStructureCommand extends Command
 {
     protected $signature = 'projects:structure {base_path?}';
+
     protected $description = 'Display the structure and status of projects in the Sites directory';
 
     protected $basePath;
+
     protected $response;
 
     public function handle()
@@ -22,9 +24,9 @@ class ProjectStructureCommand extends Command
         // Add overview section
         $this->response->addSection(
             'Projects Overview',
-            "Base Path: {$this->basePath}\n" .
-            'Total Projects: ' . $this->countProjects() . "\n" .
-            'Last Scan: ' . now()->format('Y-m-d H:i:s')
+            "Base Path: {$this->basePath}\n".
+            'Total Projects: '.$this->countProjects()."\n".
+            'Last Scan: '.now()->format('Y-m-d H:i:s')
         );
 
         // Add production projects
@@ -45,13 +47,13 @@ class ProjectStructureCommand extends Command
     protected function countProjects(): int
     {
         return collect(File::directories($this->basePath))
-            ->filter(fn ($dir) => File::exists($dir . '/.git'))
+            ->filter(fn ($dir) => File::exists($dir.'/.git'))
             ->count();
     }
 
     protected function addProductionProjects(): void
     {
-        $productionPath = $this->basePath . '/production/apis';
+        $productionPath = $this->basePath.'/production/apis';
         if (! File::exists($productionPath)) {
             return;
         }
@@ -59,8 +61,8 @@ class ProjectStructureCommand extends Command
         $content = collect(File::directories($productionPath))
             ->map(function ($dir) {
                 $name = basename($dir);
-                $gitPath = $dir . '/.git';
-                $composerPath = $dir . '/composer.json';
+                $gitPath = $dir.'/.git';
+                $composerPath = $dir.'/composer.json';
                 $status = File::exists($gitPath) ? '🟢' : '⚪️';
 
                 $stack = 'Laravel';
@@ -88,12 +90,12 @@ class ProjectStructureCommand extends Command
     {
         $toolsContent = collect(['claude-tools', 'claude-context'])
             ->map(function ($name) {
-                $dir = $this->basePath . '/' . $name;
+                $dir = $this->basePath.'/'.$name;
                 if (! File::exists($dir)) {
                     return null;
                 }
 
-                $status = File::exists($dir . '/.git') ? '🟢' : '⚪️';
+                $status = File::exists($dir.'/.git') ? '🟢' : '⚪️';
 
                 return sprintf(
                     "%s %s\n   Path: /%s\n   Purpose: %s\n",
@@ -112,11 +114,11 @@ class ProjectStructureCommand extends Command
     protected function addProjectMetrics(): void
     {
         $activeCount = collect(File::directories($this->basePath))
-            ->filter(fn ($dir) => File::exists($dir . '/.git'))
+            ->filter(fn ($dir) => File::exists($dir.'/.git'))
             ->count();
 
         $this->response->addMetric('Active Projects', $activeCount)
-            ->addMetric('Production APIs', collect(File::directories($this->basePath . '/production/apis'))->count())
+            ->addMetric('Production APIs', collect(File::directories($this->basePath.'/production/apis'))->count())
             ->addMetric('Development Tools', 2);
     }
 
@@ -130,7 +132,7 @@ class ProjectStructureCommand extends Command
             $stack[] = 'Livewire';
         }
 
-        return empty($stack) ? '' : ', ' . implode(', ', $stack);
+        return empty($stack) ? '' : ', '.implode(', ', $stack);
     }
 
     protected function getProjectPurpose(string $name): string

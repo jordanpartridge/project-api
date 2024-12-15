@@ -2,7 +2,7 @@
 
 use JordanPartridge\GithubClient\Facades\GitHub;
 
-class RepositoryInsightsDemo 
+class RepositoryInsightsDemo
 {
     public function getComprehensiveRepositoryInsights(string $owner, string $repo)
     {
@@ -89,7 +89,7 @@ class RepositoryInsightsDemo
             GRAPHQL,
             variables: [
                 'owner' => $owner,
-                'repo' => $repo
+                'repo' => $repo,
             ]
         );
 
@@ -113,14 +113,14 @@ class RepositoryInsightsDemo
                 'forks' => $repo['forkCount'],
                 'watchers' => $repo['watchers']['totalCount'],
             ],
-            'languages' => array_map(function($lang) {
+            'languages' => array_map(function ($lang) {
                 return [
                     'name' => $lang['node']['name'],
                     'color' => $lang['node']['color'],
                     'size' => $lang['size'],
                 ];
             }, $repo['languages']['edges']),
-            'contributors' => array_map(function($contrib) {
+            'contributors' => array_map(function ($contrib) {
                 return [
                     'name' => $contrib['node']['name'],
                     'login' => $contrib['node']['login'],

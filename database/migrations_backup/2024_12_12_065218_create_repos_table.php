@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -26,7 +27,7 @@ return new class extends Migration {
             $table->integer('stars');
             $table->integer('forks');
             $table->integer('open_issues_count');
-            $table->enum('visibility', ["public", "private", "internal"]);
+            $table->enum('visibility', ['public', 'private', 'internal']);
             $table->string('owner_id');
             $table->string('issues');
             $table->string('pull_requests');

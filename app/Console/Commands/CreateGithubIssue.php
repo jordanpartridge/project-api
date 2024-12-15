@@ -25,9 +25,9 @@ class CreateGithubIssue extends Command
 
         if ($response->successful()) {
             $this->info('✅ Issue created! Now, let\'s watch the magic unfold...');
-            $this->info('URL: ' . $response->json()['html_url']);
+            $this->info('URL: '.$response->json()['html_url']);
         } else {
-            $this->error('Failed to create issue: ' . $response->status() . '. Maybe the universe is telling us to use carrier pigeons?');
+            $this->error('Failed to create issue: '.$response->status().'. Maybe the universe is telling us to use carrier pigeons?');
             $this->error($response->json()['message'] ?? 'Unknown error - blame the matrix');
         }
     }

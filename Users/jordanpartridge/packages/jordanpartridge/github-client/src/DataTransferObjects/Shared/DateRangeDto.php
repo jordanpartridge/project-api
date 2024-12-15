@@ -2,10 +2,10 @@
 
 namespace JordanPartridge\GithubClient\DataTransferObjects\Shared;
 
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
-use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Attributes\Validation;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 #[MapName(SnakeCaseMapper::class)]
 class DateRangeDto extends Data
@@ -23,19 +23,16 @@ class DateRangeDto extends Data
 
     /**
      * Calculate duration between creation and update/closure
-     * 
-     * @return \DateInterval|null
      */
     public function getDuration(): ?\DateInterval
     {
-        $endDate = $this->closed ?? new \DateTimeImmutable();
+        $endDate = $this->closed ?? new \DateTimeImmutable;
+
         return $this->created->diff($endDate);
     }
 
     /**
      * Check if the item is still active
-     * 
-     * @return bool
      */
     public function isActive(): bool
     {

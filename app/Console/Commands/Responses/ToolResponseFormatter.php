@@ -8,7 +8,9 @@ use Illuminate\Support\Collection;
 class ToolResponseFormatter
 {
     protected Collection $sections;
+
     protected array $metrics;
+
     protected array $recommendations;
 
     public function __construct()
@@ -93,7 +95,7 @@ class ToolResponseFormatter
                     $rec['title'],
                     $rec['priority']
                 ));
-                $command->line('  ' . $rec['description']);
+                $command->line('  '.$rec['description']);
                 $command->newLine();
             }
         }

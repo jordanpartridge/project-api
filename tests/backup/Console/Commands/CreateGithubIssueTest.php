@@ -1,7 +1,5 @@
 <?php
 
-use App\Console\Commands\CreateGithubIssue;
-use App\Services\GitHub\GitHubService;
 use Illuminate\Support\Facades\Http;
 
 it('creates a new GitHub issue with provided parameters', function () {
@@ -12,12 +10,12 @@ it('creates a new GitHub issue with provided parameters', function () {
             'state' => 'open',
             'created_at' => '2024-12-10T00:00:00Z',
             'labels' => [
-                ['name' => 'bug']
+                ['name' => 'bug'],
             ],
             'assignees' => [
-                ['login' => 'octocat']
-            ]
-        ], 201)
+                ['login' => 'octocat'],
+            ],
+        ], 201),
     ]);
 
     $this->artisan('github:create-issue', [
@@ -25,37 +23,37 @@ it('creates a new GitHub issue with provided parameters', function () {
         '--title' => 'Test Issue',
         '--body' => 'Test Description',
         '--labels' => ['bug'],
-        '--assignees' => ['octocat']
+        '--assignees' => ['octocat'],
     ])->assertSuccessful()
-      ->expectsOutput('Created issue #1: Test Issue');
+        ->expectsOutput('Created issue #1: Test Issue');
 });
 
 it('enforces validation of required parameters', function () {
     $this->artisan('github:create-issue', [
-        '--title' => 'Test Issue'
+        '--title' => 'Test Issue',
     ])->assertFailed()
-      ->expectsOutput('Missing required parameter: repo');
+        ->expectsOutput('Missing required parameter: repo');
 });
 
 it('validates input against OpenAPI schema specifications', function () {
     $this->artisan('github:create-issue', [
         '--repo' => 'test/repo',
         '--title' => 'Test Issue',
-        '--state' => 'invalid'
+        '--state' => 'invalid',
     ])->assertFailed()
-      ->expectsOutput('Invalid payload: state must be one of: open, closed');
+        ->expectsOutput('Invalid payload: state must be one of: open, closed');
 });
 
 it('handles GitHub API rate limiting and errors', function () {
     Http::fake([
         'api.github.com/repos/test/repo/issues' => Http::response([
-            'message' => 'API rate limit exceeded'
-        ], 403)
+            'message' => 'API rate limit exceeded',
+        ], 403),
     ]);
 
     $this->artisan('github:create-issue', [
         '--repo' => 'test/repo',
-        '--title' => 'Test Issue'
+        '--title' => 'Test Issue',
     ])->assertFailed()
-      ->expectsOutput('API rate limit exceeded');
+        ->expectsOutput('API rate limit exceeded');
 });

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('avatar_url')->nullable();
             $table->string('profile_url');
-            $table->enum('type', ["User","Organization"]);
+            $table->enum('type', ['User', 'Organization']);
             $table->string('repos');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');

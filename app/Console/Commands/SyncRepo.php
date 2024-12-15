@@ -56,7 +56,7 @@ class SyncRepo extends Command
             info('Sync completed successfully!');
 
         } catch (Throwable $e) {
-            warning('Failed to sync repositories: ' . $e->getMessage());
+            warning('Failed to sync repositories: '.$e->getMessage());
 
             return;
         }
@@ -230,7 +230,7 @@ class SyncRepo extends Command
             $unit++;
         }
 
-        return round($size, 2) . ' ' . $units[$unit];
+        return round($size, 2).' '.$units[$unit];
     }
 
     private function formatDate(string $date): string

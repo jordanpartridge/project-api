@@ -3,7 +3,6 @@
 namespace Tests\Feature\Models;
 
 use Tests\TestCase;
-use App\Models\Owner;
 
 class OwnerTest extends TestCase
 {
@@ -11,4 +10,4 @@ class OwnerTest extends TestCase
     {
         // Test content
     }
-} 
+}

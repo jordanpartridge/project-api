@@ -1,0 +1,15 @@
+parameters:
+    level: 10
+    paths:
+        - app
+        - tests
+    treatPhpDocTypesAsCertain: false
+    exceptions:
+        check:
+            missingCheckedExceptionInThrows: true
+            tooWideThrowType: true
+    excludePaths:
+        - vendor/*
+    ignoreErrors:
+        - '#PHPDoc tag @throws with type .* is not subtype of Throwable#'
+        - '#Call to an undefined method .* getAttribute\(\)#'

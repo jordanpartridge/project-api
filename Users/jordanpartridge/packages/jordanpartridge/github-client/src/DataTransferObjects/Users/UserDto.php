@@ -3,10 +3,10 @@
 namespace JordanPartridge\GithubClient\DataTransferObjects\Users;
 
 use JordanPartridge\GithubClient\DataTransferObjects\Contracts\DataTransformableInterface;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
-use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Attributes\Validation;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 #[MapName(SnakeCaseMapper::class)]
 class UserDto extends Data implements DataTransformableInterface
@@ -79,8 +79,8 @@ class UserDto extends Data implements DataTransformableInterface
             publicGists: $data['public_gists'] ?? null,
             followers: $data['followers'] ?? null,
             following: $data['following'] ?? null,
-            createdAt: isset($data['created_at']) 
-                ? new \DateTimeImmutable($data['created_at']) 
+            createdAt: isset($data['created_at'])
+                ? new \DateTimeImmutable($data['created_at'])
                 : null
         );
     }

@@ -3,8 +3,6 @@
 namespace Tests\Feature\Relations;
 
 use Tests\TestCase;
-use App\Models\Owner;
-use App\Models\Repo;
 
 class OwnerRepoRelationTest extends TestCase
 {

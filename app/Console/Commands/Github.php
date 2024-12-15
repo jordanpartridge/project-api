@@ -122,7 +122,7 @@ class Github extends Command
             return [
                 $repo['name'],
                 $repo['description'] ?? 'No description',
-                $repo['stargazers_count'] . ' stars',
+                $repo['stargazers_count'].' stars',
                 $repo['language'] ?? 'N/A',
                 $repo['owner']['login'],
             ];
@@ -174,7 +174,7 @@ class Github extends Command
         return spin(function () use ($request) {
             $response = $this->githubConnector->send($request);
             if (! $response->successful()) {
-                error('Failed to fetch data. Status: ' . $response->status());
+                error('Failed to fetch data. Status: '.$response->status());
 
                 return null;
             }
@@ -185,6 +185,6 @@ class Github extends Command
 
     private function truncate($string, $length)
     {
-        return strlen($string) > $length ? substr($string, 0, $length - 3) . '...' : $string;
+        return strlen($string) > $length ? substr($string, 0, $length - 3).'...' : $string;
     }
 }

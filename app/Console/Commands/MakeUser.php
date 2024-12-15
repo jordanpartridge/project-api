@@ -29,7 +29,7 @@ class MakeUser extends Command
         $email = text(
             label: '📧 What mystical address shall we use to summon you?',
             placeholder: 'merlin@camelot.com',
-            default: Str::slug($name) . '@example.com'
+            default: Str::slug($name).'@example.com'
         );
 
         $password = text(

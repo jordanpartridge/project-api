@@ -3,10 +3,10 @@
 namespace JordanPartridge\GithubClient\DataTransferObjects\Users;
 
 use JordanPartridge\GithubClient\DataTransferObjects\Contracts\DataTransformableInterface;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
-use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Attributes\Validation;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 #[MapName(SnakeCaseMapper::class)]
 class GitUserDto extends Data implements DataTransformableInterface

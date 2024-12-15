@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Issue;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IssueFactory extends Factory
 {
@@ -24,7 +23,7 @@ class IssueFactory extends Factory
             'github_id' => $this->faker->word(),
             'title' => $this->faker->sentence(4),
             'body' => $this->faker->text(),
-            'state' => $this->faker->randomElement(["open","closed"]),
+            'state' => $this->faker->randomElement(['open', 'closed']),
             'repo_id' => $this->faker->word(),
             'author_id' => $this->faker->word(),
             'assignee_id' => $this->faker->word(),

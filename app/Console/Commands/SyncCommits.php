@@ -91,8 +91,8 @@ class SyncCommits extends Command
                 $this->enforceRateLimit();
 
             } catch (Exception $e) {
-                Log::error("Failed to sync commits for {$repo->full_name}: " . $e->getMessage());
-                $this->error("Failed to sync commits for {$repo->full_name}: " . $e->getMessage());
+                Log::error("Failed to sync commits for {$repo->full_name}: ".$e->getMessage());
+                $this->error("Failed to sync commits for {$repo->full_name}: ".$e->getMessage());
 
                 return;
             }
@@ -118,7 +118,7 @@ class SyncCommits extends Command
         })->all();
 
         $count = Commit::upsert($commitData, ['sha'], ['message', 'author', 'committed_at']);
-        $this->info($count . ' commits upserted');
+        $this->info($count.' commits upserted');
         Commit::whereIn('sha', array_column($commitData, 'sha'))
             ->get()
             ->each(fn ($commit) => ProcessFilesForCommit::dispatch($commit));

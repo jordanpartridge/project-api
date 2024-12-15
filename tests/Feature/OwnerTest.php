@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Owner;
-use App\Models\Repo;
 use App\Models\Issue;
+use App\Models\Owner;
 use App\Models\PullRequest;
+use App\Models\Repo;
 
 beforeEach(function () {
     $this->owner = Owner::factory()->create();
@@ -31,7 +31,7 @@ it('can be created as an organization', function () {
 
 it('can have many repositories', function () {
     $repos = Repo::factory()->count(3)->create([
-        'owner_id' => $this->owner->id
+        'owner_id' => $this->owner->id,
     ]);
 
     expect($this->owner->repos)
@@ -41,10 +41,10 @@ it('can have many repositories', function () {
 
 it('can have many authored issues', function () {
     $repo = Repo::factory()->create(['owner_id' => $this->owner->id]);
-    
+
     $issues = Issue::factory()->count(2)->create([
         'repo_id' => $repo->id,
-        'author_id' => $this->owner->id
+        'author_id' => $this->owner->id,
     ]);
 
     expect($this->owner->issues)
@@ -54,10 +54,10 @@ it('can have many authored issues', function () {
 
 it('can have many authored pull requests', function () {
     $repo = Repo::factory()->create(['owner_id' => $this->owner->id]);
-    
+
     $prs = PullRequest::factory()->count(2)->create([
         'repo_id' => $repo->id,
-        'author_id' => $this->owner->id
+        'author_id' => $this->owner->id,
     ]);
 
     expect($this->owner->pullRequests)
@@ -67,7 +67,7 @@ it('can have many authored pull requests', function () {
 
 it('can be soft deleted', function () {
     $this->owner->delete();
-    
+
     expect(Owner::count())->toBe(0)
         ->and(Owner::withTrashed()->count())->toBe(1)
         ->and(Owner::withTrashed()->first())->toBeInstanceOf(Owner::class);
@@ -75,11 +75,11 @@ it('can be soft deleted', function () {
 
 it('cascades deletes to repositories', function () {
     $repos = Repo::factory()->count(2)->create([
-        'owner_id' => $this->owner->id
+        'owner_id' => $this->owner->id,
     ]);
-    
+
     $this->owner->delete();
-    
+
     expect(Repo::count())->toBe(0)
         ->and(Repo::withTrashed()->count())->toBe(2);
 });

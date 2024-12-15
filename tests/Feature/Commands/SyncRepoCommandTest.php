@@ -3,7 +3,6 @@
 use App\Models\Owner;
 use App\Models\Repo;
 use Illuminate\Support\Facades\Http;
-use JordanPartridge\GithubClient\Data\Repos\RepoData;
 
 it('can sync repositories from github', function () {
     // Mock the GitHub API response
@@ -18,14 +17,14 @@ it('can sync repositories from github', function () {
                     'login' => 'test-user',
                     'type' => 'User',
                     'avatar_url' => 'https://example.com/avatar.jpg',
-                    'html_url' => 'https://github.com/test-user'
+                    'html_url' => 'https://github.com/test-user',
                 ],
                 'html_url' => 'https://github.com/test-user/test-repo',
                 'visibility' => 'public',
                 'created_at' => now()->subDays(5)->toISOString(),
-                'updated_at' => now()->toISOString()
-            ]
-        ])
+                'updated_at' => now()->toISOString(),
+            ],
+        ]),
     ]);
 
     // Run the command
@@ -39,4 +38,4 @@ it('can sync repositories from github', function () {
         ->login->toBe('test-user')
         ->and(Repo::first())
         ->name->toBe('test-repo');
-}); 
+});

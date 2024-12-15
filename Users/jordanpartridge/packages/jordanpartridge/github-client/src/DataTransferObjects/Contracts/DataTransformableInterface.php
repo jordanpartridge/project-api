@@ -6,9 +6,8 @@ interface DataTransformableInterface
 {
     /**
      * Transform raw API response to DTO
-     * 
-     * @param array $data Raw API response data
-     * @return static
+     *
+     * @param  array  $data  Raw API response data
      */
     public static function fromApiResponse(array $data): static;
 }

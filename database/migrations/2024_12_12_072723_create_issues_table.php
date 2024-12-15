@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('github_id')->unique();
             $table->string('title');
             $table->text('body')->nullable();
-            $table->enum('state', ["open","closed"]);
+            $table->enum('state', ['open', 'closed']);
             $table->string('repo_id');
             $table->string('author_id');
             $table->string('assignee_id')->nullable();

@@ -85,7 +85,7 @@ class ProjectResource extends Resource
                                 TableAction::make('viewRepo')
                                     ->icon('heroicon-m-arrow-top-right-on-square')
                                     ->color('gray')
-                                    ->url(fn ($record) => '/admin/repos/' . $record?->id)
+                                    ->url(fn ($record) => '/admin/repos/'.$record?->id)
                                     ->visible(fn ($record) => $record?->id)
                                     ->openUrlInNewTab()
                             ),

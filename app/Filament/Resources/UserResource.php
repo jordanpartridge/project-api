@@ -32,11 +32,17 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
     protected static ?string $navigationGroup = 'User Management';
+
     protected static ?int $navigationSort = 1;
+
     protected static ?string $recordTitleAttribute = 'name';
+
     protected static ?string $modelLabel = 'System User';
+
     protected static ?string $pluralModelLabel = 'System Users';
+
     protected static int $globalSearchResultsLimit = 20;
 
     public static function getNavigationBadge(): ?string
@@ -148,7 +154,7 @@ class UserResource extends Resource
                             'super_admin' => '👑',
                         ];
 
-                        return $record->roles?->pluck('name')->map(fn ($role) => ($icons[$role] ?? '🔹') . ' ' . Str::title(str_replace('_', ' ', $role))
+                        return $record->roles?->pluck('name')->map(fn ($role) => ($icons[$role] ?? '🔹').' '.Str::title(str_replace('_', ' ', $role))
                         )->join(', ') ?? 'No roles assigned';
                     }),
 

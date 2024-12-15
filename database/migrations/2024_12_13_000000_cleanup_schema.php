@@ -117,4 +117,4 @@ return new class extends Migration
         Schema::dropIfExists('repos');
         Schema::dropIfExists('owners');
     }
-}; 
+};

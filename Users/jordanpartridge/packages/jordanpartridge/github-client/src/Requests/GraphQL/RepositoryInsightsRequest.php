@@ -2,8 +2,8 @@
 
 namespace JordanPartridge\GithubClient\Requests\GraphQL;
 
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapName;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 
 #[MapName(SnakeCaseMapper::class)]
@@ -25,6 +25,7 @@ class RepositoryInsightsData extends Data
 class RepositoryInsightsRequest extends AbstractGraphQLRequest
 {
     protected string $owner;
+
     protected string $repo;
 
     public function __construct(string $owner, string $repo)
@@ -87,7 +88,7 @@ class RepositoryInsightsRequest extends AbstractGraphQLRequest
     {
         return [
             'owner' => $this->owner,
-            'repo' => $this->repo
+            'repo' => $this->repo,
         ];
     }
 
@@ -102,20 +103,20 @@ class RepositoryInsightsRequest extends AbstractGraphQLRequest
             createdAt: $repo['createdAt'],
             starCount: $repo['stargazerCount'],
             forkCount: $repo['forkCount'],
-            languages: array_map(fn($lang) => [
+            languages: array_map(fn ($lang) => [
                 'name' => $lang['node']['name'],
                 'color' => $lang['node']['color'],
-                'size' => $lang['size']
+                'size' => $lang['size'],
             ], $repo['languages']['edges']),
-            contributors: array_map(fn($contrib) => [
+            contributors: array_map(fn ($contrib) => [
                 'name' => $contrib['node']['name'] ?? $contrib['node']['login'],
                 'login' => $contrib['node']['login'],
-                'total_commits' => $contrib['contributions']['totalCommitContributions']
+                'total_commits' => $contrib['contributions']['totalCommitContributions'],
             ], $repo['contributors']['edges']),
-            pullRequests: array_map(fn($pr) => [
+            pullRequests: array_map(fn ($pr) => [
                 'state' => $pr['node']['state'],
                 'created_at' => $pr['node']['createdAt'],
-                'closed_at' => $pr['node']['closedAt']
+                'closed_at' => $pr['node']['closedAt'],
             ], $repo['pullRequests']['edges'])
         );
     }

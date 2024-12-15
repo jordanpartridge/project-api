@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\GitHubUser;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class GitHubUserFactory extends Factory
 {
@@ -25,7 +24,7 @@ class GitHubUserFactory extends Factory
             'username' => $this->faker->userName(),
             'avatar_url' => $this->faker->word(),
             'profile_url' => $this->faker->word(),
-            'type' => $this->faker->randomElement(["User","Organization"]),
+            'type' => $this->faker->randomElement(['User', 'Organization']),
             'repos' => $this->faker->word(),
             'projects' => $this->faker->word(),
         ];

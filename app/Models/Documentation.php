@@ -23,16 +23,12 @@ class Documentation extends Model
         'is_published' => 'boolean',
     ];
 
-    /**
-     * @return array
-     */
-    public static  function categories(): array
+    public static function categories(): array
     {
         return ['Laravel', 'PHP', 'JavaScript', 'Vue', 'React', 'Node', 'Laravel', 'PHP', 'JavaScript', 'Vue', 'React', 'Node'];
     }
 
     /**
-     * @param $query
      * @return mixed
      */
     public function scopePublished($query)

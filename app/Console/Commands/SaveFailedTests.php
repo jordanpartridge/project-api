@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 class SaveFailedTests extends Command
 {
     protected $signature = 'test:save-failures';
+
     protected $description = 'Run tests and save failures to .failed-tests file';
 
     public function handle()

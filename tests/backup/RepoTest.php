@@ -15,7 +15,7 @@ it('belongs to a project', function () {
     $project = Project::factory()->create();
     $repo = Repo::factory()->create();
     $repo->projects()->attach($project->id);
-    
+
     expect($repo->projects)->toHaveCount(1)
         ->and($repo->projects->first())->toBeInstanceOf(Project::class);
 });

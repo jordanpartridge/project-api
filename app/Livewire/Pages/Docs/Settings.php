@@ -8,9 +8,13 @@ use Livewire\Component;
 class Settings extends Component
 {
     public $title;
+
     public $content;
+
     public $category;
+
     public $order;
+
     public $is_published = true;
 
     protected $rules = [

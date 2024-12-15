@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -33,8 +33,8 @@ return new class extends Migration
                             'updated_at' => $now,
                         ];
                     })->toArray();
-                    
-                    if (!empty($records)) {
+
+                    if (! empty($records)) {
                         DB::table('project_repository')->insert($records);
                     }
                 });
