@@ -1,0 +1,1634 @@
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Console/Commands/AnalyzeModel.php                                                     
+ ------ -------------------------------------------------------------------------------------- 
+  22     Parameter #1 $query of method                                                         
+         App\Console\Commands\AnalyzeModel::findModel() expects string,                        
+         array|bool|string given.                                                              
+         🪪  argument.type                                                                     
+  54     Method App\Console\Commands\AnalyzeModel::getAllModelNames() return                   
+         type has no value type specified in iterable type array.                              
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  100    Negated boolean expression is always false.                                           
+         🪪  booleanNot.alwaysFalse                                                            
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Console/Commands/AnalyzeProjectCommand.php                                            
+ ------ -------------------------------------------------------------------------------------- 
+  14     Method App\Console\Commands\AnalyzeProjectCommand::handle() has no                    
+         return type specified.                                                                
+         🪪  missingType.return                                                                
+  19     Parameter #1 $path of method                                                          
+         App\Console\Commands\AnalyzeProjectCommand::analyzeProject() expects                  
+         string, array|bool|string|null given.                                                 
+         🪪  argument.type                                                                     
+  26     Part $path (array|bool|string|null) of encapsed string cannot be cast                 
+         to string.                                                                            
+         🪪  encapsedStringPart.nonString                                                      
+  52     Method App\Console\Commands\AnalyzeProjectCommand::analyzeProject()                   
+         return type has no value type specified in iterable type array.                       
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------- 
+  Line   Console/Commands/ApiTokenForUser.php                          
+ ------ -------------------------------------------------------------- 
+  31     Call to an undefined static method App\Models\User::pluck().  
+         🪪  staticMethod.notFound                                     
+  32     Call to an undefined static method App\Models\User::find().   
+         🪪  staticMethod.notFound                                     
+ ------ -------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Console/Commands/CreateGithubIssue.php                                 
+ ------ ----------------------------------------------------------------------- 
+  14     Method App\Console\Commands\CreateGithubIssue::handle() has no return  
+         type specified.                                                        
+         🪪  missingType.return                                                 
+  23     Parameter #1 $token of static method                                   
+         Illuminate\Support\Facades\Http::withToken() expects string, mixed     
+         given.                                                                 
+         🪪  argument.type                                                      
+  28     Binary operation "." between 'URL: ' and mixed results in an error.    
+         🪪  binaryOp.invalid                                                   
+  28     Cannot access offset 'html_url' on mixed.                              
+         🪪  offsetAccess.nonOffsetAccessible                                   
+  31     Cannot access offset 'message' on mixed.                               
+         🪪  offsetAccess.nonOffsetAccessible                                   
+  31     Parameter #1 $string of method Illuminate\Console\Command::error()     
+         expects string, mixed given.                                           
+         🪪  argument.type                                                      
+ ------ ----------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Console/Commands/DeleteRepo.php                                      
+ ------ --------------------------------------------------------------------- 
+  32     Parameter #2 $options of function Laravel\Prompts\select expects     
+         array<int|string, string>|Illuminate\Support\Collection<int|string,  
+         string>, array<mixed> given.                                         
+         🪪  argument.type                                                    
+  35     Call to an undefined static method App\Models\Repo::find().          
+         🪪  staticMethod.notFound                                            
+  36     Call to an undefined method                                          
+         JordanPartridge\GithubClient\Github::deleteRepo().                   
+         🪪  method.notFound                                                  
+ ------ --------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Console/Commands/GenerateModelDocumentation.php                        
+ ------ ----------------------------------------------------------------------- 
+  22     Parameter #1 $name of method                                           
+         App\Console\Commands\GenerateModelDocumentation::resolveModelClass()   
+         expects string, array|bool|string|null given.                          
+         🪪  argument.type                                                      
+  25     Part $modelName (array|bool|string|null) of encapsed string cannot be  
+         cast to string.                                                        
+         🪪  encapsedStringPart.nonString                                       
+  36     Part $modelName (array|bool|string|null) of encapsed string cannot be  
+         cast to string.                                                        
+         🪪  encapsedStringPart.nonString                                       
+  67     Parameter #2 ...$values of function sprintf expects                    
+         bool|float|int|string|null, array|bool|string|null given.              
+         🪪  argument.type                                                      
+  80     Part $modelName (array|bool|string|null) of encapsed string cannot be  
+         cast to string.                                                        
+         🪪  encapsedStringPart.nonString                                       
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------------------------- 
+  Line   Console/Commands/Github.php                                                                   
+ ------ ---------------------------------------------------------------------------------------------- 
+  30     Method App\Console\Commands\Github::handle() has no return type                               
+         specified.                                                                                    
+         🪪  missingType.return                                                                        
+  45     Method App\Console\Commands\Github::selectAction() has no return type                         
+         specified.                                                                                    
+         🪪  missingType.return                                                                        
+  58     Method App\Console\Commands\Github::performAction() has no return                             
+         type specified.                                                                               
+         🪪  missingType.return                                                                        
+  58     Method App\Console\Commands\Github::performAction() has parameter                             
+         $action with no type specified.                                                               
+         🪪  missingType.parameter                                                                     
+  73     Method App\Console\Commands\Github::displayUserInfo() has no return                           
+         type specified.                                                                               
+         🪪  missingType.return                                                                        
+  96     Method App\Console\Commands\Github::listRepositories() has no return                          
+         type specified.                                                                               
+         🪪  missingType.return                                                                        
+  100    Instantiated class JordanPartridge\GithubClient\Requests\Repos\Repos                          
+         not found.                                                                                    
+         🪪  class.notFound                                                                            
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                           
+  101    Call to method query() on an unknown class                                                    
+         JordanPartridge\GithubClient\Requests\Repos\Repos.                                            
+         🪪  class.notFound                                                                            
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                           
+  108    Call to method query() on an unknown class                                                    
+         JordanPartridge\GithubClient\Requests\Repos\Repos.                                            
+         🪪  class.notFound                                                                            
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                           
+  139    Method App\Console\Commands\Github::viewRecentCommits() has no return                         
+         type specified.                                                                               
+         🪪  missingType.return                                                                        
+  141    Instantiated class App\Console\Commands\ListRequest not found.                                
+         🪪  class.notFound                                                                            
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                           
+  142    Call to method query() on an unknown class                                                    
+         App\Console\Commands\ListRequest.                                                             
+         🪪  class.notFound                                                                            
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols                           
+  150    Parameter #2 $options of function Laravel\Prompts\select expects                              
+         array<int|string, string>|Illuminate\Support\Collection<int|string,                           
+         string>, array<mixed> given.                                                                  
+         🪪  argument.type                                                                             
+  150    Unable to resolve the template type TKey in call to function collect                          
+         🪪  argument.templateType                                                                     
+         💡 See:                                                                                       
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type             
+  150    Unable to resolve the template type TValue in call to function                                
+         collect                                                                                       
+         🪪  argument.templateType                                                                     
+         💡 See:                                                                                       
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type             
+  154    Call to an undefined method                                                                   
+         JordanPartridge\GithubClient\Contracts\GithubConnectorInterface::getAuthenticatedUsername().  
+         🪪  method.notFound                                                                           
+  172    Method App\Console\Commands\Github::fetchData() has no return type                            
+         specified.                                                                                    
+         🪪  missingType.return                                                                        
+  172    Method App\Console\Commands\Github::fetchData() has parameter                                 
+         $request with no type specified.                                                              
+         🪪  missingType.parameter                                                                     
+  186    Method App\Console\Commands\Github::truncate() has no return type                             
+         specified.                                                                                    
+         🪪  missingType.return                                                                        
+  186    Method App\Console\Commands\Github::truncate() has parameter $length                          
+         with no type specified.                                                                       
+         🪪  missingType.parameter                                                                     
+  186    Method App\Console\Commands\Github::truncate() has parameter $string                          
+         with no type specified.                                                                       
+         🪪  missingType.parameter                                                                     
+ ------ ---------------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Console/Commands/ImportDocsCommand.php                                                
+ ------ -------------------------------------------------------------------------------------- 
+  19     Method App\Console\Commands\ImportDocsCommand::handle() has no return                 
+         type specified.                                                                       
+         🪪  missingType.return                                                                
+  25     Parameter #1 $filename of function is_file expects string,                            
+         array|bool|string|null given.                                                         
+         🪪  argument.type                                                                     
+  27     Parameter #1 $filename of function is_dir expects string,                             
+         array|bool|string|null given.                                                         
+         🪪  argument.type                                                                     
+  30     Part $source (array|bool|string|null) of encapsed string cannot be                    
+         cast to string.                                                                       
+         🪪  encapsedStringPart.nonString                                                      
+  37     Method App\Console\Commands\ImportDocsCommand::importFile() has no                    
+         return type specified.                                                                
+         🪪  missingType.return                                                                
+  37     Method App\Console\Commands\ImportDocsCommand::importFile() has                       
+         parameter $category with no type specified.                                           
+         🪪  missingType.parameter                                                             
+  37     Method App\Console\Commands\ImportDocsCommand::importFile() has                       
+         parameter $file with no type specified.                                               
+         🪪  missingType.parameter                                                             
+  39     Parameter #1 $json of function json_decode expects string,                            
+         string|false given.                                                                   
+         🪪  argument.type                                                                     
+  41     Cannot access offset 'conversation' on mixed.                                         
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  46     Cannot access offset 'main_topics' on mixed.                                          
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  47     Cannot access offset 'specific_use_cases' on mixed.                                   
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  49     Argument of an invalid type mixed supplied for foreach, only                          
+         iterables are supported.                                                              
+         🪪  foreach.nonIterable                                                               
+  51     Cannot access offset 'topic' on mixed.                                                
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  52     Cannot access offset 'details' on mixed.                                              
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  61     Argument of an invalid type mixed supplied for foreach, only                          
+         iterables are supported.                                                              
+         🪪  foreach.nonIterable                                                               
+  63     Cannot access offset 'title' on mixed.                                                
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  76     Method App\Console\Commands\ImportDocsCommand::importDirectory() has                  
+         no return type specified.                                                             
+         🪪  missingType.return                                                                
+  76     Method App\Console\Commands\ImportDocsCommand::importDirectory() has                  
+         parameter $category with no type specified.                                           
+         🪪  missingType.parameter                                                             
+  76     Method App\Console\Commands\ImportDocsCommand::importDirectory() has                  
+         parameter $dir with no type specified.                                                
+         🪪  missingType.parameter                                                             
+  79     Argument of an invalid type list<string>|false supplied for foreach,                  
+         only iterables are supported.                                                         
+         🪪  foreach.nonIterable                                                               
+  84     Method App\Console\Commands\ImportDocsCommand::createDocEntry() has                   
+         no return type specified.                                                             
+         🪪  missingType.return                                                                
+  84     Method App\Console\Commands\ImportDocsCommand::createDocEntry() has                   
+         parameter $data with no value type specified in iterable type array.                  
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  86     Call to an undefined static method                                                    
+         App\Models\Documentation::create().                                                   
+         🪪  staticMethod.notFound                                                             
+  92     Call to an undefined static method App\Models\Documentation::where().                 
+         🪪  staticMethod.notFound                                                             
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------- 
+  Line   Console/Commands/ListPulls.php                         
+ ------ ------------------------------------------------------- 
+  31     Call to an undefined static method                     
+         JordanPartridge\GithubClient\Facades\Github::pulls().  
+         🪪  staticMethod.notFound                              
+ ------ ------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Console/Commands/MakeUser.php                                          
+ ------ ----------------------------------------------------------------------- 
+  19     Method App\Console\Commands\MakeUser::handle() has no return type      
+         specified.                                                             
+         🪪  missingType.return                                                 
+  52     Call to an undefined static method App\Models\User::create().          
+         🪪  staticMethod.notFound                                              
+  65     Parameter #2 $rows of function Laravel\Prompts\table expects           
+         array<int, array<int, string>>|Illuminate\Support\Collection<int,      
+         array<int, string>>|null, array{array{'Name', string}, array{'Email',  
+         string}, array{'Favorite Color', int|string}, array{'Secret            
+         Identity', 'Shh... it\'s a…'}} given.                                  
+         🪪  argument.type                                                      
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Console/Commands/ManageDocsCommand.php                                 
+ ------ ----------------------------------------------------------------------- 
+  22     Method App\Console\Commands\ManageDocsCommand::handle() has no return  
+         type specified.                                                        
+         🪪  missingType.return                                                 
+  32     Part $action (array|bool|string|null) of encapsed string cannot be     
+         cast to string.                                                        
+         🪪  encapsedStringPart.nonString                                       
+  36     Method App\Console\Commands\ManageDocsCommand::listDocs() has no       
+         return type specified.                                                 
+         🪪  missingType.return                                                 
+  63     Method App\Console\Commands\ManageDocsCommand::showDoc() has no        
+         return type specified.                                                 
+         🪪  missingType.return                                                 
+  70     Call to an undefined static method App\Models\Documentation::find().   
+         🪪  staticMethod.notFound                                              
+  72     Part $id (non-empty-array|non-falsy-string|true) of encapsed string    
+         cannot be cast to string.                                              
+         🪪  encapsedStringPart.nonString                                       
+  86     Method App\Console\Commands\ManageDocsCommand::updateDoc() has no      
+         return type specified.                                                 
+         🪪  missingType.return                                                 
+  93     Call to an undefined static method App\Models\Documentation::find().   
+         🪪  staticMethod.notFound                                              
+  95     Part $id (non-empty-array|non-falsy-string|true) of encapsed string    
+         cannot be cast to string.                                              
+         🪪  encapsedStringPart.nonString                                       
+  103    Parameter #1 $title of static method Illuminate\Support\Str::slug()    
+         expects string, array|string|true given.                               
+         🪪  argument.type                                                      
+  133    Method App\Console\Commands\ManageDocsCommand::deleteDoc() has no      
+         return type specified.                                                 
+         🪪  missingType.return                                                 
+  140    Call to an undefined static method App\Models\Documentation::find().   
+         🪪  staticMethod.notFound                                              
+  142    Part $id (non-empty-array|non-falsy-string|true) of encapsed string    
+         cannot be cast to string.                                              
+         🪪  encapsedStringPart.nonString                                       
+  156    Method App\Console\Commands\ManageDocsCommand::reorderDocs() has no    
+         return type specified.                                                 
+         🪪  missingType.return                                                 
+  163    Call to an undefined static method App\Models\Documentation::where().  
+         🪪  staticMethod.notFound                                              
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------------------- 
+  Line   Console/Commands/PrismAnalyzeCommand.php                                           
+ ------ ----------------------------------------------------------------------------------- 
+  18     Parameter #1 $filePath of method                                                   
+         App\Services\CodeAnalysis\PrismAnalyzer::analyzeFile() expects                     
+         string, array|bool|string|null given.                                              
+         🪪  argument.type                                                                  
+  22     Unable to resolve the template type TKey in call to function collect               
+         🪪  argument.templateType                                                          
+         💡 See:                                                                            
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type  
+  22     Unable to resolve the template type TValue in call to function                     
+         collect                                                                            
+         🪪  argument.templateType                                                          
+         💡 See:                                                                            
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type  
+ ------ ----------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Console/Commands/ProjectStructureCommand.php                                          
+ ------ -------------------------------------------------------------------------------------- 
+  15     Property App\Console\Commands\ProjectStructureCommand::$basePath has                  
+         no type specified.                                                                    
+         🪪  missingType.property                                                              
+  17     Property App\Console\Commands\ProjectStructureCommand::$response has                  
+         no type specified.                                                                    
+         🪪  missingType.property                                                              
+  19     Method App\Console\Commands\ProjectStructureCommand::handle() has no                  
+         return type specified.                                                                
+         🪪  missingType.return                                                                
+  27     Part $this->basePath (array|bool|string) of encapsed string cannot be                 
+         cast to string.                                                                       
+         🪪  encapsedStringPart.nonString                                                      
+  71     Cannot access offset 'require' on mixed.                                              
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  72     Parameter #1 $require of method                                                       
+         App\Console\Commands\ProjectStructureCommand::getStackFromComposer()                  
+         expects array, mixed given.                                                           
+         🪪  argument.type                                                                     
+  125    Method                                                                                
+         App\Console\Commands\ProjectStructureCommand::getStackFromComposer()                  
+         has parameter $require with no value type specified in iterable type                  
+         array.                                                                                
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Console/Commands/Responses/ToolResponseFormatter.php                                  
+ ------ -------------------------------------------------------------------------------------- 
+  10     Property                                                                              
+         App\Console\Commands\Responses\ToolResponseFormatter::$sections with                  
+         generic class Illuminate\Support\Collection does not specify its                      
+         types: TKey, TValue                                                                   
+         🪪  missingType.generics                                                              
+  12     Property                                                                              
+         App\Console\Commands\Responses\ToolResponseFormatter::$metrics type                   
+         has no value type specified in iterable type array.                                   
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  14     Property                                                                              
+         App\Console\Commands\Responses\ToolResponseFormatter::$recommendations                
+         type has no value type specified in iterable type array.                              
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  61     Cannot access offset 'title' on mixed.                                                
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  61     Parameter #1 $string of function strlen expects string, mixed given.                  
+         🪪  argument.type                                                                     
+  62     Cannot access offset 'title' on mixed.                                                
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  62     Parameter #1 $string of method Illuminate\Console\Command::info()                     
+         expects string, mixed given.                                                          
+         🪪  argument.type                                                                     
+  63     Cannot access offset 'title' on mixed.                                                
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  63     Parameter #1 $string of function strlen expects string, mixed given.                  
+         🪪  argument.type                                                                     
+  64     Cannot access offset 'content' on mixed.                                              
+         🪪  offsetAccess.nonOffsetAccessible                                                  
+  64     Parameter #1 $string of method Illuminate\Console\Command::line()                     
+         expects string, mixed given.                                                          
+         🪪  argument.type                                                                     
+  104    Method                                                                                
+         App\Console\Commands\Responses\ToolResponseFormatter::toArray()                       
+         return type has no value type specified in iterable type array.                       
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  115    Method App\Console\Commands\Responses\ToolResponseFormatter::toJson()                 
+         should return string but returns string|false.                                        
+         🪪  return.type                                                                       
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Console/Commands/SaveFailedTests.php                                 
+ ------ --------------------------------------------------------------------- 
+  13     Method App\Console\Commands\SaveFailedTests::handle() has no return  
+         type specified.                                                      
+         🪪  missingType.return                                               
+  16     Parameter #2 $subject of function preg_match_all expects string,     
+         string|false|null given.                                             
+         🪪  argument.type                                                    
+ ------ --------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Console/Commands/SyncCommits.php                                                      
+ ------ -------------------------------------------------------------------------------------- 
+  36     Call to an undefined static method App\Models\Repo::count().                          
+         🪪  staticMethod.notFound                                                             
+  46     Call to an undefined static method App\Models\Repo::chunk().                          
+         🪪  staticMethod.notFound                                                             
+  47     Parameter #1 $callback of method                                                      
+         Illuminate\Support\Collection<(int|string),mixed>::each() expects                     
+         callable(mixed, int|string): mixed, Closure(App\Models\Repo): false                   
+         given.                                                                                
+         🪪  argument.type                                                                     
+         💡 Type App\Models\Repo of parameter #1 $repo of passed callable                      
+            needs to be same or wider than parameter type mixed of accepting                   
+            callable.                                                                          
+  61     Access to an undefined property App\Models\Repo::$full_name.                          
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  72     Call to an undefined static method                                                    
+         JordanPartridge\GithubClient\Facades\Github::commits().                               
+         🪪  staticMethod.notFound                                                             
+  73     Access to an undefined property App\Models\Repo::$full_name.                          
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  86     Access to an undefined property App\Models\Repo::$full_name.                          
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  86     Part $maxPages (array|bool|string|null) of encapsed string cannot be                  
+         cast to string.                                                                       
+         🪪  encapsedStringPart.nonString                                                      
+  94     Access to an undefined property App\Models\Repo::$full_name.                          
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  95     Access to an undefined property App\Models\Repo::$full_name.                          
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  100    Variable $commits in empty() always exists and is not falsy.                          
+         🪪  empty.variable                                                                    
+  102    Access to an undefined property App\Models\Repo::$full_name.                          
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  106    Method App\Console\Commands\SyncCommits::processCommits() has                         
+         parameter $commits with no value type specified in iterable type                      
+         array.                                                                                
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  110    Parameter #1 $callback of method                                                      
+         Illuminate\Support\Collection<(int|string),mixed>::map() contains                     
+         unresolvable type.                                                                    
+         🪪  argument.unresolvableType                                                         
+  110    Return type of call to method                                                         
+         Illuminate\Support\Collection<(int|string),array<string,                              
+         mixed>>::all() contains unresolvable type.                                            
+         🪪  method.unresolvableReturnType                                                     
+  110    Return type of call to method                                                         
+         Illuminate\Support\Collection<(int|string),mixed>::map() contains                     
+         unresolvable type.                                                                    
+         🪪  method.unresolvableReturnType                                                     
+  116    Access to an undefined property App\Models\Repo::$id.                                 
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  120    Call to an undefined static method App\Models\Commit::upsert().                       
+         🪪  staticMethod.notFound                                                             
+  122    Call to an undefined static method App\Models\Commit::whereIn().                      
+         🪪  staticMethod.notFound                                                             
+  129    Method App\Console\Commands\SyncCommits::shouldStopDueToRateLimit()                   
+         is unused.                                                                            
+         🪪  method.unused                                                                     
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------------------- 
+  Line   Console/Commands/SyncRepo.php                                                      
+ ------ ----------------------------------------------------------------------------------- 
+  70     Method App\Console\Commands\SyncRepo::fetchAllRepositories() return                
+         type with generic class Illuminate\Support\Collection does not                     
+         specify its types: TKey, TValue                                                    
+         🪪  missingType.generics                                                           
+  78     Call to an undefined static method                                                 
+         JordanPartridge\GithubClient\Facades\Github::repos().                              
+         🪪  staticMethod.notFound                                                          
+  78     Unable to resolve the template type TKey in call to function collect               
+         🪪  argument.templateType                                                          
+         💡 See:                                                                            
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type  
+  78     Unable to resolve the template type TValue in call to function                     
+         collect                                                                            
+         🪪  argument.templateType                                                          
+         💡 See:                                                                            
+            https://phpstan.org/blog/solving-phpstan-error-unable-to-resolve-template-type  
+  181    Call to an undefined static method                                                 
+         App\Models\Owner::updateOrCreate().                                                
+         🪪  staticMethod.notFound                                                          
+  190    Cannot call method repo() on mixed.                                                
+         🪪  method.nonObject                                                               
+  206    Using nullsafe property access "?->spdxId" on left side of ?? is                   
+         unnecessary. Use -> instead.                                                       
+         🪪  nullsafe.neverNull                                                             
+  213    Method App\Console\Commands\SyncRepo::syncLanguage() has parameter                 
+         $project with no type specified.                                                   
+         🪪  missingType.parameter                                                          
+  216    Call to an undefined static method                                                 
+         App\Models\Language::firstOrCreate().                                              
+         🪪  staticMethod.notFound                                                          
+ ------ ----------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------- 
+  Line   Events/ProjectCreated.php              
+ ------ --------------------------------------- 
+  27     Call to an undefined static method     
+         App\Models\Project::updateOrCreate().  
+         🪪  staticMethod.notFound              
+ ------ --------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Filament/Github/Resources/CommitResource.php                              
+ ------ -------------------------------------------------------------------------- 
+  38     Constant                                                                  
+         App\Filament\Github\Resources\CommitResource::COMMIT_SVG_ICON is          
+         unused.                                                                   
+         🪪  classConstant.unused                                                  
+         💡 See:                                                                   
+            https://phpstan.org/developing-extensions/always-used-class-constants  
+  44     Constant                                                                  
+         App\Filament\Github\Resources\CommitResource::EXTERNAL_LINK_SVG is        
+         unused.                                                                   
+         🪪  classConstant.unused                                                  
+         💡 See:                                                                   
+            https://phpstan.org/developing-extensions/always-used-class-constants  
+  60     Strict comparison using === between string|null and 0 will always         
+         evaluate to false.                                                        
+         🪪  identical.alwaysFalse                                                 
+  75     Access to an undefined property App\Models\Commit::$repo.                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  76     Access to an undefined property App\Models\Commit::$repo.                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  130    Access to an undefined property App\Models\Commit::$repo.                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  130    Access to an undefined property App\Models\Commit::$sha.                  
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  255    Static method                                                             
+         App\Filament\Github\Resources\CommitResource::getTimePeriod() is          
+         unused.                                                                   
+         🪪  method.unused                                                         
+  257    Access to an undefined property App\Models\Commit::$author.               
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  283    Static method                                                             
+         App\Filament\Github\Resources\CommitResource::getRepoNameColumn() is      
+         unused.                                                                   
+         🪪  method.unused                                                         
+  289    Access to an undefined property App\Models\Commit::$repo.                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  290    Access to an undefined property App\Models\Commit::$repo.                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  299    Static method                                                             
+         App\Filament\Github\Resources\CommitResource::getCommitColumn() is        
+         unused.                                                                   
+         🪪  method.unused                                                         
+  319    Static method                                                             
+         App\Filament\Github\Resources\CommitResource::getAuthorColumn() is        
+         unused.                                                                   
+         🪪  method.unused                                                         
+  337    Static method                                                             
+         App\Filament\Github\Resources\CommitResource::getCommitDateColumn()       
+         is unused.                                                                
+         🪪  method.unused                                                         
+  347    Static method                                                             
+         App\Filament\Github\Resources\CommitResource::getGithubAction() is        
+         unused.                                                                   
+         🪪  method.unused                                                         
+  354    Access to an undefined property App\Models\Commit::$repo.                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  354    Access to an undefined property App\Models\Commit::$sha.                  
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  358    Static method                                                             
+         App\Filament\Github\Resources\CommitResource::getEditAction() is          
+         unused.                                                                   
+         🪪  method.unused                                                         
+  364    Static method                                                             
+         App\Filament\Github\Resources\CommitResource::getRepoFilter() is          
+         unused.                                                                   
+         🪪  method.unused                                                         
+ ------ -------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Filament/Github/Resources/OwnerResource.php                               
+ ------ -------------------------------------------------------------------------- 
+  105    Access to an undefined property App\Models\Owner::$html_url.              
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Filament/Github/Resources/RepoResource.php                                
+ ------ -------------------------------------------------------------------------- 
+  147    Access to an undefined property App\Models\Repo::$owner.                  
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  154    Access to an undefined property App\Models\Repo::$full_name.              
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  161    Anonymous function should return string|null but returns mixed.           
+         🪪  return.type                                                           
+  161    Parameter #1 $string of function strlen expects string, mixed given.      
+         🪪  argument.type                                                         
+  209    Anonymous function has invalid return type                                
+         App\Filament\Github\Resources\Builder.                                    
+         🪪  class.notFound                                                        
+  209    Call to method where() on an unknown class                                
+         App\Filament\Github\Resources\Builder.                                    
+         🪪  class.notFound                                                        
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols       
+  209    Parameter $query of anonymous function has invalid type                   
+         App\Filament\Github\Resources\Builder.                                    
+         🪪  class.notFound                                                        
+  222    Access to an undefined property App\Models\Repo::$url.                    
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Filament/Github/Resources/RepoResource/Pages/EditRepo.php                 
+ ------ -------------------------------------------------------------------------- 
+  36     Access to an undefined property App\Models\Repo::$url.                    
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Filament/Github/Resources/RepoResource/Pages/ViewRepo.php                 
+ ------ -------------------------------------------------------------------------- 
+  32     Access to an undefined property App\Models\Repo::$url.                    
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------------------------- 
+  Line   Filament/Github/Resources/RepoResource/RelationManagers/CommitsRelationshipManager.php  
+ ------ ---------------------------------------------------------------------------------------- 
+  113    Access to an undefined property App\Models\Commit::$repo.                               
+         🪪  property.notFound                                                                   
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+  113    Access to an undefined property App\Models\Commit::$sha.                                
+         🪪  property.notFound                                                                   
+         💡 Learn more:                                                                          
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property                
+ ------ ---------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Filament/Github/Resources/RepoResource/Widgets/RepoStatsOverview.php  
+ ------ ---------------------------------------------------------------------- 
+  16     Cannot access property $stars_count on                                
+         Illuminate\Database\Eloquent\Model|null.                              
+         🪪  property.nonObject                                                
+  18     Cannot access property $forks_count on                                
+         Illuminate\Database\Eloquent\Model|null.                              
+         🪪  property.nonObject                                                
+  20     Cannot access property $open_issues_count on                          
+         Illuminate\Database\Eloquent\Model|null.                              
+         🪪  property.nonObject                                                
+ ------ ---------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Filament/Resources/DocumentationResource.php                         
+ ------ --------------------------------------------------------------------- 
+  55     Call to an undefined method object::slug().                          
+         🪪  method.notFound                                                  
+  65     Call to an undefined static method                                   
+         App\Models\Documentation::categories().                              
+         🪪  staticMethod.notFound                                            
+  66     Call to an undefined static method                                   
+         App\Models\Documentation::categories().                              
+         🪪  staticMethod.notFound                                            
+  130    Call to an undefined static method                                   
+         App\Models\Documentation::categories().                              
+         🪪  staticMethod.notFound                                            
+  131    Call to an undefined static method                                   
+         App\Models\Documentation::categories().                              
+         🪪  staticMethod.notFound                                            
+  169    Method                                                               
+         App\Filament\Resources\DocumentationResource::getEloquentQuery()     
+         return type with generic class Illuminate\Database\Eloquent\Builder  
+         does not specify its types: TModel                                   
+         🪪  missingType.generics                                             
+ ------ --------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Filament/Resources/PrivateGPT/Pages/AnalyzeContent.php                                
+ ------ -------------------------------------------------------------------------------------- 
+  20     Property                                                                              
+         App\Filament\Resources\PrivateGPT\Pages\AnalyzeContent::$data type                    
+         has no value type specified in iterable type array.                                   
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  24     Access to an undefined property                                                       
+         App\Filament\Resources\PrivateGPT\Pages\AnalyzeContent::$form.                        
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  44     Access to an undefined property                                                       
+         App\Filament\Resources\PrivateGPT\Pages\AnalyzeContent::$form.                        
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  48     Call to an undefined method                                                           
+         App\Services\PrivateGPT\PrivateGPTService::analyze().                                 
+         🪪  method.notFound                                                                   
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Filament/Resources/ProjectResource.php                                    
+ ------ -------------------------------------------------------------------------- 
+  134    Access to an undefined property App\Models\Project::$created_at.          
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  141    Access to an undefined property App\Models\Project::$updated_at.          
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  178    Access to an undefined property App\Models\Project::$repo.                
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  180    Access to an undefined property App\Models\Project::$repo.                
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Filament/Resources/UserResource.php                                    
+ ------ ----------------------------------------------------------------------- 
+  50     Method App\Filament\Resources\UserResource::getNavigationBadge()       
+         should return string|null but returns mixed.                           
+         🪪  return.type                                                        
+  219    Method App\Filament\Resources\UserResource::getEloquentQuery() return  
+         type with generic class Illuminate\Database\Eloquent\Builder does not  
+         specify its types: TModel                                              
+         🪪  missingType.generics                                               
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------------------- 
+  Line   Filament/Widgets/DocumentationActivityList.php                                     
+ ------ ----------------------------------------------------------------------------------- 
+  16     Method                                                                             
+         App\Filament\Widgets\DocumentationActivityList::getActivityLog() has               
+         no return type specified.                                                          
+         🪪  missingType.return                                                             
+  18     Call to an undefined method                                                        
+         Illuminate\Database\Eloquent\Builder|Spatie\Activitylog\Models\Activity::where().  
+         🪪  method.notFound                                                                
+ ------ ----------------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Filament/Widgets/DocumentationStatsOverview.php                        
+ ------ ----------------------------------------------------------------------- 
+  16     Call to an undefined static method App\Models\Documentation::count().  
+         🪪  staticMethod.notFound                                              
+  19     Parameter #1 $chart of method                                          
+         Filament\Widgets\StatsOverviewWidget\Stat::chart() expects             
+         array<float>|null, array<mixed> given.                                 
+         🪪  argument.type                                                      
+  28     Call to an undefined static method                                     
+         App\Models\Documentation::published().                                 
+         🪪  staticMethod.notFound                                              
+  33     Call to an undefined static method App\Models\Documentation::where().  
+         🪪  staticMethod.notFound                                              
+ ------ ----------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Filament/Widgets/LatestDocumentation.php                                  
+ ------ -------------------------------------------------------------------------- 
+  22     Call to an undefined static method                                        
+         App\Models\Documentation::latest().                                       
+         🪪  staticMethod.notFound                                                 
+  26     Access to an undefined property App\Models\Documentation::$content.       
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  26     Call to an undefined method object::limit().                              
+         🪪  method.notFound                                                       
+ ------ -------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Http/Controllers/Api/V1/PrivateGPTController.php                       
+ ------ ----------------------------------------------------------------------- 
+  11     Method App\Http\Controllers\Api\V1\PrivateGPTController::query() has   
+         no return type specified.                                              
+         🪪  missingType.return                                                 
+  42     Method App\Http\Controllers\Api\V1\PrivateGPTController::status() has  
+         no return type specified.                                              
+         🪪  missingType.return                                                 
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Http/Controllers/Languages/ShowController.php                         
+ ------ ---------------------------------------------------------------------- 
+  10     Method App\Http\Controllers\Languages\ShowController::__invoke() has  
+         no return type specified.                                             
+         🪪  missingType.return                                                
+ ------ ---------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Http/Controllers/Repos/IndexController.php                                
+ ------ -------------------------------------------------------------------------- 
+  11     Method App\Http\Controllers\Repos\IndexController::__invoke() has no      
+         return type specified.                                                    
+         🪪  missingType.return                                                    
+  13     Access to an undefined property App\Models\Language::$repos.              
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Http/Middleware/LogApiRequests.php                                    
+ ------ ---------------------------------------------------------------------- 
+  11     Method App\Http\Middleware\LogApiRequests::handle() has no return     
+         type specified.                                                       
+         🪪  missingType.return                                                
+  21     Call to an undefined method Illuminate\Contracts\Auth\Factory::id().  
+         🪪  method.notFound                                                   
+ ------ ---------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Http/Middleware/LogFilamentLogin.php                                 
+ ------ --------------------------------------------------------------------- 
+  10     Method App\Http\Middleware\LogFilamentLogin::handle() has no return  
+         type specified.                                                      
+         🪪  missingType.return                                               
+  14     Call to an undefined method                                          
+         Illuminate\Contracts\Auth\Factory::check().                          
+         🪪  method.notFound                                                  
+  16     Call to an undefined method                                          
+         Illuminate\Contracts\Auth\Factory::user().                           
+         🪪  method.notFound                                                  
+ ------ --------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Http/Resources/LanguageResource.php                                       
+ ------ -------------------------------------------------------------------------- 
+  17     Access to an undefined property                                           
+         App\Http\Resources\LanguageResource::$name.                               
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Http/Resources/RepoResource.php                                           
+ ------ -------------------------------------------------------------------------- 
+  18     Access to an undefined property                                           
+         App\Http\Resources\RepoResource::$name.                                   
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  19     Access to an undefined property                                           
+         App\Http\Resources\RepoResource::$full_name.                              
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  20     Access to an undefined property                                           
+         App\Http\Resources\RepoResource::$description.                            
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  21     Access to an undefined property                                           
+         App\Http\Resources\RepoResource::$url.                                    
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  22     Access to an undefined property                                           
+         App\Http\Resources\RepoResource::$topics.                                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  23     Access to an undefined property                                           
+         App\Http\Resources\RepoResource::$language.                               
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------- 
+  Line   Jobs/ProcessFilesForCommit.php                                            
+ ------ -------------------------------------------------------------------------- 
+  34     Method App\Jobs\ProcessFilesForCommit::getCommitDetails() has no          
+         return type specified.                                                    
+         🪪  missingType.return                                                    
+  36     Access to an undefined property App\Models\Commit::$repo.                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  36     Access to an undefined property App\Models\Commit::$sha.                  
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+  36     Call to an undefined static method                                        
+         JordanPartridge\GithubClient\Facades\Github::commits().                   
+         🪪  staticMethod.notFound                                                 
+  39     Method App\Jobs\ProcessFilesForCommit::shouldProcessFiles() has           
+         parameter $details with no type specified.                                
+         🪪  missingType.parameter                                                 
+  44     Method App\Jobs\ProcessFilesForCommit::processFiles() has parameter       
+         $details with no type specified.                                          
+         🪪  missingType.parameter                                                 
+  49     Call to an undefined static method App\Models\File::firstOrCreate().      
+         🪪  staticMethod.notFound                                                 
+  51     Access to an undefined property App\Models\Commit::$repo.                 
+         🪪  property.notFound                                                     
+         💡 Learn more:                                                            
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property  
+ ------ -------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Livewire/Pages/Docs/Index.php                                          
+ ------ ----------------------------------------------------------------------- 
+  10     Property App\Livewire\Pages\Docs\Index::$selectedCategory has no type  
+         specified.                                                             
+         🪪  missingType.property                                               
+  12     Method App\Livewire\Pages\Docs\Index::render() has no return type      
+         specified.                                                             
+         🪪  missingType.return                                                 
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Livewire/Pages/Docs/Settings.php                                      
+ ------ ---------------------------------------------------------------------- 
+  10     Property App\Livewire\Pages\Docs\Settings::$title has no type         
+         specified.                                                            
+         🪪  missingType.property                                              
+  12     Property App\Livewire\Pages\Docs\Settings::$content has no type       
+         specified.                                                            
+         🪪  missingType.property                                              
+  14     Property App\Livewire\Pages\Docs\Settings::$category has no type      
+         specified.                                                            
+         🪪  missingType.property                                              
+  16     Property App\Livewire\Pages\Docs\Settings::$order has no type         
+         specified.                                                            
+         🪪  missingType.property                                              
+  18     Property App\Livewire\Pages\Docs\Settings::$is_published has no type  
+         specified.                                                            
+         🪪  missingType.property                                              
+  20     Property App\Livewire\Pages\Docs\Settings::$rules has no type         
+         specified.                                                            
+         🪪  missingType.property                                              
+  27     Method App\Livewire\Pages\Docs\Settings::save() has no return type    
+         specified.                                                            
+         🪪  missingType.return                                                
+  31     Call to an undefined static method                                    
+         App\Models\Documentation::create().                                   
+         🪪  staticMethod.notFound                                             
+  39     Method App\Livewire\Pages\Docs\Settings::render() has no return type  
+         specified.                                                            
+         🪪  missingType.return                                                
+ ------ ---------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Livewire/Pages/Docs/Show.php                                           
+ ------ ----------------------------------------------------------------------- 
+  9      Property App\Livewire\Pages\Docs\Show::$slug has no type specified.    
+         🪪  missingType.property                                               
+  11     Method App\Livewire\Pages\Docs\Show::mount() has no return type        
+         specified.                                                             
+         🪪  missingType.return                                                 
+  11     Method App\Livewire\Pages\Docs\Show::mount() has parameter $slug with  
+         no type specified.                                                     
+         🪪  missingType.parameter                                              
+  16     Method App\Livewire\Pages\Docs\Show::render() has no return type       
+         specified.                                                             
+         🪪  missingType.return                                                 
+ ------ ----------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------- 
+  Line   Models/BaseModel.php                                            
+ ------ ---------------------------------------------------------------- 
+  13     Class App\Models\BaseModel uses generic trait                   
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not  
+         specify its types: TFactory                                     
+         🪪  missingType.generics                                        
+ ------ ---------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/Commit.php                                                                     
+ ------ -------------------------------------------------------------------------------------- 
+  19     Property App\Models\Commit::$casts type has no value type specified                   
+         in iterable type array.                                                               
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  24     Method App\Models\Commit::repo() return type with generic class                       
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its                 
+         types: TRelatedModel, TDeclaringModel                                                 
+         🪪  missingType.generics                                                              
+  29     Method App\Models\Commit::files() return type with generic class                      
+         Illuminate\Database\Eloquent\Relations\BelongsToMany does not specify                 
+         its types: TRelatedModel, TDeclaringModel                                             
+         🪪  missingType.generics                                                              
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/Documentation.php                                                              
+ ------ -------------------------------------------------------------------------------------- 
+  25     Property App\Models\Documentation::$casts type has no value type                      
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  31     Method App\Models\Documentation::getCategories() has no return type                   
+         specified.                                                                            
+         🪪  missingType.return                                                                
+  33     Call to an undefined static method                                                    
+         App\Models\Documentation::select().                                                   
+         🪪  staticMethod.notFound                                                             
+  39     Method App\Models\Documentation::scopePublished() has no return type                  
+         specified.                                                                            
+         🪪  missingType.return                                                                
+  39     Method App\Models\Documentation::scopePublished() has parameter                       
+         $query with no type specified.                                                        
+         🪪  missingType.parameter                                                             
+  44     Method App\Models\Documentation::scopeCategory() has no return type                   
+         specified.                                                                            
+         🪪  missingType.return                                                                
+  44     Method App\Models\Documentation::scopeCategory() has parameter                        
+         $category with no type specified.                                                     
+         🪪  missingType.parameter                                                             
+  44     Method App\Models\Documentation::scopeCategory() has parameter $query                 
+         with no type specified.                                                               
+         🪪  missingType.parameter                                                             
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Models/File.php                                                        
+ ------ ----------------------------------------------------------------------- 
+  20     Method App\Models\File::commits() return type with generic class       
+         Illuminate\Database\Eloquent\Relations\BelongsToMany does not specify  
+         its types: TRelatedModel, TDeclaringModel                              
+         🪪  missingType.generics                                               
+  25     Method App\Models\File::repo() return type with generic class          
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its  
+         types: TRelatedModel, TDeclaringModel                                  
+         🪪  missingType.generics                                               
+ ------ ----------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/FileVersion.php                                                                
+ ------ -------------------------------------------------------------------------------------- 
+  19     Property App\Models\FileVersion::$casts type has no value type                        
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/GitHubUser.php                                                                 
+ ------ -------------------------------------------------------------------------------------- 
+  10     Class App\Models\GitHubUser uses generic trait                                        
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not                        
+         specify its types: TFactory                                                           
+         🪪  missingType.generics                                                              
+  17     PHPDoc type array of property App\Models\GitHubUser::$fillable is not                 
+         covariant with PHPDoc type array<int, string> of overridden property                  
+         Illuminate\Database\Eloquent\Model::$fillable.                                        
+         🪪  property.phpDocType                                                               
+         💡 You can fix 3rd party PHPDoc types with stub files:                                
+         💡 https://phpstan.org/user-guide/stub-files                                          
+                                                                                               
+  17     Property App\Models\GitHubUser::$fillable type has no value type                      
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  32     Property App\Models\GitHubUser::$casts type has no value type                         
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/Issue.php                                                                      
+ ------ -------------------------------------------------------------------------------------- 
+  10     Class App\Models\Issue uses generic trait                                             
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not                        
+         specify its types: TFactory                                                           
+         🪪  missingType.generics                                                              
+  17     PHPDoc type array of property App\Models\Issue::$fillable is not                      
+         covariant with PHPDoc type array<int, string> of overridden property                  
+         Illuminate\Database\Eloquent\Model::$fillable.                                        
+         🪪  property.phpDocType                                                               
+         💡 You can fix 3rd party PHPDoc types with stub files:                                
+         💡 https://phpstan.org/user-guide/stub-files                                          
+                                                                                               
+  17     Property App\Models\Issue::$fillable type has no value type specified                 
+         in iterable type array.                                                               
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  34     Property App\Models\Issue::$casts type has no value type specified in                 
+         iterable type array.                                                                  
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------- 
+  Line   Models/JoinModel.php                                            
+ ------ ---------------------------------------------------------------- 
+  10     Class App\Models\JoinModel uses generic trait                   
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not  
+         specify its types: TFactory                                     
+         🪪  missingType.generics                                        
+ ------ ---------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Models/Language.php                                                  
+ ------ --------------------------------------------------------------------- 
+  20     Method App\Models\Language::repos() return type with generic class   
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its  
+         types: TRelatedModel, TDeclaringModel                                
+         🪪  missingType.generics                                             
+ ------ --------------------------------------------------------------------- 
+
+ ------ ----------------------------------------------------------------------- 
+  Line   Models/Owner.php                                                       
+ ------ ----------------------------------------------------------------------- 
+  12     Class App\Models\Owner uses generic trait                              
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not         
+         specify its types: TFactory                                            
+         🪪  missingType.generics                                               
+  22     Method App\Models\Owner::repos() return type with generic class        
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its    
+         types: TRelatedModel, TDeclaringModel                                  
+         🪪  missingType.generics                                               
+  27     Method App\Models\Owner::issues() return type with generic class       
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its    
+         types: TRelatedModel, TDeclaringModel                                  
+         🪪  missingType.generics                                               
+  32     Method App\Models\Owner::pullRequests() return type with generic       
+         class Illuminate\Database\Eloquent\Relations\HasMany does not specify  
+         its types: TRelatedModel, TDeclaringModel                              
+         🪪  missingType.generics                                               
+ ------ ----------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/PrivateGPTAnalysis.php                                                         
+ ------ -------------------------------------------------------------------------------------- 
+  11     Class App\Models\PrivateGPTAnalysis uses generic trait                                
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not                        
+         specify its types: TFactory                                                           
+         🪪  missingType.generics                                                              
+  21     Property App\Models\PrivateGPTAnalysis::$casts type has no value type                 
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/Project.php                                                                    
+ ------ -------------------------------------------------------------------------------------- 
+  25     Class App\Models\Project has PHPDoc tag @property for property                        
+         $meta_data with no value type specified in iterable type array.                       
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  27     Class App\Models\Project uses generic trait                                           
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not                        
+         specify its types: TFactory                                                           
+         🪪  missingType.generics                                                              
+  43     Property App\Models\Project::$casts type has no value type specified                  
+         in iterable type array.                                                               
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  83     Method App\Models\Project::repo() return type with generic class                      
+         Illuminate\Database\Eloquent\Relations\HasOne does not specify its                    
+         types: TRelatedModel, TDeclaringModel                                                 
+         🪪  missingType.generics                                                              
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/ProjectCard.php                                                                
+ ------ -------------------------------------------------------------------------------------- 
+  10     Class App\Models\ProjectCard uses generic trait                                       
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not                        
+         specify its types: TFactory                                                           
+         🪪  missingType.generics                                                              
+  17     PHPDoc type array of property App\Models\ProjectCard::$fillable is                    
+         not covariant with PHPDoc type array<int, string> of overridden                       
+         property Illuminate\Database\Eloquent\Model::$fillable.                               
+         🪪  property.phpDocType                                                               
+         💡 You can fix 3rd party PHPDoc types with stub files:                                
+         💡 https://phpstan.org/user-guide/stub-files                                          
+                                                                                               
+  17     Property App\Models\ProjectCard::$fillable type has no value type                     
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  30     Property App\Models\ProjectCard::$casts type has no value type                        
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/ProjectColumn.php                                                              
+ ------ -------------------------------------------------------------------------------------- 
+  10     Class App\Models\ProjectColumn uses generic trait                                     
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not                        
+         specify its types: TFactory                                                           
+         🪪  missingType.generics                                                              
+  17     PHPDoc type array of property App\Models\ProjectColumn::$fillable is                  
+         not covariant with PHPDoc type array<int, string> of overridden                       
+         property Illuminate\Database\Eloquent\Model::$fillable.                               
+         🪪  property.phpDocType                                                               
+         💡 You can fix 3rd party PHPDoc types with stub files:                                
+         💡 https://phpstan.org/user-guide/stub-files                                          
+                                                                                               
+  17     Property App\Models\ProjectColumn::$fillable type has no value type                   
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  29     Property App\Models\ProjectColumn::$casts type has no value type                      
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/PullRequest.php                                                                
+ ------ -------------------------------------------------------------------------------------- 
+  10     Class App\Models\PullRequest uses generic trait                                       
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not                        
+         specify its types: TFactory                                                           
+         🪪  missingType.generics                                                              
+  17     PHPDoc type array of property App\Models\PullRequest::$fillable is                    
+         not covariant with PHPDoc type array<int, string> of overridden                       
+         property Illuminate\Database\Eloquent\Model::$fillable.                               
+         🪪  property.phpDocType                                                               
+         💡 You can fix 3rd party PHPDoc types with stub files:                                
+         💡 https://phpstan.org/user-guide/stub-files                                          
+                                                                                               
+  17     Property App\Models\PullRequest::$fillable type has no value type                     
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  35     Property App\Models\PullRequest::$casts type has no value type                        
+         specified in iterable type array.                                                     
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/Repo.php                                                                       
+ ------ -------------------------------------------------------------------------------------- 
+  23     Property App\Models\Repo::$casts type has no value type specified in                  
+         iterable type array.                                                                  
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  27     Method App\Models\Repo::project() return type with generic class                      
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its                 
+         types: TRelatedModel, TDeclaringModel                                                 
+         🪪  missingType.generics                                                              
+  32     Method App\Models\Repo::owner() return type with generic class                        
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its                 
+         types: TRelatedModel, TDeclaringModel                                                 
+         🪪  missingType.generics                                                              
+  37     Method App\Models\Repo::language() return type with generic class                     
+         Illuminate\Database\Eloquent\Relations\BelongsTo does not specify its                 
+         types: TRelatedModel, TDeclaringModel                                                 
+         🪪  missingType.generics                                                              
+  42     Method App\Models\Repo::commits() return type with generic class                      
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its                   
+         types: TRelatedModel, TDeclaringModel                                                 
+         🪪  missingType.generics                                                              
+  47     Method App\Models\Repo::files() return type with generic class                        
+         Illuminate\Database\Eloquent\Relations\HasMany does not specify its                   
+         types: TRelatedModel, TDeclaringModel                                                 
+         🪪  missingType.generics                                                              
+  70     Access to an undefined property App\Models\Repo::$language.                           
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  75     Access to an undefined property App\Models\Repo::$owner.                              
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+  78     Method App\Models\Repo::getLatestCommitAttribute() has no return type                 
+         specified.                                                                            
+         🪪  missingType.return                                                                
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Models/User.php                                                                       
+ ------ -------------------------------------------------------------------------------------- 
+  17     Class App\Models\User uses generic trait                                              
+         Illuminate\Database\Eloquent\Factories\HasFactory but does not                        
+         specify its types: TFactory                                                           
+         🪪  missingType.generics                                                              
+  32     Property App\Models\User::$casts type has no value type specified in                  
+         iterable type array.                                                                  
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  37     Method App\Models\User::getPermissionPrefixes() return type has no                    
+         value type specified in iterable type array.                                          
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  60     Method App\Models\User::getFilamentShieldPermissions() return type                    
+         has no value type specified in iterable type array.                                   
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  62     Access to an undefined property App\Models\User::$roles.                              
+         🪪  property.notFound                                                                 
+         💡 Learn more:                                                                        
+            https://phpstan.org/blog/solving-phpstan-access-to-undefined-property              
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Policies/LanguagePolicy.php                                           
+ ------ ---------------------------------------------------------------------- 
+  15     Method App\Policies\LanguagePolicy::viewAny() should return bool but  
+         return statement is missing.                                          
+  23     Method App\Policies\LanguagePolicy::view() should return bool but     
+         return statement is missing.                                          
+  31     Method App\Policies\LanguagePolicy::create() should return bool but   
+         return statement is missing.                                          
+  39     Method App\Policies\LanguagePolicy::update() should return bool but   
+         return statement is missing.                                          
+  47     Method App\Policies\LanguagePolicy::delete() should return bool but   
+         return statement is missing.                                          
+  55     Method App\Policies\LanguagePolicy::restore() should return bool but  
+         return statement is missing.                                          
+  63     Method App\Policies\LanguagePolicy::forceDelete() should return bool  
+         but return statement is missing.                                      
+ ------ ---------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------- 
+  Line   Providers/Filament/AdminPanelProvider.php                          
+ ------ ------------------------------------------------------------------- 
+  34     Parameter #1 $name of method Filament\Panel::brandName() expects   
+         Closure|Illuminate\Contracts\Support\Htmlable|string|null, mixed   
+         given.                                                             
+         🪪  argument.type                                                  
+  82     Anonymous function should return Illuminate\View\View but returns  
+         Illuminate\Contracts\View\View.                                    
+         🪪  return.type                                                    
+  92     Call to an undefined method                                        
+         Illuminate\Contracts\Auth\Factory::user().                         
+         🪪  method.notFound                                                
+ ------ ------------------------------------------------------------------- 
+
+ ------ -------------------------------------------- 
+  Line   Providers/Filament/GithubPanelProvider.php  
+ ------ -------------------------------------------- 
+  66     Call to an undefined method                 
+         Illuminate\Contracts\Auth\Factory::user().  
+         🪪  method.notFound                         
+ ------ -------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Providers/PrismServiceProvider.php                                    
+ ------ ---------------------------------------------------------------------- 
+  13     Class OpenAI\Client not found.                                        
+         🪪  class.notFound                                                    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols   
+  14     Instantiated class OpenAI\Client not found.                           
+         🪪  class.notFound                                                    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols   
+  17     Class App\Services\Prism\ModelDocumentationService not found.         
+         🪪  class.notFound                                                    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols   
+  18     Class OpenAI\Client not found.                                        
+         🪪  class.notFound                                                    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols   
+  18     Instantiated class App\Services\Prism\ModelDocumentationService not   
+         found.                                                                
+         🪪  class.notFound                                                    
+         💡 Learn more at https://phpstan.org/user-guide/discovering-symbols   
+  22     Method App\Providers\PrismServiceProvider::boot() has no return type  
+         specified.                                                            
+         🪪  missingType.return                                                
+ ------ ---------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Services/CodeAnalysis/PrismAnalyzer.php                                               
+ ------ -------------------------------------------------------------------------------------- 
+  7      Property App\Services\CodeAnalysis\PrismAnalyzer::$supportedLanguages                 
+         type has no value type specified in iterable type array.                              
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  13     Method App\Services\CodeAnalysis\PrismAnalyzer::analyzeFile() return                  
+         type has no value type specified in iterable type array.                              
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  28     Parameter #1 $content of method                                                       
+         App\Services\CodeAnalysis\PrismAnalyzer::tokenize() expects string,                   
+         string|false given.                                                                   
+         🪪  argument.type                                                                     
+  29     Parameter #1 $content of method                                                       
+         App\Services\CodeAnalysis\PrismAnalyzer::calculateMetrics() expects                   
+         string, string|false given.                                                           
+         🪪  argument.type                                                                     
+  33     Method App\Services\CodeAnalysis\PrismAnalyzer::tokenize() return                     
+         type has no value type specified in iterable type array.                              
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  39     Method App\Services\CodeAnalysis\PrismAnalyzer::calculateMetrics()                    
+         return type has no value type specified in iterable type array.                       
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Services/PrivateGPT/PrivateGPTConnector.php                           
+ ------ ---------------------------------------------------------------------- 
+  17     Method App\Services\PrivateGPT\PrivateGPTConnector::resolveBaseUrl()  
+         should return string but returns mixed.                               
+         🪪  return.type                                                       
+ ------ ---------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Services/PrivateGPT/PrivateGPTService.php                            
+ ------ --------------------------------------------------------------------- 
+  9      Property App\Services\PrivateGPT\PrivateGPTService::$baseUrl has no  
+         type specified.                                                      
+         🪪  missingType.property                                             
+  16     Method App\Services\PrivateGPT\PrivateGPTService::query() has no     
+         return type specified.                                               
+         🪪  missingType.return                                               
+ ------ --------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Services/PrivateGPT/Requests/CompletionRequest.php                                    
+ ------ -------------------------------------------------------------------------------------- 
+  16     Method                                                                                
+         App\Services\PrivateGPT\Requests\CompletionRequest::__construct() has                 
+         parameter $context with no value type specified in iterable type                      
+         array.                                                                                
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  16     Method                                                                                
+         App\Services\PrivateGPT\Requests\CompletionRequest::__construct() has                 
+         parameter $options with no value type specified in iterable type                      
+         array.                                                                                
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  27     Method                                                                                
+         App\Services\PrivateGPT\Requests\CompletionRequest::defaultBody()                     
+         return type has no value type specified in iterable type array.                       
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ -------------------------------------------------------------------------------------- 
+  Line   Tool/GetFunctionForFile.php                                                           
+ ------ -------------------------------------------------------------------------------------- 
+  35     Method App\Tool\GetFunctionForFile::__invoke() should return string                   
+         but returns string|false.                                                             
+         🪪  return.type                                                                       
+  44     Method App\Tool\GetFunctionForFile::__invoke() should return string                   
+         but returns string|false.                                                             
+         🪪  return.type                                                                       
+  78     Method App\Tool\GetFunctionForFile::__invoke() should return string                   
+         but returns string|false.                                                             
+         🪪  return.type                                                                       
+  86     Method App\Tool\GetFunctionForFile::__invoke() should return string                   
+         but returns string|false.                                                             
+         🪪  return.type                                                                       
+  93     Method App\Tool\GetFunctionForFile::getRelationships() has parameter                  
+         $reflection with generic class ReflectionClass but does not specify                   
+         its types: T                                                                          
+         🪪  missingType.generics                                                              
+  93     Method App\Tool\GetFunctionForFile::getRelationships() return type                    
+         has no value type specified in iterable type array.                                   
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  100    Return type of call to method                                                         
+         Illuminate\Support\Collection<int,ReflectionMethod>::map() contains                   
+         unresolvable type.                                                                    
+         🪪  method.unresolvableReturnType                                                     
+  100    Return type of call to method                                                         
+         Illuminate\Support\Collection<int,array<string, mixed>>::values()                     
+         contains unresolvable type.                                                           
+         🪪  method.unresolvableReturnType                                                     
+  111    Cannot call method getName() on ReflectionType|null.                                  
+         🪪  method.nonObject                                                                  
+  113    Parameter #1 $callback of method                                                      
+         Illuminate\Support\Collection<int,ReflectionMethod>::map() contains                   
+         unresolvable type.                                                                    
+         🪪  argument.unresolvableType                                                         
+  116    Cannot call method getName() on ReflectionType|null.                                  
+         🪪  method.nonObject                                                                  
+  128    Method App\Tool\GetFunctionForFile::getProperties() has parameter                     
+         $reflection with generic class ReflectionClass but does not specify                   
+         its types: T                                                                          
+         🪪  missingType.generics                                                              
+  128    Method App\Tool\GetFunctionForFile::getProperties() return type has                   
+         no value type specified in iterable type array.                                       
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+  132    Return type of call to method                                                         
+         Illuminate\Support\Collection<int,ReflectionProperty>::map() contains                 
+         unresolvable type.                                                                    
+         🪪  method.unresolvableReturnType                                                     
+  132    Return type of call to method                                                         
+         Illuminate\Support\Collection<int,array<string, mixed>>::values()                     
+         contains unresolvable type.                                                           
+         🪪  method.unresolvableReturnType                                                     
+  133    Parameter #1 $callback of method                                                      
+         Illuminate\Support\Collection<int,ReflectionProperty>::map() contains                 
+         unresolvable type.                                                                    
+         🪪  argument.unresolvableType                                                         
+  136    Call to an undefined method ReflectionType::getName().                                
+         🪪  method.notFound                                                                   
+  148    Method App\Tool\GetFunctionForFile::getModelInfo() has parameter                      
+         $instance with no type specified.                                                     
+         🪪  missingType.parameter                                                             
+  148    Method App\Tool\GetFunctionForFile::getModelInfo() return type has no                 
+         value type specified in iterable type array.                                          
+         🪪  missingType.iterableValue                                                         
+         💡 See:                                                                               
+            https://phpstan.org/blog/solving-phpstan-no-value-type-specified-in-iterable-type  
+ ------ -------------------------------------------------------------------------------------- 
+
+ ------ --------------------------------------------------------------------- 
+  Line   Traits/HasCommonPanelConfiguration.php                               
+ ------ --------------------------------------------------------------------- 
+  17     Trait App\Traits\HasCommonPanelConfiguration is used zero times and  
+         is not analysed.                                                     
+         🪪  trait.unused                                                     
+         💡 See: https://phpstan.org/blog/how-phpstan-analyses-traits         
+ ------ --------------------------------------------------------------------- 
+
+ ------ ---------------------------------------------------------------------- 
+  Line   Traits/HasOptionalDatabaseNotifications.php                           
+ ------ ---------------------------------------------------------------------- 
+  8      Trait App\Traits\HasOptionalDatabaseNotifications is used zero times  
+         and is not analysed.                                                  
+         🪪  trait.unused                                                      
+         💡 See: https://phpstan.org/blog/how-phpstan-analyses-traits          
+ ------ ---------------------------------------------------------------------- 
+
+ ------ ------------------------------------------------------------------ 
+  Line   View/Components/AppLayout.php                                     
+ ------ ------------------------------------------------------------------ 
+  15     Method App\View\Components\AppLayout::render() should return      
+         Illuminate\View\View but returns Illuminate\Contracts\View\View.  
+         🪪  return.type                                                   
+ ------ ------------------------------------------------------------------ 
+
+ [ERROR] Found 355 errors                                                       
+

@@ -1,0 +1,13 @@
+gpt4all==1.0.8
+chromadb==0.4.18
+llama-cpp-python==0.2.20
+langchain==0.0.350
+urllib3==2.0.7
+PyMuPDF==1.23.8
+python-dotenv==1.0.0
+unstructured==0.10.28
+extract-msg==0.45.0
+tabulate==0.9.0
+pandoc==2.3
+pypandoc==1.12
+tqdm==4.66.1

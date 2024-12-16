@@ -1,0 +1,21 @@
+#!/bin/bash
+commit_msg_file=$1
+commit_msg=$(cat "$commit_msg_file")
+
+# Check for story structure
+if ! echo "$commit_msg" | grep -q "^# The Story"; then
+    echo "Error: Commit message must include a story section"
+    exit 1
+fi
+
+# Check for technical details
+if ! echo "$commit_msg" | grep -q "^# Technical Details"; then
+    echo "Error: Commit message must include technical details"
+    exit 1
+fi
+
+# Ensure the commit message follows our narrative style
+if ! echo "$commit_msg" | grep -q "^[a-z]\+(\[A-Za-z-\]+): "; then
+    echo "Error: Commit message must start with type(scope): "
+    exit 1
+fi
