@@ -21,3 +21,22 @@ The `brave_web_search` tool allows searching the web using the Brave Search API.
 </invoke>
 </function_calls>
 ```
+
+## File System Access
+The file system tools allow reading, writing, and manipulating files and directories within the project.
+
+Key capabilities:
+- List directory contents with `list_directory`
+- Read files with `read_file` 
+- Write files with `write_file`
+- Check file info with `get_file_info`
+- Search for files by name with `search_files`
+
+Example usage:
+```javascript
+<function_calls>
+<invoke name="read_file">
+<parameter name="path">/path/to/file.md</parameter>
+</invoke>
+</function_calls>
+```
