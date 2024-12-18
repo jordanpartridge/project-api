@@ -11,19 +11,13 @@ This README documents the functionality of the various tools available in the pr
 - [Knowledge Graph](#knowledge-graph)
 
 ## Web Search Tools
-TODO: Test and document web search tools
+The `brave_web_search` tool allows searching the web using the Brave Search API. It's useful for finding general information, news articles, and web pages related to a query.
 
-## Terminal
-TODO: Test and document terminal interaction
-
-## Puppeteer Browser Automation
-TODO: Test Puppeteer navigation, interaction and scraping
-
-## GitHub Integration
-TODO: Test GitHub repo and file APIs
-
-## File System Access
-TODO: Verify file/directory APIs
-
-## Knowledge Graph
-TODO: Explore knowledge graph creation and querying
+### Usage
+```javascript
+<function_calls>
+<invoke name="brave_web_search">
+<parameter name="query">SEARCH_QUERY</parameter>
+</invoke>
+</function_calls>
+```
