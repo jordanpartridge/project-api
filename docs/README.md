@@ -1,1 +1,29 @@
-IyBQcm9qZWN0IEFQSSBUb29scyBEb2N1bWVudGF0aW9uDQoNClRoaXMgUkVBRE1FIGRvY3VtZW50cyB0aGUgZnVuY3Rpb25hbGl0eSBvZiB0aGUgdmFyaW91cyB0b29scyBhdmFpbGFibGUgaW4gdGhlIHByb2plY3QtYXBpIHN5c3RlbS4NCg0KIyMgVGFibGUgb2YgQ29udGVudHMNCi0gW1dlYiBTZWFyY2ggVG9vbHNdKCN3ZWItc2VhcmNoLXRvb2xzKQ0KLSBbVGVybWluYWxdKCN0ZXJtaW5hbCkNCi0gW1B1cHBldGVlciBCcm93c2VyIEF1dG9tYXRpb25dKCNwdXBwZXRlZXItYnJvd3Nlci1hdXRvbWF0aW9uKQ0KLSBbR2l0SHViIEludGVncmF0aW9uXSgjZ2l0aHViLWludGVncmF0aW9uKQ0KLSBGW2lsZSBTeXN0ZW0gQWNjZXNzXSgjZmlsZS1zeXN0ZW0tYWNjZXNzKQ0KLSBLW25vd2xlZGdlIEdyYXBoXSgja25vd2xlZGdlLWdyYXBoKQ0KDQojIyBXZWIgU2VhcmNoIFRvb2xzDQpUT0RPOiBUZXN0IGFuZCBkb2N1bWVudCB3ZWIgc2VhcmNoIHRvb2xzDQoNCiMjIFRlcm1pbmFsDQpUT0RPIFRlc3QgYW5kIGRvY3VtZW50IHRlcm1pbmFsIGludGVyYWN0aW9uDQoNCiMjIFB1cHBldGVlciBCcm93c2VyIEF1dG9tYXRpb24NClRPRE86IFRlc3QgUHVwcGV0ZWVyIG5hdmlnYXRpb24sIGludGVyYWN0aW9uIGFuZCBzY3JhcGluZw0KDQojIyBHaXRIdWIgSW50ZWdyYXRpb24NClRPRE86IFRlc3QgR2l0SHViIHJlcG8gYW5kIGZpbGUgQVBJcw0KDQojIyBGaWxlIFN5c3RlbSBBY2Nlc3MNClRPRE86IFZlcmlmeSBmaWxlL2RpcmVjdG9yeSBBUElzDQoNCiMjIEtub3dsZWRnZSBHcmFwaA0KVE9ETzogRXhwbG9yZSBrbm93bGVkZ2UgZ3JhcGggY3JlYXRpb24gYW5kIHF1ZXJ5aW5n
+# Project API Tools Documentation
+
+This README documents the functionality of the various tools available in the project-api system.
+
+## Table of Contents
+- [Web Search Tools](#web-search-tools)
+- [Terminal](#terminal)
+- [Puppeteer Browser Automation](#puppeteer-browser-automation)
+- [GitHub Integration](#github-integration)
+- [File System Access](#file-system-access)
+- [Knowledge Graph](#knowledge-graph)
+
+## Web Search Tools
+TODO: Test and document web search tools
+
+## Terminal
+TODO: Test and document terminal interaction
+
+## Puppeteer Browser Automation
+TODO: Test Puppeteer navigation, interaction and scraping
+
+## GitHub Integration
+TODO: Test GitHub repo and file APIs
+
+## File System Access
+TODO: Verify file/directory APIs
+
+## Knowledge Graph
+TODO: Explore knowledge graph creation and querying
