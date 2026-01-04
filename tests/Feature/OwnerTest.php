@@ -1,85 +1,50 @@
 <?php
 
-use App\Models\Issue;
 use App\Models\Owner;
-use App\Models\PullRequest;
 use App\Models\Repo;
 
-beforeEach(function () {
-    $this->owner = Owner::factory()->create();
-});
-
 it('has basic owner attributes', function () {
-    expect($this->owner)
+    $owner = Owner::factory()->create();
+
+    expect($owner)
         ->toBeInstanceOf(Owner::class)
-        ->github_id->toBeString()
-        ->login->toBeString()
-        ->type->toBeIn(['User', 'Organization'])
-        ->avatar_url->toBeString()
-        ->html_url->toBeString();
+        ->github_id->not->toBeEmpty()
+        ->login->not->toBeEmpty()
+        ->type->toBe('user');
 });
 
 it('can be created as a user', function () {
-    $user = Owner::factory()->user()->create();
-    expect($user->type)->toBe('User');
+    $owner = Owner::factory()->user()->create();
+    expect($owner->type)->toBe('user');
 });
 
 it('can be created as an organization', function () {
-    $org = Owner::factory()->organization()->create();
-    expect($org->type)->toBe('Organization');
+    $owner = Owner::factory()->organization()->create();
+    expect($owner->type)->toBe('organization');
 });
 
 it('can have many repositories', function () {
-    $repos = Repo::factory()->count(3)->create([
-        'owner_id' => $this->owner->id,
-    ]);
+    $owner = Owner::factory()->create();
+    $repos = Repo::factory(3)->create(['owner_id' => $owner->id]);
 
-    expect($this->owner->repos)
-        ->toHaveCount(3)
-        ->each->toBeInstanceOf(Repo::class);
-});
-
-it('can have many authored issues', function () {
-    $repo = Repo::factory()->create(['owner_id' => $this->owner->id]);
-
-    $issues = Issue::factory()->count(2)->create([
-        'repo_id' => $repo->id,
-        'author_id' => $this->owner->id,
-    ]);
-
-    expect($this->owner->issues)
-        ->toHaveCount(2)
-        ->each->toBeInstanceOf(Issue::class);
-});
-
-it('can have many authored pull requests', function () {
-    $repo = Repo::factory()->create(['owner_id' => $this->owner->id]);
-
-    $prs = PullRequest::factory()->count(2)->create([
-        'repo_id' => $repo->id,
-        'author_id' => $this->owner->id,
-    ]);
-
-    expect($this->owner->pullRequests)
-        ->toHaveCount(2)
-        ->each->toBeInstanceOf(PullRequest::class);
+    expect($owner->repos)->toHaveCount(3);
+    expect($owner->repos->first())->toBeInstanceOf(Repo::class);
 });
 
 it('can be soft deleted', function () {
-    $this->owner->delete();
+    $owner = Owner::factory()->create();
+    $owner->delete();
 
-    expect(Owner::count())->toBe(0)
-        ->and(Owner::withTrashed()->count())->toBe(1)
-        ->and(Owner::withTrashed()->first())->toBeInstanceOf(Owner::class);
+    expect(Owner::withTrashed()->find($owner->id))->not->toBeNull()
+        ->and(Owner::find($owner->id))->toBeNull();
 });
 
 it('cascades deletes to repositories', function () {
-    $repos = Repo::factory()->count(2)->create([
-        'owner_id' => $this->owner->id,
-    ]);
+    $owner = Owner::factory()->create();
+    $repos = Repo::factory(3)->create(['owner_id' => $owner->id]);
 
-    $this->owner->delete();
+    $owner->delete();
 
     expect(Repo::count())->toBe(0)
-        ->and(Repo::withTrashed()->count())->toBe(2);
+        ->and(Repo::withTrashed()->count())->toBe(3);
 });

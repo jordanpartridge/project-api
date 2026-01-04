@@ -10,6 +10,7 @@ use Spatie\Activitylog\LogOptions;
 class Repo extends DataModel
 {
     protected $fillable = [
+        'github_id',
         'project_id',
         'owner_id',
         'language_id',
@@ -60,6 +61,7 @@ class Repo extends DataModel
                 'project_id',
                 'owner_id',
                 'language_id',
+                'github_id',
             ])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();

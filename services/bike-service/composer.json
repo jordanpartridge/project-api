@@ -1,0 +1,22 @@
+{
+    "name": "jordanpartridge/bike-service",
+    "description": "Bike management microservice",
+    "type": "project",
+    "require": {
+        "php": "^8.2",
+        "laravel/lumen-framework": "^10.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BikeService\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

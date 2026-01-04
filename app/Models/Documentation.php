@@ -2,12 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\HasStandardBehavior;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Documentation extends Model
+/**
+ * Documentation Model
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $content
+ * @property string $category
+ * @property int $order
+ * @property bool $is_published
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ *
+ * @method static Builder|Documentation published()
+ */
+class Documentation extends DataModel
 {
-    use HasFactory;
+    use HasStandardBehavior;
 
     protected $table = 'documentation';
 
@@ -20,18 +35,37 @@ class Documentation extends Model
     ];
 
     protected $casts = [
+        'title' => 'string',
+        'content' => 'string',
+        'category' => 'string',
+        'order' => 'integer',
         'is_published' => 'boolean',
     ];
 
+    /**
+     * Get the predefined categories for documentation.
+     *
+     * @return array<string>
+     */
     public static function categories(): array
     {
-        return ['Laravel', 'PHP', 'JavaScript', 'Vue', 'React', 'Node', 'Laravel', 'PHP', 'JavaScript', 'Vue', 'React', 'Node'];
+        return [
+            'Laravel',
+            'PHP',
+            'JavaScript',
+            'Vue',
+            'React',
+            'Node',
+        ];
     }
 
     /**
-     * @return mixed
+     * Scope query to only include published documentation.
+     *
+     * @param Builder $query
+     * @return Builder
      */
-    public function scopePublished($query)
+    public function scopePublished(Builder $query): Builder
     {
         return $query->where('is_published', true);
     }

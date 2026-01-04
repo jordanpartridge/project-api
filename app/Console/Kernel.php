@@ -5,11 +5,13 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\AiTroubleshootCommand;
+use App\Console\Commands\OllamaDemoCommand;
 
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        AiTroubleshootCommand::class
+        AiTroubleshootCommand::class,
+        OllamaDemoCommand::class
     ];
 
     protected function schedule(Schedule $schedule)

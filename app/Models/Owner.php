@@ -2,26 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Owner extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'github_id',
-        'login',
         'type',
+        'login',
+        'name',
+        'email',
         'avatar_url',
-        'html_url',
     ];
 
-    public function repos(): HasMany
+    public function repositories(): HasMany
     {
-        return $this->hasMany(Repo::class);
+        return $this->hasMany(Repository::class);
     }
 
     public function issues(): HasMany

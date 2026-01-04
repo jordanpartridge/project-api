@@ -1,0 +1,68 @@
+name: Quality Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+        coverage: xdebug
+        
+    - name: Validate composer.json
+      run: composer validate --strict
+        
+    - name: Install Dependencies
+      run: |
+        composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        npm ci
+        
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+        
+    - name: Generate key
+      run: php artisan key:generate
+        
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+        
+    - name: Create Database
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
+        
+    - name: Run Migration Tests
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: |
+        php artisan migrate:fresh --seed --env=testing
+        php artisan test --env=testing
+        
+    - name: Static Analysis
+      run: ./vendor/bin/phpstan analyse
+        
+    - name: Laravel Pint
+      run: ./vendor/bin/pint --test
+        
+    - name: PHP Mess Detector
+      run: ./vendor/bin/phpmd app text cleancode,codesize,controversial,design,naming,unusedcode
+        
+    - name: Check Migrations
+      run: php artisan migrate:status --env=testing
+        
+    - name: Security Check
+      run: composer audit
+        
+    - name: PHP CS Fixer
+      run: ./vendor/bin/php-cs-fixer fix --dry-run --diff

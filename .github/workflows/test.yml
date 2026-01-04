@@ -1,0 +1,12 @@
+name: Tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          composer install
+          php artisan test
+          ./vendor/bin/phpstan analyse
+          ./vendor/bin/php-cs-fixer fix --dry-run

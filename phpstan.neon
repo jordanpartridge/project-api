@@ -1,18 +1,27 @@
 parameters:
-    level: 2  # Start with lower level first
+    level: 8
     paths:
         - app
         - tests
+    
+    # Exclude files or directories from analysis
     excludePaths:
-        - vendor/*
-        - app/Console/Commands/MindLearnCommand.php  # Exclude mind commands for now
-        - app/Console/Commands/MindRecallCommand.php
+        - */vendor/*
+        
+    # Specific checks and rules
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+
+    # Ignore certain errors
     ignoreErrors:
-        - '#Undefined property: [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9\\_]+#'
-        - '#Call to an undefined static method [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\)#'
-        - '#Method [a-zA-Z0-9\\_]+::handle\(\) has no return type specified#'
-        - '#Access to an undefined property [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9\\_]+#'
-        - '#Parameter \#1 \$[a-zA-Z0-9\\_]+ of [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\) expects string, [a-zA-Z0-9\\_|]+ given#'
-        - '#Cannot access property \$[a-zA-Z0-9\\_]+ on mixed#'
-        - '#Cannot access offset [a-zA-Z0-9\\_]+ on mixed#'
-        - '#Binary operation "\." between [a-zA-Z0-9\\_]+ and [a-zA-Z0-9\\_]+ results in an error#'
+        - '#Call to an undefined method#'
+        - '#Access to an undefined property#'
+        
+    # Symfony DI container integration
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+
+    # Custom rules
+    rules:
+        - PHPStan\Rules\Deprecations\CallToDeprecatedMethodRule
+        - PHPStan\Rules\Deprecations\CallToDeprecatedStaticMethodRule

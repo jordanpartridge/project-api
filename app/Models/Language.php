@@ -2,31 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-/** @use HasFactory<\Database\Factories\LanguageFactory> */
-class Language extends DataModel
+class Language extends Model
 {
+    use HasFactory;
+    use LogsActivity;
+    
     protected $fillable = [
         'name',
+        'color',
     ];
 
-    public function getRouteKeyName()
+    public function repositories(): HasMany
     {
-        return 'name';
+        return $this->hasMany(Repository::class);
     }
 
     public function repos(): HasMany
     {
-        return $this->hasMany(Repo::class);
+        return $this->hasMany(Repository::class);
     }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name'])
-            ->logOnlyDirty()
-            ->dontSubmitEmptyLogs();
+            ->logAll()
+            ->logOnlyDirty();
     }
 }

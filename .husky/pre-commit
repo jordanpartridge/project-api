@@ -1,0 +1,21 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run Laravel Pint
+./vendor/bin/pint
+
+# Run PHPStan
+./vendor/bin/phpstan analyse
+
+# Run PHP CS Fixer
+./vendor/bin/php-cs-fixer fix --dry-run --diff
+
+# Run Tests
+php artisan test --filter=MigrationTest
+php artisan test --filter=AI
+
+# Check security vulnerabilities
+composer audit
+
+# Check code quality
+./vendor/bin/phpmd app text cleancode,codesize,controversial,design,naming,unusedcode
